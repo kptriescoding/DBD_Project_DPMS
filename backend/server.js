@@ -1,42 +1,39 @@
 import express from "express"
 import path from "path"
 import cors from "cors"
-import dotenv from "dotenv"
-import mysql from "mysql"
-import pg from 'pg'
+import mongoose from "mongoose"
+
+import sqlInit from "./sqlInit.js"
+import {DATABASE_URL} from "./env.js"
 
 
 const __dirname=path.resolve()
-const Client=pg.Client
-// var con = mysql.createConnection({
-//    host: "localhost",
-//    user: "yourusername",
-//    password: "yourpassword"
-//  });
- 
-//  con.connect((err)=>{
+
+const url=DATABASE_URL
+mongoose
+    .connect(url,
+        { useNewUrlParser: true,
+             useUnifiedTopology: true
+        })
+    .then(() => console.log("Database Connected Successfully"))
+    .catch(err => console.log(err));
+
+
+// const client = new Client({
+//    user: process.env.PG_USER,
+//    host: process.env.PG_HOST,
+//    database: process.env.PG_USER,
+//    password: process.env.PG_PASS,
+//    port: 5432,
+//  })
+//  client.connect((err)=>{
 //    if (!err)
-   // console.log("Connected!");
-   // else 
-   // console.log("Error")
+//    console.log("Connected!");
+//    else 
+//    console.log("Error")
 //  });
-
-dotenv.config({path:__dirname+"/.env"});
-
-const client = new Client({
-   user: process.env.PG_USER,
-   host: process.env.PG_HOST,
-   database: process.env.PG_USER,
-   password: process.env.PG_PASS,
-   port: 5432,
- })
- client.connect((err)=>{
-   if (!err)
-   console.log("Connected!");
-   else 
-   console.log("Error")
- });
- client.query("CREATE TABLE Persons (PersonID int,LastName varchar(255),FirstName varchar(255),Address varchar(255),City varchar(255));");
+//  client.query("CREATE TABLE Persons (PersonID int,LastName varchar(255),FirstName varchar(255),Address varchar(255),City varchar(255));");
+sqlInit()
 const app=express()
 
 const corsOptions ={
