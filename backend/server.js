@@ -3,7 +3,7 @@ import path from "path"
 import cors from "cors"
 import mongoose from "mongoose"
 
-import sqlInit from "./sqlInit.js"
+import sqlInit from "./models/sqlInit.js"
 import {DATABASE_URL} from "./env.js"
 
 
@@ -19,21 +19,9 @@ mongoose
     .catch(err => console.log(err));
 
 
-// const client = new Client({
-//    user: process.env.PG_USER,
-//    host: process.env.PG_HOST,
-//    database: process.env.PG_USER,
-//    password: process.env.PG_PASS,
-//    port: 5432,
-//  })
-//  client.connect((err)=>{
-//    if (!err)
-//    console.log("Connected!");
-//    else 
-//    console.log("Error")
-//  });
-//  client.query("CREATE TABLE Persons (PersonID int,LastName varchar(255),FirstName varchar(255),Address varchar(255),City varchar(255));");
 sqlInit()
+
+
 const app=express()
 
 const corsOptions ={

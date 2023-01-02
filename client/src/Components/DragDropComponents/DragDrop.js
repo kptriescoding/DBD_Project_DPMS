@@ -3,6 +3,7 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { COLUMN_NAMES } from "./constants";
 import { tasks } from "./tasks";
+import axios from "axios"
 
 import "../../assets/styles/DragDrop.css";
 
@@ -27,7 +28,7 @@ const MovableItem = ({
   const ref = useRef(null);
 
   const [, drop] = useDrop({
-    accept: "Our first type",
+    accept: "DraggableTasks",
     hover(item, monitor) {
       if (!ref.current) {
         return;
@@ -69,7 +70,7 @@ const MovableItem = ({
   });
 
   const [{ isDragging }, drag] = useDrag({
-    type:"Our first type",
+    type:"DraggableTasks",
     item: { index, name, currentColumnName},
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
@@ -113,7 +114,7 @@ const MovableItem = ({
 
 const Column = ({ children, className, title }) => {
   const [{ isOver, canDrop }, drop] = useDrop({
-    accept: "Our first type",
+    accept: "DraggableTasks",
     drop: () => ({ name: title }),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
