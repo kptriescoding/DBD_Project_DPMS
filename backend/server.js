@@ -6,6 +6,8 @@ import mongoose from "mongoose"
 import sqlInit from "./models/sqlInit.js"
 import {DATABASE_URL} from "./env.js"
 
+import studentRouter from "./routes/student.js"
+import professorRouter from "./routes/professor.js"
 
 const __dirname=path.resolve()
 
@@ -33,6 +35,8 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
+app.use("/student",studentRouter);
+app.use("/professor",professorRouter)
 
 app.use(express.static(path.join(__dirname, "client","build")))
 

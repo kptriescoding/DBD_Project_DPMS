@@ -77,5 +77,5 @@ const draggableTasksSchema=new mongoose.Schema({
 
     }]
 });
-const draggableTasks=mongoose.model("book",draggableTasksSchema);
+const draggableTasks=mongoose.model("draggableTasks",draggableTasksSchema);
 export default draggableTasks;
