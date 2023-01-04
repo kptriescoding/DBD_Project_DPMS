@@ -1,3 +1,8 @@
+/**
+ * TODO:
+ * Add Departments Query for Some Obvious Ones
+ */
+
 export const queryDeptTable=`CREATE TABLE IF NOT EXISTS Department
 (
   Name CHAR(50) NOT NULL,
@@ -51,16 +56,6 @@ export const queryProfessorTable=`CREATE TABLE IF NOT EXISTS Professor
   FOREIGN KEY (Department_Name) REFERENCES Department(Name)
 );`
 
-export const queryAnnouncementTable=`CREATE TABLE IF NOT EXISTS Announcement
-(
-  Announcement_ID VARCHAR(20) NOT NULL,
-  Date_of_Announcement DATE NOT NULL,
-  isImmediate INT NOT NULL,
-  Email VARCHAR(50) NOT NULL,
-  PRIMARY KEY (Announcement_ID),
-  FOREIGN KEY (Email) REFERENCES Professor(Email)
-);`
-
 export const queryProfessorFieldOfExpertise=`CREATE TABLE IF NOT EXISTS Professor_Field_Of_Expertise
 (
   Field_Of_Expertise VARCHAR(100) NOT NULL,
@@ -85,11 +80,31 @@ export const queryProjectTable=`CREATE TABLE IF NOT EXISTS Project
   Start_Date DATE NOT NULL,
   End_Date DATE NOT NULL,
   Project_ID VARCHAR(20) NOT NULL,
-  Announcement_ID VARCHAR(20) NOT NULL,
   Professor_Email VARCHAR(50) NOT NULL,
   PRIMARY KEY (Project_ID),
-  FOREIGN KEY (Announcement_ID) REFERENCES Announcement(Announcement_ID),
   FOREIGN KEY (Professor_Email) REFERENCES Professor(Email)
+);`
+
+
+export const queryProjectSkillTable=`CREATE TABLE IF NOT EXISTS Project_Skill
+(
+  Skill VARCHAR(50) NOT NULL,
+  Project_ID VARCHAR(20) NOT NULL,
+  PRIMARY KEY (Skill, Project_ID),
+  FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID)
+);`
+
+
+export const queryAnnouncementTable=`CREATE TABLE IF NOT EXISTS Announcement
+(
+  Announcement_ID VARCHAR(20) NOT NULL,
+  Project_ID VARCHAR(20) NOT NULL,
+  Date_of_Announcement DATE NOT NULL,
+  isImmediate INT NOT NULL,
+  Email VARCHAR(50) NOT NULL,
+  PRIMARY KEY (Announcement_ID,Project_ID),
+  FOREIGN KEY (Email) REFERENCES Professor(Email),
+  FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID)
 );`
 
 export const queryWorksOnTable=`CREATE TABLE IF NOT EXISTS Works_on
@@ -98,13 +113,5 @@ export const queryWorksOnTable=`CREATE TABLE IF NOT EXISTS Works_on
   Project_ID VARCHAR(20) NOT NULL,
   PRIMARY KEY (Student_Email, Project_ID),
   FOREIGN KEY (Student_Email) REFERENCES Student(Email),
-  FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID)
-);`
-
-export const queryProjectSkillTable=`CREATE TABLE IF NOT EXISTS Project_Skill
-(
-  Skill VARCHAR(50) NOT NULL,
-  Project_ID VARCHAR(20) NOT NULL,
-  PRIMARY KEY (Skill, Project_ID),
   FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID)
 );`

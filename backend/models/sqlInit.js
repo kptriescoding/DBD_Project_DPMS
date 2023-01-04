@@ -50,11 +50,10 @@ const sqlInit=async()=>{
         await pool.execute(queryStudentAchievementTable)
         await pool.execute(queryStudentSkillTable)
 
-
-        await pool.execute(queryAnnouncementTable)
-
         await pool.execute(queryProjectTable)
         await pool.execute(queryProjectSkillTable)
+
+        await pool.execute(queryAnnouncementTable)
         
         await pool.execute(queryWorksOnTable)
     }

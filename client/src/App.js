@@ -16,6 +16,13 @@ import ProfessorSignup from "./Components/Professor/Login/Signup"
 import ProfessorLogin from "./Components/Professor/Login/Login"
 import ProfessorDashboard from "./Components/Professor/Dashboard"
 import DragDrop from "./Components/DragDropComponents/DragDrop";
+
+/**
+ TODO
+ If logged in professor or student and try to access others links will not work properly
+ A naive solution can be implemented by using local storages
+ * 
+ */
 function App() {
   // const { currentUser } = useAuth();
   // const render = () => {
