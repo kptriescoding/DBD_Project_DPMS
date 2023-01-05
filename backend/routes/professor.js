@@ -115,4 +115,45 @@ router.post("/get_user",async(req,res)=>{
         }
     )
 })
+
+router.post("/get_students_working_under_me",async(req,res)=>{
+    let user  =req.body.data
+    let query=`
+    SELECT * FROM STUDENT 
+    WHERE Email=(SELECT Student_Email FROM Works_On
+    WHERE  Project_ID=(SELECT Project_ID
+    FROM Project
+    WHERE Professor_Email="${user.email}"))
+    `
+    try{
+        var students = [];
+        const sqlRes=await mysqlPool.query(query,function(err,result,fields){
+            students.push({
+                firstName:user.First_Name,
+        lastName:result.Last_Name,
+        middleName:result.Middle_Name,
+        cgpa:result.cgpa,
+        deptName:result.Department_Name,
+        usn:result.usn
+            })
+        })
+        
+        
+        
+       }
+       catch(err){
+           console.log(err)
+           return res.status(200).json(
+               {
+                   success:false
+               })
+           }
+       return res.status(200).json(
+           {
+               success:true,
+               students:students
+               
+           }
+       )
+})
 export default router;
