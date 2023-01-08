@@ -12,13 +12,13 @@ import professorRouter from "./routes/professor.js"
 const __dirname=path.resolve()
 
 const url=DATABASE_URL
-mongoose
-    .connect(url,
-        { useNewUrlParser: true,
-             useUnifiedTopology: true
-        })
-    .then(() => console.log("Database Connected Successfully"))
-    .catch(err => console.log(err));
+// mongoose
+//     .connect(url,
+//         { useNewUrlParser: true,
+//              useUnifiedTopology: true
+//         })
+//     .then(() => console.log("Database Connected Successfully"))
+//     .catch(err => console.log(err));
 
 
 sqlInit()
