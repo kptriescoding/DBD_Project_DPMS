@@ -8,17 +8,19 @@ import {DATABASE_URL} from "./env.js"
 
 import studentRouter from "./routes/student.js"
 import professorRouter from "./routes/professor.js"
+import projectRouter from "./routes/projects.js"
+import dragdropRouter from "./routes/dragdrop.js"
 
 const __dirname=path.resolve()
 
 const url=DATABASE_URL
-// mongoose
-//     .connect(url,
-//         { useNewUrlParser: true,
-//              useUnifiedTopology: true
-//         })
-//     .then(() => console.log("Database Connected Successfully"))
-//     .catch(err => console.log(err));
+mongoose
+    .connect(url,
+        { useNewUrlParser: true,
+             useUnifiedTopology: true
+        })
+    .then(() => console.log("Database Connected Successfully"))
+    .catch(err => console.log(err));
 
 
 sqlInit()
@@ -37,6 +39,8 @@ app.use(express.urlencoded({extended:true}))
 
 app.use("/student",studentRouter);
 app.use("/professor",professorRouter)
+app.use("/project",projectRouter);
+app.use("/project/dragdrop",dragdropRouter)
 
 app.use(express.static(path.join(__dirname, "client","build")))
 

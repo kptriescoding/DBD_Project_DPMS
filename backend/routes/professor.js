@@ -34,7 +34,10 @@ router.post("/is_signup",async (req,res)=>{
 
     }
     catch(err){
-        console.log(err)
+        return res.status(200).json(
+            {
+                isSignup:false
+            })
     }
     
     return ;
@@ -83,6 +86,7 @@ router.post("/save_user",async(req,res)=>{
  */
 
 router.post("/get_user",async(req,res)=>{
+    console.log(req.body)
     let user=req.body.data
     let query=`
     SELECT *
@@ -115,6 +119,12 @@ router.post("/get_user",async(req,res)=>{
         }
     )
 })
+
+/**
+ * @route   POST professor/get_students_working_under_me
+ * @desc    Gets the Students Working Under the Professor
+ * @access  Logged in
+ */
 
 router.post("/get_students_working_under_me",async(req,res)=>{
     let user  =req.body.data
