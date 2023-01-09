@@ -1,6 +1,12 @@
 import React, { useRef} from "react";
 import { useDrag, useDrop } from "react-dnd";
-import{COLUMN_NAMES,tasks} from "./tempConstants"
+
+/**
+ * 
+ * TODO
+ *  Popup to edit details of each task
+ * Add Option to delete along with edit
+ */
 
 const MovableItem = ({
   items,

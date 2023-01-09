@@ -1,9 +1,14 @@
 import React, { useRef, useState,useEffect } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
-import {COLUMN_NAMES,tasks} from "./tempConstants"
-import axios from "axios"
+import { Button } from "@nextui-org/react";
 
-const Column = ({ children, className, title }) => {
+/**
+ * 
+ * TODO
+ *  Get popup to add details of new tasks
+ */
+
+const Column = ({ children, className, title,items,updateDragTasksForItems,columnIndex}) => {
     const [{ isOver, canDrop }, drop] = useDrop({
       accept: "DraggableTasks",
       drop: () => ({ name: title }),
@@ -13,8 +18,6 @@ const Column = ({ children, className, title }) => {
       }),
       // Override monitor.canDrop() function
       canDrop: (item) => {
-        const { DO_IT, IN_PROGRESS, AWAITING_REVIEW, DONE } = COLUMN_NAMES;
-        const { currentColumnName } = item;
         return (
         //   currentColumnName === title ||
         //   (currentColumnName === DO_IT && title === IN_PROGRESS) ||
@@ -27,6 +30,18 @@ const Column = ({ children, className, title }) => {
         true);
       }
     });
+    const addNewItem=()=>{
+      let item={
+        Name:"New Item "+ items.length,
+        Description:"Create a login page",
+        Members:[],
+        Labels:[],
+        Date:Date.now(),
+        Column:columnIndex
+      }
+      items.push(item)
+      updateDragTasksForItems(items)
+    }
   
     const getBackgroundColor = () => {
       if (isOver) {
@@ -48,6 +63,7 @@ const Column = ({ children, className, title }) => {
       >
         <p>{title}</p>
         {children}
+        <Button onClick={addNewItem}>Add Item</Button>
       </div>
     );
   };

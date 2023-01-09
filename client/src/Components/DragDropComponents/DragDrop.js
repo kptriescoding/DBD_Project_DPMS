@@ -3,7 +3,6 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import MovableItem from "./MovableItem";
 import Column from "./Column";
-import {COLUMN_NAMES,tasks} from "./tempConstants"
 import axios from "axios"
 
 import "../../assets/styles/DragDrop.css";
@@ -91,7 +90,12 @@ export default function DragDrop(){
         // console.log(columns)
         (columns)?columns.map((e,index) => {
         // console.log(e)
-       return <Column title={e} className="column do-it-column">
+       return <Column title={e} 
+       items={items} 
+       updateDragTasksForItems={updateDragTasksForItems} 
+       className="column do-it-column"
+       columnIndex={index}
+       >
        {returnItemsForColumn(index)}
      </Column>
      }):<div/>
