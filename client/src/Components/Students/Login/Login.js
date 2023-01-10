@@ -1,11 +1,15 @@
-import React, { useEffect,useState } from "react";
-import {Button, Input,Spacer } from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
+import { Button, Input, Spacer } from "@nextui-org/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { auth, signInWithGoogle,logInWithEmailAndPassword} from "../../../firebase";
-import GoogleButton from 'react-google-button'
+import {
+  auth,
+  signInWithGoogle,
+  logInWithEmailAndPassword,
+} from "../../../firebase";
+import GoogleButton from "react-google-button";
 import axios from "axios";
-import Signup from "./Signup"
+import Signup from "./Signup";
 import rvce from "../../../assets/styles/download-removebg-preview.png";
 
 /**TODO
@@ -16,8 +20,8 @@ import rvce from "../../../assets/styles/download-removebg-preview.png";
 
 export default function Login() {
   const [user, loading, error] = useAuthState(auth);
-  const [email,setEmail]=useState("")
-  const [loginState,setLoginState]=useState("login");
+  const [email, setEmail] = useState("");
+  const [loginState, setLoginState] = useState("login");
   const navigate = useNavigate();
   useEffect(() => {
     if (loading) {
@@ -27,23 +31,21 @@ export default function Login() {
     if (user) navigate("/student/dashboard");
   }, [user, loading]);
 
-
-
-
-  const checkUserLoggedIn=async(event)=>{
-    event.preventDefault()
-    let emailInput=document.forms[0].email.value;
-    setEmail(emailInput)
-    const data={
-      email:emailInput
-    }
-    const res=await axios.post("/student/is_signup",{data:data})
-    if(res.data.isSignup)setLoginState("isSignup")
-    else setLoginState("noSignup")
-  }
-  const EmailInput=()=>{
-    return <div className="flex justify-center content-center h-screen flex-col flex-wrap">
-    {/* <form>
+  const checkUserLoggedIn = async (event) => {
+    event.preventDefault();
+    let emailInput = document.forms[0].email.value;
+    setEmail(emailInput);
+    const data = {
+      email: emailInput,
+    };
+    const res = await axios.post("/student/is_signup", { data: data });
+    if (res.data.isSignup) setLoginState("isSignup");
+    else setLoginState("noSignup");
+  };
+  const EmailInput = () => {
+    return (
+      <div className="flex justify-center content-center h-screen flex-col flex-wrap">
+        {/* <form>
     <Input
         clearable
         underlined
@@ -64,15 +66,15 @@ export default function Login() {
       <Button onClickCapture={()=>{navigate("/professor/login")}}>Login As Teacher</Button>
       </form> */}
 
-      <div className=" ">
-          <div className=" flex justify-center -mb-12 z-10">
+        <div className="">
+          <div className=" flex justify-center -mb-10 z-10">
             <img src={rvce} className=" justify-center w-1/5"></img>
           </div>
 
           <form className="pt-32 pb-8 px-8 bg-blue-50">
             {/* <!-- Email input --> */}
             <div className=" w-full items-center justify-center">
-              <h2 className=" text-center font-sans italic">DPMS</h2>
+              <h2 className=" text-center font-sans italic">CPMS</h2>
             </div>
             <div className="mb-6">
               <input
@@ -94,6 +96,24 @@ export default function Login() {
 
             <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
               <p className="text-center font-semibold mx-4 mb-0">OR</p>
+            </div>
+            <div class="flex justify-between items-center mb-6">
+              <div class="form-group form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                  id="exampleCheck2"
+                />
+                <label
+                  class="form-check-label inline-block text-gray-800"
+                  for="exampleCheck2"
+                >
+                  Remember me
+                </label>
+              </div>
+              <a href="#!" class="text-gray-800">
+                Forgot password?
+              </a>
             </div>
 
             <button
@@ -122,55 +142,54 @@ export default function Login() {
             </div>
           </form>
         </div>
-    </div>
-  }
-  
+      </div>
+    );
+  };
 
+  const loginThroughPassword = (event) => {
+    event.preventDefault();
+    const password = document.forms[0].password.value;
+    logInWithEmailAndPassword(email, password);
+  };
+  const PasswordInput = () => {
+    return (
+      <div className="flex justify-center content-center h-screen flex-col flex-wrap">
+        <form>
+          <Input
+            clearable
+            underlined
+            labelPlaceholder="Password"
+            name="password"
+            type="password"
+          />
+          <Spacer y={1.5} />
+          <Button onClickCapture={loginThroughPassword}>Enter Password</Button>
+          <Spacer y={1} />
+          <GoogleButton onClickCapture={signInWithGoogle}>
+            <img
+              src="https://img.icons8.com/ios-filled/50/000000/google-logo.png"
+              alt="google icon"
+            />
+            <span> Continue with Google</span>
+          </GoogleButton>
+          <Spacer y={1} />
+          <Button
+            onClickCapture={() => {
+              setLoginState("login");
+            }}
+          >
+            Change Email
+          </Button>
+        </form>
+      </div>
+    );
+  };
 
-
-
-  const loginThroughPassword=(event)=>{
-    event.preventDefault()
-    const password=document.forms[0].password.value
-    logInWithEmailAndPassword(email,password)
-  }
-  const PasswordInput=()=>{
-    return <div className="flex justify-center content-center h-screen flex-col flex-wrap">
-    <form>
-      <Input
-          clearable
-          underlined
-          labelPlaceholder="Password"
-          name="password"
-          type="password"
-        />
-        <Spacer y={1.5}/>
-        <Button onClickCapture={loginThroughPassword}>Enter Password</Button>
-        <Spacer y={1}/>
-        <GoogleButton onClickCapture={signInWithGoogle}>
-        <img
-          src="https://img.icons8.com/ios-filled/50/000000/google-logo.png"
-          alt="google icon"
-        />
-        <span> Continue with Google</span>
-      </GoogleButton>
-      <Spacer y={1}/>
-      <Button onClickCapture={()=>{setLoginState("login")}}>Change Email</Button>
-      </form>
-        </div>
-  }
-
-
-
-  return (
-    (loginState==="login")
-    ?
-    <EmailInput/>
-    :
-    (loginState==="isSignup")
-    ?
-    <PasswordInput/>
-    :
-    <Signup email={email}/>
+  return loginState === "login" ? (
+    <EmailInput />
+  ) : loginState === "isSignup" ? (
+    <PasswordInput />
+  ) : (
+    <Signup email={email} />
   );
 }

@@ -98,6 +98,7 @@ export const queryProjectSkillTable=`CREATE TABLE IF NOT EXISTS Project_Skill
 export const queryAnnouncementTable=`CREATE TABLE IF NOT EXISTS Announcement
 (
   Announcement_ID VARCHAR(20) NOT NULL,
+  Description VARCHAR(255) NOT NULL,
   Project_ID VARCHAR(20) NOT NULL,
   Date_of_Announcement DATE NOT NULL,
   isImmediate INT NOT NULL,
@@ -115,3 +116,4 @@ export const queryWorksOnTable=`CREATE TABLE IF NOT EXISTS Works_on
   FOREIGN KEY (Student_Email) REFERENCES Student(Email),
   FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID)
 );`
+
