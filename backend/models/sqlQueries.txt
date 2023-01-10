@@ -1,0 +1,214 @@
+CREATE TABLE IF NOT EXISTS Department
+(
+  Name CHAR(50) NOT NULL,
+  Year__Of_Establishment INT NOT NULL,
+  PRIMARY KEY (Name)
+);
+CREATE TABLE IF NOT EXISTS Student
+(
+  First_Name CHAR(20) NOT NULL,
+  Last_Name CHAR(20) NOT NULL,
+  Middle_Name CHAR(20) ,
+  Local_Address VARCHAR(100) NOT NULL,
+  Permanent_Address VARCHAR(100) NOT NULL,
+  USN VARCHAR(10) NOT NULL,
+  CGPA FLOAT NOT NULL,
+  Semester INT NOT NULL,
+  Email VARCHAR(50) NOT NULL,
+  Department_Name CHAR(50) NOT NULL,
+  PRIMARY KEY (Email),
+  FOREIGN KEY (Department_Name) REFERENCES Department(Name) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Student_Skill
+(
+  Skill VARCHAR(50) NOT NULL,
+  Student_Email VARCHAR(30) NOT NULL,
+  PRIMARY KEY (Skill, Student_Email),
+  FOREIGN KEY (Student_Email) REFERENCES Student(Email) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Student_Achievement
+(
+  Achievement VARCHAR(255) NOT NULL,
+  Student_Email VARCHAR(50) NOT NULL,
+  PRIMARY KEY (Achievement, Student_Email),
+  FOREIGN KEY (Student_Email) REFERENCES Student(Email) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Professor
+(
+  First_Name CHAR(30) NOT NULL,
+  Last_Name CHAR(30) NOT NULL,
+  Middle_Name CHAR(30) ,
+  Email VARCHAR(50) NOT NULL,
+  Year_Of_Joining INT NOT NULL,
+  Department_Name CHAR(50) NOT NULL,
+  PRIMARY KEY (Email),
+  FOREIGN KEY (Department_Name) REFERENCES Department(Name) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Professor_Field_Of_Expertise
+(
+  Field_Of_Expertise VARCHAR(100) NOT NULL,
+  Professor_Email VARCHAR(50) NOT NULL,
+  PRIMARY KEY (Field_Of_Expertise, Professor_Email),
+  FOREIGN KEY (Professor_Email) REFERENCES Professor(Email) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Professor_Paper_Published
+(
+  Paper_Published VARCHAR(255) NOT NULL,
+  Professor_Email VARCHAR(50) NOT NULL,
+  PRIMARY KEY (Paper_Published, Professor_Email),
+  FOREIGN KEY (Professor_Email) REFERENCES Professor(Email) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Project
+(
+  Title VARCHAR(50) NOT NULL,
+  Description VARCHAR(255) NOT NULL,
+  Collaborator VARCHAR(100),
+  Start_Date DATE NOT NULL,
+  End_Date DATE NOT NULL,
+  Project_ID VARCHAR(20) NOT NULL,
+  Professor_Email VARCHAR(50) NOT NULL,
+  PRIMARY KEY (Project_ID),
+  FOREIGN KEY (Professor_Email) REFERENCES Professor(Email) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Project_Skill
+(
+  Skill VARCHAR(50) NOT NULL,
+  Project_ID VARCHAR(20) NOT NULL,
+  PRIMARY KEY (Skill, Project_ID),
+  FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Announcement
+(
+  Announcement_ID VARCHAR(20) NOT NULL,
+  Description VARCHAR(255) NOT NULL,
+  Project_ID VARCHAR(20) NOT NULL,
+  Date_of_Announcement DATE NOT NULL,
+  isImmediate INT NOT NULL,
+  Email VARCHAR(50) NOT NULL,
+  PRIMARY KEY (Announcement_ID,Project_ID),
+  FOREIGN KEY (Email) REFERENCES Professor(Email) ON DELETE CASCADE, 
+  FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Works_on
+(
+  Student_Email VARCHAR(50) NOT NULL,
+  Project_ID VARCHAR(20) NOT NULL,
+  PRIMARY KEY (Student_Email, Project_ID),
+  FOREIGN KEY (Student_Email) REFERENCES Student(Email) ON DELETE CASCADE,
+  FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID) ON DELETE CASCADE
+);
+INSERT INTO Department VALUES
+("Information Science and Engineering",1999),
+("Computer Science and Engineering",1966),
+("Mechanical Engineering",1970),
+("Civil Engineering",1976),
+("Chemical Engineering",1980);
+INSERT INTO Student VALUES
+("Rohan","Shetty","A","Manipal","Bengaluru","1RV20IS001",9.87,3,"rohanshetty.is20@rvce.edu.in","Information Science and Engineering"),
+("Mohan","Shetty","D","Bengaluru","Bengaluru","1RV20CS001",8.77,5,"mohanshetty.cs20@rvce.edu.in","Computer Science and Engineering"),
+("Rohit","Sharma","L","Udupi","Bengaluru","1RV20ME001",7.87,3,"rohitsharma.me20@rvce.edu.in","Mechanical Engineering"),
+("Mohit","Kumar","S","Bengaluru","Bengaluru","1RV20CV001",8.97,5,"mohitkumar.cv20@rvce.edu.in","Civil Engineering"),
+("Roshan","Kumar","B","Shimoga","Bengaluru","1RV20CH001",7.87,3,"roshankumar.ch20@rvce.edu.in","Chemical Engineering");
+INSERT INTO Student_Skill VALUES
+("C++","rohanshetty.is20@rvce.edu.in"),
+("Java","mohanshetty.cs20@rvce.edu.in"),
+("CAD","rohitsharma.me20@rvce.edu.in"),
+("Python","mohitkumar.cv20@rvce.edu.in"),
+("C","roshankumar.ch20@rvce.edu.in");
+INSERT INTO Student_Achievement VALUES
+("Won 2nd place Blockchain Hackathon","rohanshetty.is20@rvce.edu.in"),
+("Qualified for GRID 4.0 Hackathon","mohanshetty.cs20@rvce.edu.in"),
+("Won 1st place in Century Hackathon ","rohitsharma.me20@rvce.edu.in"),
+("300 questions solved in LeetCode","mohitkumar.cv20@rvce.edu.in"),
+("Qualified in top 12 of Centurion Hackathon","roshankumar.ch20@rvce.edu.in");
+INSERT INTO Professor VALUES
+("Adam","Fetcher","L","adamlfetcher@gmail.com",2006,"Information Science and Engineering"),
+("Shanta","Padmanabhaswamy","R","shantapadmanabhaswamy@gmail.com",2006,"Information Science and Engineering"),
+("Raghavendra","Adiga","L","raghavendraadiga@rvce.edu.in",2008,"Computer Science and Engineering"),
+("Laksmi","Gowda","M","laksmigowda@rvce.edu.in",2010,"Computer Science and Engineering"),
+("Mark","Fetcher","D","markfetcher@rvce.edu.in",2016,"Computer Science and Engineering"),
+("Shyam","Sundar","M","shyammsundar@rvce.edu.in",2011,"Mechanical Engineering"),
+("Karthika","Rosswood","I","karthikairosswood@rvce.edu.in",2012,"Information Science and Engineering");
+INSERT INTO  Professor_Field_Of_Expertise VALUESce.edu.in",2008,"Computer Science and Engineering"),
+("Laksmi","Gowda","M","laksmigowda@rvce.edu.in",2010,"Computer Science and Engineering"),
+("Mark","Fetcher","D","markfetcher@rvce.edu.in",2016,"Computer Science and Engineering"),
+("Shyam","Sundar","M","shyammsundar@rvce.edu.in",2011,"Electronics and Communication Engineering"),
+("Karthika","Rosswood","I","karthikairosswood@rvce.edu.in",2012,"Information Science and Engineering");
+INSERT INTO  Professor_Field_Of_Expertise VALUES
+("Digital Computing","adamlfetcher@gmail.com"),
+("Electronics","raghavendraadiga@rvce.edu.in"),
+("Nano Tech","markfetcher@rvce.edu.in"),
+("Cybersecurity and Big Data","laksmigowda@rvce.edu.in"),
+("Analog and digital Electronics","shyammsundar@rvce.edu.in");
+INSERT INTO Professor_Paper_Published VALUES
+("A B IEEE","adamlfetcher@gmail.com"),
+("BC IEEE sdf","raghavendraadiga@rvce.edu.in"),
+("CD Elsivier sdf","laksmigowda@rvce.edu.in"),
+("CDF IEEE sdf","markfetcher@rvce.edu.in"),
+("BioT IEEE sdf","shyammsundar@rvce.edu.in");
+INSERT INTO Project VALUES
+("AR In Physics","To check AR in physics","Samsung","2023-01-01","2023-03-01","Proj001","adamlfetcher@gmail.com"),
+("Emotion Recognition","A face recognition App to check emotions","ABB","2023-01-01","2023-03-01","Proj002","raghavendraadiga@rvce.edu.in"),
+("Load Cell Graph","To draw graphs for real time data of Load Cell Data","Samsung","2023-01-01","2023-03-01","Proj003","laksmigowda@rvce.edu.in"),
+("Fish Recognition","To make ML to recognize fish","Cisco","2023-01-01","2023-03-01","Proj004","markfetcher@rvce.edu.in"),
+("Banking System","To implement a Banking System","Google","2023-01-01","2023-03-01","Proj005","shyammsundar@rvce.edu.in");
+INSERT INTO Project_Skill VALUES
+("Unity","Proj001"),
+("Python","Proj002"),
+("Java","Proj003"),
+("Python","Proj004"),
+("C++","Proj005");
+INSERT INTO Announcement VALUES
+("1","Proj001","Project deadline is nearing","2023-01-01",0,"raghavendraadiga@rvce.edu.in"),
+("2","Proj002","Next milestone is nearing complete the tasks","2023-01-03,0","laksmigowda@rvce.edu.in"),
+("3","Proj003","Next milestone is somewhere complete the tasks","2023-01-06",0,"markfetcher@rvce.edu.in"),
+("4","Proj004","Next deadline nearing","2023-01-03,1","shyammsundar@rvce.edu.in"),
+("5","Proj005","Next deadline nearing","2023-01-03,1","laksmigowda@rvce.edu.in");
+INSERT INTO Works_on VALUES
+("rohanshetty.is20@rvce.edu.in","Proj001"),
+("mohanshetty.cs20@rvce.edu.in","Proj002"),
+("rohitsharma.me20@rvce.edu.in","Proj003"),
+("mohitkumar.cv20@rvce.edu.in","Proj004"),
+("roshankumar.ch20@rvce.edu.in","Proj005");
+
+
+{
+   "data" :  {
+      "projectID":"Proj001",
+		 "dragTask":{
+			 "ProjectID":"Proj001",
+			 "Columns":["To Do","In Progress","To Be Reviewed","Completed"],
+			 "Tasks":[{
+				 "Name":"Create Project Page",
+				 "Description":"Create a login page",
+				 "Members":[],
+				 "Labels":[],
+				 "Date":"2019-04-28T14:45:15",
+				 "Column":0
+			 },{
+				 "Name":"Create Project Page 2",
+				 "Description":"Create a login page",
+				 "Members":[],
+				 "Labels":[],
+				 "Date":"2019-04-28T14:45:15",
+				 "Column":0
+			 },
+				{
+				 "Name":"Create Project Page 3",
+				 "Description":"Create a login page",
+				 "Members":[],
+				 "Labels":[],
+				 "Date":"2019-04-28T14:45:15",
+					"Column":0
+			 },{
+				 "Name":"Create Project Page 4",
+				 "Description":"Create a login page",
+				 "Members":[],
+				 "Labels":[],
+				 "Date":"2019-04-28T14:45:15",
+				 "Column":0
+			 }
+							]
+		 }
+   }
+}

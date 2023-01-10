@@ -7,7 +7,7 @@ export default ()=>{
     <Navbar variant={"sticky"} color={"primary"}>
           <Navbar.Content className=" flex justify-center">
             <Navbar.Link variant="underline" className=" justify-center flex">
-              Home
+              Create Project
             </Navbar.Link>
             <Navbar.Link>Analytics</Navbar.Link>
           </Navbar.Content>

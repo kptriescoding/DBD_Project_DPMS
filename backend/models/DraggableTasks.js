@@ -4,9 +4,17 @@ const draggableTasksSchema=new mongoose.Schema({
     ProjectID:{
         type:String
     },
-    ToDo:[{
+    Columns:[
+        {
+            type:String
+        }
+    ],
+    Tasks:[{
         Name:{
             type:String
+        },
+        Column:{
+            type:Number
         },
         Description:{
             type:String
@@ -20,61 +28,6 @@ const draggableTasksSchema=new mongoose.Schema({
         Date:{
             type:Date
         }
-
-    }],
-    InProgress:[{
-        Name:{
-            type:String
-        },
-        Description:{
-            type:String
-        },
-        Members:[{
-            type:String
-        }],
-        Labels:[{
-            type:String
-        }],
-        Date:{
-            type:Date
-        }
-
-    }],
-    ToBeReviewed:[{
-        Name:{
-            type:String
-        },
-        Description:{
-            type:String
-        },
-        Members:[{
-            type:String
-        }],
-        Labels:[{
-            type:String
-        }],
-        Date:{
-            type:Date
-        }
-
-    }],
-    Completed:[{
-        Name:{
-            type:String
-        },
-        Description:{
-            type:String
-        },
-        Members:[{
-            type:String
-        }],
-        Labels:[{
-            type:String
-        }],
-        Date:{
-            type:Date
-        }
-
     }]
 });
 const draggableTasks=mongoose.model("draggableTasks",draggableTasksSchema);

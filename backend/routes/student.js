@@ -35,6 +35,10 @@ router.post("/is_signup",async (req,res)=>{
     }
     catch(err){
         console.log(err)
+        return res.status(200).json(
+            {
+                isSignup:false
+            })
     }
     
     return ;
