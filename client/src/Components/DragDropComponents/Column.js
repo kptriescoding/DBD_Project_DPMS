@@ -1,70 +1,64 @@
-import React, { useRef, useState,useEffect } from "react";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
-import { Button } from "@nextui-org/react";
+import React, { useState } from "react";
+import {useDrop } from "react-dnd";
+import { Button,Modal,Text,Input,Textarea,Col,Card} from "@nextui-org/react";
+import ModalAddNewItem from "./ModalAddNewItem";
+import MovableItem from "./MovableItem";
 
-/**
- * 
- * TODO
- *  Get popup to add details of new tasks
- */
-
-const Column = ({ children, className, title,items,updateDragTasksForItems,columnIndex}) => {
-    const [{ isOver, canDrop }, drop] = useDrop({
+const Column = ({ 
+  columns,
+  title,
+  items,
+  updateDragTasksForItems,
+  columnIndex,
+moveCardHandler}) => {
+    const [,drop] = useDrop({
       accept: "DraggableTasks",
-      drop: () => ({ name: title }),
+      drop: () => ({ columnIndex: columnIndex }),
       collect: (monitor) => ({
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop()
-      }),
-      // Override monitor.canDrop() function
-      canDrop: (item) => {
-        return (
-        //   currentColumnName === title ||
-        //   (currentColumnName === DO_IT && title === IN_PROGRESS) ||
-        //   (currentColumnName === IN_PROGRESS &&
-        //     (title === DO_IT || title === AWAITING_REVIEW)) ||
-        //   (currentColumnName === AWAITING_REVIEW &&
-        //     (title === IN_PROGRESS || title === DONE)) ||
-        //   (currentColumnName === DONE && title === AWAITING_REVIEW)
-        // );
-        true);
-      }
+      })
     });
-    const addNewItem=()=>{
-      let item={
-        Name:"New Item "+ items.length,
-        Description:"Create a login page",
-        Members:[],
-        Labels:[],
-        Date:Date.now(),
-        Column:columnIndex
-      }
-      items.push(item)
-      updateDragTasksForItems(items)
-    }
   
-    const getBackgroundColor = () => {
-      if (isOver) {
-        if (canDrop) {
-          return ;
-        } else if (!canDrop) {
-          return "rgb(255,188,188)";
-        }
-      } else {
-        return "";
-      }
+    const returnItemsForColumn = () => {
+      return items
+        .map((item, index) => (
+          (item.Column===columnIndex)?
+          <MovableItem
+            items={items}
+            name={item.Name}
+            currentColumnName={columns[item.Column]}
+            updateDragTasksForItems={updateDragTasksForItems}
+            index={index}
+            moveCardHandler={moveCardHandler}
+            columns={columns}
+            item={item}
+          />:<div/>
+        ));
     };
   
     return (
-      <div
-        ref={drop}
-        className={className}
-        style={{ backgroundColor: getBackgroundColor() }}
+      
+      <Col
+        
+        justify="center" align="center"
       >
-        <p>{title}</p>
-        {children}
-        <Button onClick={addNewItem}>Add Item</Button>
-      </div>
+      <div ref={drop}>
+      <Card>
+      <Card.Header>
+        <Text>{title}</Text>
+        </Card.Header>
+        <Card.Body/>
+        {returnItemsForColumn()}
+        <Card.Body/>
+        <Card.Footer/>
+        <ModalAddNewItem items={items} 
+        columnIndex={columnIndex} 
+        updateDragTasksForItems={updateDragTasksForItems}/>
+        <Card.Footer/>
+        </Card>
+        </div>
+      </Col>
     );
   };
 export default Column

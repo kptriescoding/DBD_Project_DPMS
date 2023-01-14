@@ -1,21 +1,16 @@
-import React, { useRef} from "react";
+import React, { useRef,useState,forwardRef} from "react";
 import { useDrag, useDrop } from "react-dnd";
-
-/**
- * 
- * TODO
- *  Popup to edit details of each task
- * Add Option to delete along with edit
- */
+import ModalItemDescription from "./ModalItemDescription";
 
 const MovableItem = ({
-  items,
+    items,
     name,
     index,
     currentColumnName,
     moveCardHandler,
     updateDragTasksForItems,
     columns,
+    item
   }) => {
     const changeItemColumn = (currentItem, columnIndex) => {
       let curInd=currentItem.index
@@ -72,13 +67,10 @@ const MovableItem = ({
       type:"DraggableTasks",
       item: { index, name, currentColumnName},
       end: (item, monitor) => {
-        console.log(item)
+        // console.log(item)
         const dropResult = monitor.getDropResult();
-  
         if (dropResult) {
-          const { name } = dropResult;
-          let columnIndex=columns.indexOf(name)
-          // console.log(colIndex)
+          const { columnIndex } = dropResult;
               changeItemColumn(item, columnIndex);
         }
       },
@@ -92,9 +84,16 @@ const MovableItem = ({
     drag(drop(ref));
   
     return (
-      <div ref={ref} className="movable-item" style={{ opacity }}>
-        {name}
-      </div>
+      <ModalItemDescription
+      ref={ref} 
+      items={items}
+      style={{opacity}}
+      updateDragTasksForItems={updateDragTasksForItems}
+      item={item}
+      index={index}
+      >
+      {name}
+      </ModalItemDescription>
     );
   };
 
