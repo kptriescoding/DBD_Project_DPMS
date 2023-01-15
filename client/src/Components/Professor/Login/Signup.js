@@ -184,12 +184,24 @@ export default function Signup(props) {
                 />
               </div>
             </div>
+            
             <div className="mt-4">
               <div className="flex flex-col items-start ">
                 <input
                   type="password"
                   placeholder="Confirm password"
                   name="rpassword"
+                  className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
+                />
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <div className="flex flex-col items-start ">
+                <input
+                  type="number"
+                  placeholder="Year of Joining"
+                  name="yearOfJoining"
                   className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
                 />
               </div>

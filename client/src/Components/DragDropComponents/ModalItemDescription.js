@@ -34,20 +34,38 @@ const ModalItemDescription=forwardRef(({items,
   
     return (
       <div >
-      <Spacer/>
-        <Button ref={ref} bordered color="gradient" light onPress={handler}>
+      <Spacer />
+        <Button ref={ref} bordered color="gradient" light onPress={handler} style={
+          {
+            whiteSpace:"initial",
+            height:"auto",
+            padding:"0.75rem",
+            background:"rgb(255,254,255)",
+            width:"100%",
+           
+          }
+        }>
           {item.Name}
         </Button>
         <Spacer/>
         <Modal
           closeButton
           open={visible}
+          style={{
+            width:"100%"
+          }}
           onClose={closeHandler}
         >
-          <Modal.Header>
+          <Modal.Header style={{
+            width:"100%"
+          }}>
             <Input 
             label="Name"
             readOnly={!editable} 
+            style={{
+              width:"100%",
+              textAlign: "center"
+            }}
             value={name}
             onChangeCapture={(event)=>setName(event.target.value)}
             />

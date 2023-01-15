@@ -1,87 +1,91 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Column from "./Column";
-import axios from "axios"
-import { Row,Container } from "@nextui-org/react";
+import axios from "axios";
+import { Row, Container } from "@nextui-org/react";
 
 import "../../assets/styles/DragDrop.css";
 
-const DragDrop=()=>{
-
-  let [items,setItems]=useState({})
-  let [dragTasks,setDragTasks]=useState({})
-  let [columns,setColumns]=useState([])
-  const getDragTasks=async()=>{
-    const data={
-      projectID:"Proj001"
-    }
-    const res=await axios.post("/project/dragdrop/get",{data:data})
-    if(!res.data.success)console.log("Error")
+const DragDrop = () => {
+  let [items, setItems] = useState({});
+  let [dragTasks, setDragTasks] = useState({});
+  let [columns, setColumns] = useState([]);
+  const getDragTasks = async () => {
+    const data = {
+      projectID: "Proj001",
+    };
+    const res = await axios.post("/project/dragdrop/get", { data: data });
+    if (!res.data.success) console.log("Error");
     else {
-     let resDragTask=res.data.dragTask
-      setDragTasks(resDragTask)
-      setItems(resDragTask.Tasks)
-      setColumns(resDragTask.Columns)
+      let resDragTask = res.data.dragTask;
+      setDragTasks(resDragTask);
+      setItems(resDragTask.Tasks);
+      setColumns(resDragTask.Columns);
     }
+  };
 
-  }
-
-  const updateDragTasksForItems=async(items)=>{
-    let updateDragTasks=dragTasks;
-    updateDragTasks.Tasks=items
-    const data={
-      projectID:"Proj001",
-      dragTask:updateDragTasks
-    }
+  const updateDragTasksForItems = async (items) => {
+    let updateDragTasks = dragTasks;
+    updateDragTasks.Tasks = items;
+    const data = {
+      projectID: "Proj001",
+      dragTask: updateDragTasks,
+    };
     // console.log(data)
-    const res=await axios.post("/project/dragdrop/update",{data:data})
+    const res = await axios.post("/project/dragdrop/update", { data: data });
     // console.log(res)
-    setItems([...items])
-  }
+    setItems([...items]);
+  };
   useEffect(() => {
-    getDragTasks()
-  }, [])
+    getDragTasks();
+  }, []);
 
   const moveCardHandler = (dragIndex, hoverIndex) => {
     const dragItem = items[dragIndex];
 
     if (dragItem) {
+      // remove item by "hoverIndex" and put "dragItem" instead
+      const prevItem = items.splice(hoverIndex, 1, dragItem);
 
-        // remove item by "hoverIndex" and put "dragItem" instead
-        const prevItem = items.splice(hoverIndex, 1, dragItem);
+      // remove item by "dragIndex" and put "prevItem" instead
+      items.splice(dragIndex, 1, prevItem[0]);
+      updateDragTasksForItems(items);
 
-        // remove item by "dragIndex" and put "prevItem" instead
-        items.splice(dragIndex, 1, prevItem[0]);
-        updateDragTasksForItems(items)
-
-        return items;
+      return items;
     }
   };
 
-  
-
-
   return (
     <DndProvider backend={HTML5Backend}>
-    <Container>
-    <Row gap={1}>
-      {
-        
-        // console.log(columns)
-        (columns)?columns.map((e,index) => {
-        // console.log(e)
-       return <Column title={e} 
-       items={items} 
-       updateDragTasksForItems={updateDragTasksForItems} 
-       columnIndex={index}
-       columns={columns}
-       moveCardHandler={moveCardHandler}
-       />
-     }):<div/>
-    }
-      </Row>
-    </Container>
+      <Container>
+        <Row
+          gap={1}
+          
+        >
+          {
+            // console.log(columns)
+            columns ? (
+              columns.map((e, index) => {
+                // console.log(e)
+                return (
+                  <Column
+                    title={e}
+                    items={items}
+                   
+                    updateDragTasksForItems={updateDragTasksForItems}
+                    columnIndex={index}
+                    columns={columns}
+                    moveCardHandler={moveCardHandler}
+                  />
+                );
+              })
+            ) : (
+              <div />
+            )
+          }
+        </Row>
+      </Container>
     </DndProvider>
   );
 };

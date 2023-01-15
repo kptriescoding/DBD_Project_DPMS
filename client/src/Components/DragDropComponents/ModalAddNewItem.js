@@ -33,8 +33,16 @@ const ModalAddNewItem=({items,columnIndex,updateDragTasksForItems})=> {
   
     return (
       <div>
-        <Button auto shadow onPress={handler}>
-          Add new Item
+        <Button auto shadow onPress={handler} style={
+          {
+            width: "100%",
+            fontSize: "xx-large",
+            backgroundColor: "lightslatgrey",
+            padding: "1.4rem",
+            borderRadius:"0.35rem"
+          }
+        }>
+          +
         </Button>
         <Modal
           closeButton
