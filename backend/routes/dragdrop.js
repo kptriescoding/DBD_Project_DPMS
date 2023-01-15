@@ -9,13 +9,14 @@ const router=Router()
  */
 
 router.post("/create",async(req,res)=>{
-    const user=req.body.data
+    const project=req.body.data
     try{
         let dragTask=await draggableTasks.findOne({ProjectID:user.projectID})
     if(dragTask)throw Error("Drag Task Exists")
     const newDragTask=new draggableTasks({
         ProjectID:user.projectID,
-        Tasks:[]
+        Tasks:[],
+        Columns:["To Do","In Progress","To Be Reviewed","Completed"]
     })
     const success=await newDragTask.save()
     if(!success)throw Error("Something Went Wrong")
