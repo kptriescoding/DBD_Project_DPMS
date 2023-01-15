@@ -93,10 +93,11 @@ router.post("/get_user",async(req,res)=>{
     FROM Professor
     WHERE Email="${user.email}"
     `
+    let data;
     try{
      const sqlRes=await mysqlPool.query(query)
      user=sqlRes[0][0];
-     const data={
+      data={
         firstName:user.First_Name,
         lastName:user.Last_Name,
         middleName:user.Middle_Name,
@@ -115,7 +116,7 @@ router.post("/get_user",async(req,res)=>{
     return res.status(200).json(
         {
             success:true,
-            user:user
+            user:data
         }
     )
 })

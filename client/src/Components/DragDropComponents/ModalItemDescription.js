@@ -54,7 +54,7 @@ const ModalItemDescription=forwardRef(({items,
           </Modal.Header>
           <Modal.Body>
             <Textarea 
-            label="Name"
+            label="Description"
             readOnly={!editable} 
             value={description}
             onChangeCapture={(event)=>setDescription(event.target.value)}
