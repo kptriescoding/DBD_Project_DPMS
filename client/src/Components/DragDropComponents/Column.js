@@ -54,7 +54,7 @@ const Column = ({
         <Card
           style={{
             background: "rgb(243,243,247)",
-            width:"30rem"
+            width:"25rem"
           }}
         >
           <Card.Header>
