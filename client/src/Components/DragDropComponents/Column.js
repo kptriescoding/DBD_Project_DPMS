@@ -33,6 +33,7 @@ const Column = ({
     return items.map((item, index) =>
       item.Column === columnIndex ? (
         <MovableItem
+        
           items={items}
           name={item.Name}
           currentColumnName={columns[item.Column]}
@@ -47,20 +48,37 @@ const Column = ({
       )
     );
   };
-
+const nextuiCGNVTSfIgvLppdCss ={
+  marginTop: "0 !important"
+}
   return (
-    <Col justify="center" align="center">
-      <div ref={drop}>
+    <Col style={{
+      margin:"0rem",
+      
+    }}  >
+      <div ref={drop} style={{
+            margin:"0rem",
+            
+          }}>
         <Card
           style={{
             background: "rgb(243,243,247)",
-            width:"25rem"
+            width:"25rem",
+            margin:"0rem"
           }}
         >
-          <Card.Header>
+          <Card.Header style={{
+            justifyContent: "center",
+            nextuiCGNVTSfIgvLppdCss
+          }
+          }>
             <Text>{title}</Text>
           </Card.Header>
-          <Card.Body />
+          <Card.Body style={{
+            justifyContent: "center"
+          }}
+          
+          />
           {returnItemsForColumn()}
           <Card.Body />
           <Card.Footer />

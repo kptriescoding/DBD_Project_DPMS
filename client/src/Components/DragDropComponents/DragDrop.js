@@ -60,6 +60,9 @@ const DragDrop = () => {
     <DndProvider backend={HTML5Backend}>
       <Container>
         <Row
+        style={{
+          margin: "1rem"
+        }}
           gap={1}
           
         >
@@ -72,7 +75,11 @@ const DragDrop = () => {
                   <Column
                     title={e}
                     items={items}
-                   
+                    style={{
+                      display:"flex",
+                      
+                      margin:"0"
+                     }}
                     updateDragTasksForItems={updateDragTasksForItems}
                     columnIndex={index}
                     columns={columns}
