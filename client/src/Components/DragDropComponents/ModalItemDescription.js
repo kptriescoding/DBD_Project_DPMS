@@ -33,8 +33,7 @@ const ModalItemDescription=forwardRef(({items,
   
   
     return (
-      <div >
-      <Spacer />
+      <div className=" my-0.5">
         <Button ref={ref} bordered color="gradient" light onPress={handler} style={
           {
             whiteSpace:"initial",
@@ -47,7 +46,7 @@ const ModalItemDescription=forwardRef(({items,
         }>
           {item.Name}
         </Button>
-        <Spacer/>
+        
         <Modal
           closeButton
           open={visible}
@@ -79,14 +78,20 @@ const ModalItemDescription=forwardRef(({items,
             />
           </Modal.Body>
           <Modal.Footer>
-            <Button auto flat color="error" onPress={deleteItem}>
+            <Button auto flat color="error" onPress={deleteItem} style={{
+              width:"45%"
+            }}>
               Delete
             </Button>
             {(!editable)?
-            <Button auto onPress={changeEditable}>
+            <Button auto onPress={changeEditable} style={{
+              width:"45%"
+            }}>
              Edit
             </Button>:
-            <Button auto onPress={saveChanges}>
+            <Button auto onPress={saveChanges} style={{
+              width:"45%"
+            }}>
             Save
             </Button>
             }

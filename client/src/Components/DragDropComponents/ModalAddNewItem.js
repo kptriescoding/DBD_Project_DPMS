@@ -37,6 +37,7 @@ const ModalAddNewItem=({items,columnIndex,updateDragTasksForItems})=> {
           {
             width: "100%",
             fontSize: "xx-large",
+            
             backgroundColor: "lightslatgrey",
             padding: "1.4rem",
             borderRadius:"0.35rem"
@@ -81,7 +82,9 @@ const ModalAddNewItem=({items,columnIndex,updateDragTasksForItems})=> {
             />
           </Modal.Body>
           <Modal.Footer>
-            <Button auto onPress={addNewItem}>
+            <Button auto onPress={addNewItem} style={{
+              width:"100%"
+            }}>
              Add
             </Button>
           </Modal.Footer>
