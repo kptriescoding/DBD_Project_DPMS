@@ -1,17 +1,17 @@
 import { Router } from "express";
 import { mysqlPool } from "../models/sqlInit.js";
 
-const router=Router()
+const router = Router();
 
 /**
  * @route   POST project/create
  * @desc    Create a new Project
  * @access  Logged in as Professor
  */
-router.post("/create",async(req,res)=>{
-    console.log(req.body.data);
-    let project=req.body.data;
-    let query=`
+router.post("/create", async (req, res) => {
+  console.log(req.body.data);
+  let project = req.body.data;
+  let query = `
     INSERT INTO Project VALUES
     ("${project.title}",
     "${project.description}",
@@ -22,22 +22,36 @@ router.post("/create",async(req,res)=>{
     "${project.professorEmail}",
     "${project.funding}"
     )
-    `
-    try{
-     await mysqlPool.query(query)
-    }
-    catch(err){
-        console.log(err)
-        return res.status(200).json(
-            {
-                success:false
-            })
-    }
-    return res.status(200).json(
-        {
-            success:true
-        }
-    )
-})
+    `;
 
-export default router
+  try {
+    await mysqlPool.query(query);
+    let skills = project.skills;
+    for (let i = 0; i < skills.length; i++) {
+      let skillQuery = `
+        INSERT INTO Project_Skill VALUES
+        ("${skills[i]}",
+        "${project.projectID}"
+        )
+        `;
+      try {
+        await mysqlPool.query(skillQuery);
+      } catch (err) {
+        console.log(err);
+        return res.status(200).json({
+          success: false,
+        });
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
+  return res.status(200).json({
+    success: true,
+  });
+});
+
+export default router;

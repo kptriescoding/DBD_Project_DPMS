@@ -1,6 +1,9 @@
-import { Button, Input, Spacer, Textarea, Dropdown } from "@nextui-org/react";
+import { Button, Input, Spacer, Textarea } from "@nextui-org/react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import ReactDropdown from "react-dropdown"
+import  {Multiselect} from "multiselect-react-dropdown"
+
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import {
@@ -207,13 +210,14 @@ export default function Signup(props) {
                 />
               </div>
             </div>
-            <Dropdown
+            <ReactDropdown
               options={departmentNames}
               className=" flex w-full h-40 px-2 py-2 mt-4"
               placeholder="Choose Department"
             >
               {" "}
-            </Dropdown>
+            </ReactDropdown>
+           
 
             <div className="flex items-center mt-4">
               <button
