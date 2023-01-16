@@ -12,25 +12,14 @@ export default function Dashboard() {
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
-
-  const fetchUserName = async () => {
-    try {
-      const q = query(collection(db, "users"), where("uid", "==", user?.uid));
-      const doc = await getDocs(q);
-      const data = doc.docs[0].data();
-      setName(data.name);
-    } catch (err) {
-      console.error(err);
-      alert("An error occured while fetching user data");
-    }
-  };
   const checkUserSignup=async()=>{
     const data={
         email:user.email
     }
    const res=await axios.post("/student/is_signup",{data:data})
    let isSignup=res.data.isSignup;
-   if(!isSignup)return navigate("/student/signup")
+   if(!isSignup&&localStorage.getItem("user")==="student")return navigate("/student/signup")
+   if(!isSignup&&localStorage.getItem("user")==="professor")return navigate("/professor/signup")
   }
   const getUser=async()=>{
     const data={
@@ -41,9 +30,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (loading) return;
-    if (!user) return navigate("/student/login");
+    if (!user) return navigate("/login");
     checkUserSignup();
-    fetchUserName();
     getUser();
   }, [user, loading]);
   return (

@@ -18,7 +18,8 @@ export default function Dashboard() {
     }
    const res=await axios.post("/professor/is_signup",{data:data})
    let isSignup=res.data.isSignup;
-   if(!isSignup)return navigate("/professor/signup")
+   if(!isSignup&&localStorage.getItem("user")==="student")return navigate("/student/signup")
+   if(!isSignup&&localStorage.getItem("user")==="professor")return navigate("/professor/signup")
   }
   const getUser=async()=>{
     const data={
@@ -31,7 +32,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (loading) return;
-    if (!user) return navigate("/professor/login");
+    if (!user) return navigate("/login");
     checkUserSignup();
     getUser();
   }, [user, loading]);

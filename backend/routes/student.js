@@ -62,7 +62,6 @@ router.post("/save_user",async(req,res)=>{
     "${user.permAddress}",
     "${user.USN}",
     "${user.CGPA}",
-    "${user.summary}",
     "${user.resume}",
     "${user.Sem}",
     "${user.email}",

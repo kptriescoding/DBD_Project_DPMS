@@ -42,11 +42,11 @@ export default function Signup(props) {
       CGPA: document.forms[0].CGPA.value,
       USN: document.forms[0].USN.value,
       Sem: document.forms[0].Sem.value,
-      summary: document.forms[0].summary.value,
       resume: "404 Error Not Found",
       email: email,
       deptName: "IS",
     };
+    if(data.middleName==="")data.middleName=" "
     let res = await axios.post("/student/save_user", { data: data });
     const password = document.forms[0].password.value;
     //  console.log(email+password+"!")
@@ -69,12 +69,13 @@ export default function Signup(props) {
     };
     const res = await axios.post("/student/is_signup", { data: data });
     let isSignup = res.data.isSignup;
-    if (isSignup) return navigate("/student/dashboard");
+    if(isSignup&&localStorage.getItem("user")==="student")return navigate("/student/dashboard")
+   if(isSignup&&localStorage.getItem("user")==="professor")return navigate("/professor/dashboard")
   };
 
   useEffect(() => {
     if (loading) return;
-    if (!user && !props.email) return navigate("/professor/login");
+    if (!user && !props.email) return navigate("/login");
     checkUserSignup();
   }, [user, loading]);
   return (
@@ -275,16 +276,6 @@ export default function Signup(props) {
                   style={{
                     width: "100%",
                   }}
-                  className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
-                />
-              </div>
-            </div>
-            <div className="mt-4">
-              <div className="flex flex-col items-start ">
-                <textarea
-                  type="text"
-                  placeholder="Summary"
-                  name="summary"
                   className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
                 />
               </div>

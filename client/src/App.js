@@ -11,9 +11,8 @@ import { NextUIProvider } from '@nextui-org/react';
 
 import StudentSignup from "./Components/Students/Login/Signup"
 import StudentDashboard from "./Components/Students/Dashboard"
-import StudentLogin from "./Components/Students/Login/Login"
 import ProfessorSignup from "./Components/Professor/Login/Signup"
-import ProfessorLogin from "./Components/Professor/Login/Login"
+import ProfessorLogin from "./Components/Login"
 import ProfessorDashboard from "./Components/Professor/Dashboard"
 import DragDrop from "./Components/DragDropComponents/DragDrop";
 
@@ -42,10 +41,9 @@ function App() {
           {/*<Route exact path="/" element={<Login />} />
   <Route exact path="/dashboard" element={<Dashboard />} />*/}
           <Route exact path="/dragDropTest" element={<DragDrop/>}/>
-          <Route exact path="/student/login" element={<StudentLogin/>}/>
+          <Route exact path="/login" element={<ProfessorLogin/>}/>
           <Route exact path="/student/dashboard" element={<StudentDashboard/>}/>
           <Route exact path="/student/signup" element={<StudentSignup/>}/>
-          <Route exact path="/professor/login" element={<ProfessorLogin/>}/>
           <Route exact path="/professor/dashboard" element={<ProfessorDashboard/>}/>
           <Route exact path="/professor/signup" element={<ProfessorSignup/>}/>
         </Routes>

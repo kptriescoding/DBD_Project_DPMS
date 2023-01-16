@@ -61,12 +61,13 @@ export default function Signup(props) {
     };
     const res = await axios.post("/professor/is_signup", { data: data });
     let isSignup = res.data.isSignup;
-    if (isSignup) return navigate("/professor/dashboard");
+    if(isSignup&&localStorage.getItem("user")==="student")return navigate("/student/dashboard")
+   if(isSignup&&localStorage.getItem("user")==="professor")return navigate("/professor/dashboard")
   };
 
   useEffect(() => {
     if (loading) return;
-    if (!user && !props.email) return navigate("/professor/login");
+    if (!user && !props.email) return navigate("/login");
     checkUserSignup();
   }, [user, loading]);
   return (
