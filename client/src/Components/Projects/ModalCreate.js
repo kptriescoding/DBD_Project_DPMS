@@ -9,14 +9,13 @@ import axios from "axios";
  * handle input cvalidation and error correction
  */
 
-const ModalCreate=({user})=>{
+const ModalCreate=({user,visible,setVisible,closeHandler})=>{
     const [name,setName]=useState("")
     const [description,setDescription]=useState("")
     const [funding,setFunding]=useState("")
     const [collaborator,setCollaborator]=useState("")
     const [startDate,setStartDate]=useState("")
     const [endDate,setEndDate]=useState("")
-    const [visible,setVisible]=useState(true)
 
     const addNewProject=async()=>{
         const newProject={
@@ -31,12 +30,13 @@ const ModalCreate=({user})=>{
         }
         // console.log(newProject);
         const res=await axios.post("/project/create",{data:newProject})
-        if(res.data.success)setVisible(false)
+        if(res.data.success)closeHandler()
     }
 return <div>
 <Modal
   closeButton
-  open={true}
+  onClose={closeHandler}
+  open={visible}
 >
   <Modal.Header>
     <Text size={18}>
@@ -124,8 +124,8 @@ return <div>
     }
   />
   </Modal.Body>
-  <Modal.Footer>
-    <Button auto onPress={addNewProject}>
+  <Modal.Footer autoMargin={false}>
+    <Button auto onPress={addNewProject} style={{width:"100%"}}>
      Add
     </Button>
   </Modal.Footer>

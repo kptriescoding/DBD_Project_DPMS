@@ -57,13 +57,19 @@ const DragDrop = () => {
   };
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <Container>
+    <div className=" h-screen w-screen bg-gray flex justify-center">
+    <DndProvider backend={HTML5Backend} >
+      <Container style={{
+        backgroudColor:"blue",
+        
+      }}>
         <Row
         style={{
-          margin: "1rem"
+          justifyContent:"center",
+          margin: "0.25rem",
+ 
         }}
-          gap={1}
+          gap={0}
           
         >
           {
@@ -77,8 +83,10 @@ const DragDrop = () => {
                     items={items}
                     style={{
                       display:"flex",
-                      
-                      margin:"0"
+                      borderRadius:"0.25rem",
+                    
+                      // margin:"0.5rem"
+                    
                      }}
                     updateDragTasksForItems={updateDragTasksForItems}
                     columnIndex={index}
@@ -94,6 +102,7 @@ const DragDrop = () => {
         </Row>
       </Container>
     </DndProvider>
+    </div>
   );
 };
 export default DragDrop;

@@ -39,9 +39,10 @@ const ModalItemDescription=forwardRef(({items,
             whiteSpace:"initial",
             height:"auto",
             padding:"0.75rem",
+            
             background:"rgb(255,254,255)",
             width:"100%",
-           
+            borderRadius:"0.25rem"
           }
         }>
           {item.Name}
@@ -77,15 +78,17 @@ const ModalItemDescription=forwardRef(({items,
             onChangeCapture={(event)=>setDescription(event.target.value)}
             />
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer autoMargin={false}>
             <Button auto flat color="error" onPress={deleteItem} style={{
-              width:"45%"
+              width:"45%",
+              margin:"0.25rem"
             }}>
               Delete
             </Button>
             {(!editable)?
             <Button auto onPress={changeEditable} style={{
-              width:"45%"
+              width:"45%",
+              margin:"0.25rem"
             }}>
              Edit
             </Button>:

@@ -55,6 +55,7 @@ const nextuiCGNVTSfIgvLppdCss ={
     <Col style={{
       margin:"0rem",
       
+      
     }}  >
       <div ref={drop} style={{
             margin:"0rem",
@@ -62,9 +63,11 @@ const nextuiCGNVTSfIgvLppdCss ={
           }}>
         <Card
           style={{
-            background: "rgb(243,243,247)",
+            background: "rgb(235,235,240)",
             width:"25rem",
-            margin:"0rem"
+            margin:"0.5rem",
+borderRadius:"0.25rem"
+
           }}
         >
           <Card.Header style={{
@@ -75,19 +78,24 @@ const nextuiCGNVTSfIgvLppdCss ={
             <Text>{title}</Text>
           </Card.Header>
           <Card.Body style={{
-            justifyContent: "center"
+            justifyContent: "center",
+            padding:"0",
+            
           }}
           
           />
           {returnItemsForColumn()}
           <Card.Body />
-          <Card.Footer />
+          <Card.Footer  style={{
+            padding:"0",
+            margin:"0"
+          }}/>
           <ModalAddNewItem
             items={items}
             columnIndex={columnIndex}
             updateDragTasksForItems={updateDragTasksForItems}
           />
-          <Card.Footer />
+      
         </Card>
       </div>
     </Col>

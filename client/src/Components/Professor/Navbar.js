@@ -5,11 +5,12 @@ import ModalCreateProject from "../Projects/ModalCreate";
 
 export default ({user})=>{
   const [createProjectVisible, setCreateProjectVisible] = useState(false);
-    const handler = () =>setCreateProjectVisible(true);
+    const createProjectHandler = () =>setCreateProjectVisible(true);
+    const closeCreateProjectHandler=()=>setCreateProjectVisible(false)
     return <section className=" flex flex-grow my-2 justify-center">
     <Navbar variant={"sticky"} color={"primary"}>
           <Navbar.Content className=" flex justify-center">
-            <Navbar.Link variant="underline" className=" justify-center flex" onClickCapture={handler}>
+            <Navbar.Link variant="underline" className=" justify-center flex" onClickCapture={createProjectHandler} >
               Create Project
             </Navbar.Link>
             <Navbar.Link>Analytics</Navbar.Link>
@@ -22,6 +23,6 @@ export default ({user})=>{
             </Navbar.Item>
           </Navbar.Content>
         </Navbar>
-       {(createProjectVisible)?<ModalCreateProject user={user}/>:<div/>}
+       {(createProjectVisible)?<ModalCreateProject user={user} visible={createProjectVisible} setVisible={createProjectVisible} closeHandler={closeCreateProjectHandler}/>:<div/>}
        </section>
 }

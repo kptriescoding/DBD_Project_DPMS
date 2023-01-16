@@ -32,19 +32,21 @@ const ModalAddNewItem=({items,columnIndex,updateDragTasksForItems})=> {
   
   
     return (
-      <div>
-        <Button auto shadow onPress={handler} style={
+      <div className=" my-0 py-0">
+        <button  shadow onClick={handler} style={
           {
             width: "100%",
             fontSize: "xx-large",
+            textAlign:"left",
+            display:"flex",
             
-            backgroundColor: "lightslatgrey",
-            padding: "1.4rem",
-            borderRadius:"0.35rem"
           }
-        }>
-          +
-        </Button>
+        }
+        className=" bg-gray-200 hover:bg-gray-300 rounded-sm px-4 py-1 mx-2"
+        >
+          + 
+          <span className=" text-sm self-center px-2">Add a card</span>
+        </button>
         <Modal
           closeButton
           open={visible}
@@ -81,7 +83,7 @@ const ModalAddNewItem=({items,columnIndex,updateDragTasksForItems})=> {
           }
             />
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer  >
             <Button auto onPress={addNewItem} style={{
               width:"100%"
             }}>
