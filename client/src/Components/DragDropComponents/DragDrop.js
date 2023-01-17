@@ -59,7 +59,7 @@ const DragDrop = () => {
   return (
     <div className=" h-screen w-screen bg-gray flex justify-center">
     <DndProvider backend={HTML5Backend} >
-      <Container style={{
+      <Container  style={{
         backgroudColor:"blue",
         
       }}>

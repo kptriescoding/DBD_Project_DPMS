@@ -83,6 +83,7 @@ const ModalAddNewItem=({items,columnIndex,updateDragTasksForItems})=> {
           }
             />
           </Modal.Body>
+          
           <Modal.Footer  >
             <Button auto onPress={addNewItem} style={{
               width:"100%"

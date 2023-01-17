@@ -33,7 +33,6 @@ const Column = ({
     return items.map((item, index) =>
       item.Column === columnIndex ? (
         <MovableItem
-        
           items={items}
           name={item.Name}
           currentColumnName={columns[item.Column]}
@@ -48,54 +47,49 @@ const Column = ({
       )
     );
   };
-const nextuiCGNVTSfIgvLppdCss ={
-  marginTop: "0 !important"
-}
+  const nextuiCGNVTSfIgvLppdCss = {
+    marginTop: "0 !important",
+  };
   return (
-    <Col style={{
-      margin:"0rem",
-      
-      
-    }}  >
-      <div ref={drop} style={{
-            margin:"0rem",
-            
-          }}>
+    <Col
+      style={{
+        margin: "0rem",
+      }}
+    >
+      <div
+        ref={drop}
+        
+      >
         <Card
           style={{
             background: "rgb(235,235,240)",
-            width:"25rem",
-            margin:"0.5rem",
-borderRadius:"0.25rem"
-
+            margin: "0.5rem",
+            borderRadius: "0.25rem",
           }}
         >
-          <Card.Header style={{
-            justifyContent: "center",
-            nextuiCGNVTSfIgvLppdCss
-          }
-          }>
+          <Card.Header
+            style={{
+              justifyContent: "center",
+              nextuiCGNVTSfIgvLppdCss,
+            }}
+          >
             <Text>{title}</Text>
           </Card.Header>
-          <Card.Body style={{
-            justifyContent: "center",
-            padding:"0",
-            
-          }}
-          
+          <Card.Divider />
+          <Card.Body
+            style={{
+              justifyContent: "center",
+              padding: "0",
+            }}
           />
           {returnItemsForColumn()}
-          <Card.Body />
-          <Card.Footer  style={{
-            padding:"0",
-            margin:"0"
-          }}/>
+          <Card.Divider />
           <ModalAddNewItem
             items={items}
             columnIndex={columnIndex}
             updateDragTasksForItems={updateDragTasksForItems}
           />
-      
+          <Card.Body />
         </Card>
       </div>
     </Col>
