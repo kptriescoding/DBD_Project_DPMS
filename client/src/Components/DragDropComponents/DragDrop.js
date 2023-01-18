@@ -3,7 +3,8 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Column from "./Column";
 import axios from "axios";
-import { Row, Container } from "@nextui-org/react";
+import { Row, Container, Button } from "@nextui-org/react";
+import Navbar from "../Professor/Navbar";
 
 import "../../assets/styles/DragDrop.css";
 
@@ -57,51 +58,59 @@ const DragDrop = () => {
   };
 
   return (
-    <div className=" h-screen w-screen bg-gray flex justify-center">
-    <DndProvider backend={HTML5Backend} >
-      <Container  style={{
-        backgroudColor:"blue",
-        
-      }}>
-        <Row
-        style={{
-          justifyContent:"center",
-          margin: "0.25rem",
- 
-        }}
-          gap={0}
-          
-        >
-          {
-            // console.log(columns)
-            columns ? (
-              columns.map((e, index) => {
-                // console.log(e)
-                return (
-                  <Column
-                    title={e}
-                    items={items}
-                    style={{
-                      display:"flex",
-                      borderRadius:"0.25rem",
-                    
-                      // margin:"0.5rem"
-                    
-                     }}
-                    updateDragTasksForItems={updateDragTasksForItems}
-                    columnIndex={index}
-                    columns={columns}
-                    moveCardHandler={moveCardHandler}
-                  />
-                );
-              })
-            ) : (
-              <div />
-            )
-          }
-        </Row>
-      </Container>
-    </DndProvider>
+    <div className=" h-screen w-screen bg-gray flex flex-col justify-start">
+      <div>
+        <Navbar className="" />
+      </div>
+      <div className=" flex h-full">
+        <div className=" sticky bg-orange-500 flex flex-col">
+          <Button className=" my-2 mx-2 ">THome</Button>
+          <Button className=" my-2 mx-2">Some else</Button>
+        </div>
+        <DndProvider backend={HTML5Backend}>
+          <Container
+            style={{
+              backgroudColor: "blue",
+              flexGrow:"initial"
+            }}
+          >
+            <Row
+              style={{
+                justifyContent: "center",
+                margin: "0.25rem",
+              }}
+              gap={0}
+            >
+              {
+                // console.log(columns)
+                columns ? (
+                  columns.map((e, index) => {
+                    // console.log(e)
+                    return (
+                      <Column
+                        title={e}
+                        items={items}
+                        style={{
+                          display: "flex",
+                          borderRadius: "0.25rem",
+
+                          // margin:"0.5rem"
+                        }}
+                        updateDragTasksForItems={updateDragTasksForItems}
+                        columnIndex={index}
+                        columns={columns}
+                        moveCardHandler={moveCardHandler}
+                      />
+                    );
+                  })
+                ) : (
+                  <div />
+                )
+              }
+            </Row>
+          </Container>
+        </DndProvider>
+      </div>
     </div>
   );
 };

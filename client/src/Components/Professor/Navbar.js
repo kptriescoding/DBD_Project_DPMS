@@ -7,7 +7,7 @@ export default ({user})=>{
   const [createProjectVisible, setCreateProjectVisible] = useState(false);
     const createProjectHandler = () =>setCreateProjectVisible(true);
     const closeCreateProjectHandler=()=>setCreateProjectVisible(false)
-    return <section className=" flex flex-grow my-2 justify-center">
+    return <section className=" flex flex-grow justify-center">
     <Navbar variant={"sticky"} color={"primary"}>
           <Navbar.Content className=" flex justify-center">
             <Navbar.Link variant="underline" className=" justify-center flex" onClickCapture={createProjectHandler} >

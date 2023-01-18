@@ -61,7 +61,8 @@ const Column = ({
         
       >
         <Card
-          style={{
+        borderWeight="extrabold"
+        style={{
             background: "rgb(235,235,240)",
             margin: "0.5rem",
             borderRadius: "0.25rem",
@@ -77,19 +78,20 @@ const Column = ({
           </Card.Header>
           <Card.Divider />
           <Card.Body
+          
             style={{
-              justifyContent: "center",
-              padding: "0",
             }}
           />
           {returnItemsForColumn()}
           <Card.Divider />
+         
+          <Card.Body />
+          <Card.Divider/>
           <ModalAddNewItem
             items={items}
             columnIndex={columnIndex}
             updateDragTasksForItems={updateDragTasksForItems}
           />
-          <Card.Body />
         </Card>
       </div>
     </Col>
