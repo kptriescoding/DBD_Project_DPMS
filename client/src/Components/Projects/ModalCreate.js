@@ -45,7 +45,7 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
       funding: funding,
       startDate: startDate,
       endDate: endDate,
-      professorEmail: user.email,
+      professorEmail: "dilsharma0220@gmail.com",
       projectID: Date.now(),
       skills:selectedSkills
     };

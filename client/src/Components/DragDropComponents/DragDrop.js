@@ -7,6 +7,8 @@ import { Row, Container, Button } from "@nextui-org/react";
 import Navbar from "../Professor/Navbar";
 
 import "../../assets/styles/DragDrop.css";
+import MyProjects from "../MyProjects";
+import { auth } from "../../firebase";
 
 const DragDrop = () => {
   let [items, setItems] = useState({});
@@ -63,9 +65,8 @@ const DragDrop = () => {
         <Navbar className="" />
       </div>
       <div className=" flex h-full">
-        <div className=" sticky bg-orange-500 flex flex-col">
-          <Button className=" my-2 mx-2 ">THome</Button>
-          <Button className=" my-2 mx-2">Some else</Button>
+        <div className=" sticky bg-orange-500 flex flex-col w-1/5">
+          <MyProjects email={auth.email}isProfessor={true}/>
         </div>
         <DndProvider backend={HTML5Backend}>
           <Container
