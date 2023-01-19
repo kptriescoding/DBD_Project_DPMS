@@ -65,7 +65,7 @@ const DragDrop = () => {
         <Navbar className="" />
       </div>
       <div className=" flex h-full">
-        <div className=" sticky bg-orange-500 flex flex-col w-1/5">
+        <div className=" sticky  flex flex-col w-1/5">
           <MyProjects email={auth.email}isProfessor={true}/>
         </div>
         <DndProvider backend={HTML5Backend}>
