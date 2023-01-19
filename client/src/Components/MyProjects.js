@@ -10,14 +10,16 @@ export default function MyProjects(props) {
   const [user, loading, error] = useAuthState(auth);
   const [myProjects, setmyProjects] = useState();
   const GetMyProjects = async () => {
-    let arr = ["#858585","#1e69c0","#425b64","#4f3ed9","#546d7b","#00b96f"];
+    let colorArray = ["#858585","#1e69c0","#425b64","#4f3ed9","#546d7b","#00b96f"];
 
     const pickRandom=()=>{
-      console.log( arr[Math.floor(Math.random()*arr.length)])
-      return arr[Math.floor(Math.random()*arr.length)]
+      console.log( colorArray[Math.floor(Math.random()*colorArray.length)])
+      return colorArray[Math.floor(Math.random()*colorArray.length)]
     }
+    let arr
     try {
       // console.log(user.email);
+      
       const myProjectsFromDatabase = await axios.post(
         "/project/get_my_projects",
         {
@@ -29,19 +31,19 @@ export default function MyProjects(props) {
       );
       // if (myProjectsFromDatabase.data.success) closeHandler();
       console.log(myProjectsFromDatabase);
-      arr = myProjectsFromDatabase.data.projects;
+       arr = myProjectsFromDatabase.data.projects;
     } catch (e) {
       console.log(e);
     }
     console.log(arr);
     const ret = arr.map((proj) => {
       let curColor = pickRandom();
-      console.log(curColor)
+      console.log("curColor")
       return (
         <Card
           isPressable
           isHoverable
-          
+        
           variant="bordered "
           style={{
             width: "inherit",
@@ -53,7 +55,7 @@ export default function MyProjects(props) {
           <Card.Header css={{
             backgroundColor:curColor
           }} >
-            <Text   style={{
+            <Text    style={{
               color:"#ffffff"
             }} >{proj.projectName}</Text>
           </Card.Header>
