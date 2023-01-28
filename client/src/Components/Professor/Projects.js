@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { auth, db, logout } from "../../firebase";
 import Navbar from "./Navbar";
 import axios from "axios";
-import MyProjectsCentre from "../Projects/MyProjectsCentre";
+import ProjectNotifications from "../Projects/ProjectNotifications";
 import MyProjectsSide from "../MyProjects";
 import DragDrop from "../DragDropComponents/DragDrop";
 
@@ -36,7 +36,6 @@ export default function Projects() {
       email: user.email,
     };
     const res = await axios.post("/professor/get_user", { data: data });
-    console.log(res.data.user);
     setProfile(res.data.user);
   };
 
@@ -57,6 +56,12 @@ export default function Projects() {
       </div>
       <div className="flex w-3/5">
       <DragDrop 
+      projectID={localStorage.getItem("projectID")}
+      />
+      </div>
+      <div className="flex w-1/5">
+      <ProjectNotifications
+      isProfessor={(localStorage.getItem("user")==="professor")?true:false}
       projectID={localStorage.getItem("projectID")}
       />
       </div>

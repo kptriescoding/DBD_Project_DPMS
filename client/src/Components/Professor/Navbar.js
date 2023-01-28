@@ -16,7 +16,7 @@ export default ({user})=>{
               Create Project
             </Navbar.Link>
             <Navbar.Link onClickCapture={()=>{navigate("/professor/dashboard")}}>
-            Description
+            Dashboard
             </Navbar.Link>
           </Navbar.Content>
           <Navbar.Content>
