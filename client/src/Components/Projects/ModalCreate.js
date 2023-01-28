@@ -45,12 +45,16 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
       funding: funding,
       startDate: startDate,
       endDate: endDate,
-      professorEmail: "dilsharma0220@gmail.com",
+      professorEmail: user.email,
       projectID: Date.now(),
       skills:selectedSkills
     };
     // console.log(newProject);
-    const res = await axios.post("/project/create", { data: newProject });
+    let res = await axios.post("/project/create", { data: newProject });
+    if(res.data.success) {
+      await axios.post("/project/dragdrop/create",{data:newProject})
+      await axios.post("/project/application/create",{data:newProject})
+    }
     if (res.data.success) closeHandler();
   };
   const handleSkillSelected = ((lis)=>{

@@ -10,13 +10,13 @@ import "../../assets/styles/DragDrop.css";
 import MyProjects from "../MyProjects";
 import { auth } from "../../firebase";
 
-const DragDrop = () => {
+const DragDrop = ({projectID}) => {
   let [items, setItems] = useState({});
   let [dragTasks, setDragTasks] = useState({});
   let [columns, setColumns] = useState([]);
   const getDragTasks = async () => {
     const data = {
-      projectID: "Proj001",
+      projectID: projectID,
     };
     const res = await axios.post("/project/dragdrop/get", { data: data });
     if (!res.data.success) console.log("Error");
@@ -32,7 +32,7 @@ const DragDrop = () => {
     let updateDragTasks = dragTasks;
     updateDragTasks.Tasks = items;
     const data = {
-      projectID: "Proj001",
+      projectID: projectID,
       dragTask: updateDragTasks,
     };
     // console.log(data)
@@ -61,18 +61,7 @@ const DragDrop = () => {
 
   return (
     <div className=" h-screen w-screen bg-gray flex flex-col justify-start">
-      <div>
-        <Navbar className="" />
-      </div>
       <div className=" flex h-full">
-        <div className=" sticky  flex flex-col w-1/5 mt-2 z border-gray-300 border-x-2">
-          <MyProjects
-            email={auth.email}
-            isProfessor={
-              localStorage.getItem("user") === "professor" ? true : false
-            }
-          />
-        </div>
         <DndProvider backend={HTML5Backend}>
           <Container
             style={{

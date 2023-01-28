@@ -23,6 +23,8 @@ export default function Dashboard() {
       return navigate("/student/signup");
     if (!isSignup && localStorage.getItem("user") === "professor")
       return navigate("/professor/signup");
+    if(localStorage.getItem("user")==="professor")
+    return navigate("/professor/dashboard")
   };
   const getUser = async () => {
     const data = {

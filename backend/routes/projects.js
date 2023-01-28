@@ -60,33 +60,7 @@ router.post("/get_projects", async (req,res)=>{
   try{
     var projects = [];
     const sqlRes = await mysqlPool.query(query);
-    for (let i = 0; i < sqlRes[0].length ; i=i+1) {
-      let cur = sqlRes[0][i];
-      console.log(cur+i)
-      projects.push({
-        projectName: cur.Title,
-        projectDescription: cur.Description,
-        projectId: cur.Project_ID,
-        collaborator: cur.Collaborator,
-      });
-    }
-    return res.status(200).json({
-      success: true,
-      projects: projects,
-    });
-  }catch (err) {
-    console.log(err);
-    return res.status(200).json({
-      success: false,
-    });
-  }
-})
-
-router.post("/get_projects", async (req,res)=>{
-  let query = `select * from Project`;
-  try{
-    var projects = [];
-    const sqlRes = await mysqlPool.query(query);
+    console.log(sqlRes)
     for (let i = 0; i < sqlRes[0].length ; i=i+1) {
       let cur = sqlRes[0][i];
       console.log(cur+i)

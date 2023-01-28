@@ -2,8 +2,10 @@ import React,{useState} from "react";
 import { Button,Navbar } from "@nextui-org/react";
 import { logout } from "../../firebase";
 import ModalCreateProject from "../Projects/ModalCreate";
+import { useNavigate } from "react-router-dom";
 
 export default ({user})=>{
+  const navigate=useNavigate()
   const [createProjectVisible, setCreateProjectVisible] = useState(false);
     const createProjectHandler = () =>setCreateProjectVisible(true);
     const closeCreateProjectHandler=()=>setCreateProjectVisible(false)
@@ -13,7 +15,9 @@ export default ({user})=>{
             <Navbar.Link variant="underline" className=" justify-center flex" onClickCapture={createProjectHandler} >
               Create Project
             </Navbar.Link>
-            <Navbar.Link>Analytics</Navbar.Link>
+            <Navbar.Link onClickCapture={()=>{navigate("/professor/dashboard")}}>
+            Description
+            </Navbar.Link>
           </Navbar.Content>
           <Navbar.Content>
             <Navbar.Item>
