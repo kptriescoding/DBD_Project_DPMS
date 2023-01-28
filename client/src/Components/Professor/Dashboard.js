@@ -8,10 +8,12 @@ import axios from "axios";
 import MyProjects from "../MyProjects";
 import AllProjects from "../AllProjects";
 import ProfessorNavbar from "./Navbar";
+import MyProjectsCentre from "../Projects/MyProjectsCentre";
 
 export default function Dashboard(props) {
   const navigate = useNavigate();
   const [profile, setProfile] = useState({});
+  const [user, loading, error] = useAuthState(auth);
   const [allProjects, setAllProjects] = useState([]);
   const [searchText, setsearchText] = useState("");
 
@@ -26,7 +28,7 @@ export default function Dashboard(props) {
           },
         }
       );
-      
+
       arr = allProjectsFromDatabase.data.projects;
       console.log(arr);
     } catch (err) {
@@ -56,6 +58,27 @@ export default function Dashboard(props) {
       return arr;
     });
   }
+  const checkUserSignup = async () => {
+    const data = {
+      email: user.email,
+    };
+    const res = await axios.post("/professor/is_signup", { data: data });
+    let isSignup = res.data.isSignup;
+    if (!isSignup && localStorage.getItem("user") === "student")
+      return navigate("/student/signup");
+    if (!isSignup && localStorage.getItem("user") === "professor")
+      return navigate("/professor/signup");
+    if (localStorage.getItem("user") === "student")
+      return navigate("/student/dashboard");
+  };
+  const getUser = async () => {
+    const data = {
+      email: user.email,
+    };
+    const res = await axios.post("/professor/get_user", { data: data });
+    console.log(res.data.user);
+    setProfile(res.data.user);
+  };
 
   useEffect(() => {
     console.log("dsfs");
@@ -70,10 +93,21 @@ export default function Dashboard(props) {
         user={profile}
         searchListener={handleSetFilterAllProjects}
         setsearchText={setsearchText}
-        
       />
+      <div>
+        {user ? (
+          <MyProjectsCentre
+            email={user.email}
+            isProfessor={
+              localStorage.getItem("user") === "professor" ? true : false
+            }
+          />
+        ) : (
+          <div />
+        )}
+      </div>
       <div className=" mt-2 ">
-        <AllProjects projects={allProjects}/>
+        <AllProjects projects={allProjects} />
       </div>
     </div>
   );

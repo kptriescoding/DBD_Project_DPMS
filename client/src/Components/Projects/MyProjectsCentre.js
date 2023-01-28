@@ -1,13 +1,11 @@
 import { Card, Text } from "@nextui-org/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
-export default function MyProjects(props) {
+export default function MyProjectsCentre(props) {
   // const [myProject, setmyProject] = useState([])
-  const bgColors = []
-  const [user, loading, error] = useAuthState(auth);
+  const navigate=useNavigate();
   const [myProjects, setmyProjects] = useState();
   const GetMyProjects = async () => {
     let colorArray = ["#858585","#1e69c0","#425b64","#4f3ed9","#546d7b","#00b96f"];
@@ -38,12 +36,16 @@ export default function MyProjects(props) {
     console.log(arr);
     const ret = arr.map((proj) => {
       let curColor = pickRandom();
-      console.log("curColor")
+    //   console.log("curColor")
       return (
+        <div className="flex mx-2 w-80 h-80">
         <Card
           isPressable
           isHoverable
-        
+            onPress={(event)=>{
+                localStorage.setItem("projectID",proj.projectId)
+                return navigate("/professor/project")
+            }}
           variant="bordered "
           style={{
             width: "inherit",
@@ -76,6 +78,7 @@ export default function MyProjects(props) {
             </Text>
           </Card.Footer>
         </Card>
+        </div>
       );
     });
     console.log(ret);
@@ -85,5 +88,5 @@ export default function MyProjects(props) {
     GetMyProjects();
   }, []);
 
-  return <div className=" flex px-2 flex-col  ">{myProjects}</div>;
+  return <div className=" flex px-2 flex-row flex-wrap ">{myProjects}</div>;
 }

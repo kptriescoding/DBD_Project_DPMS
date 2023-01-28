@@ -10,7 +10,7 @@ import studentRouter from "./routes/student.js"
 import professorRouter from "./routes/professor.js"
 import projectRouter from "./routes/projects.js"
 import dragdropRouter from "./routes/dragdrop.js"
-import announcementRouter from "./routes/announcements.js"
+import announcementRouter from "./routes/application.js"
 
 const __dirname=path.resolve()
 
@@ -42,7 +42,7 @@ app.use("/student",studentRouter);
 app.use("/professor",professorRouter)
 app.use("/project",projectRouter);
 app.use("/project/dragdrop",dragdropRouter)
-app.use("/announcement",announcementRouter);
+app.use("/project/application",announcementRouter);
 
 app.use(express.static(path.join(__dirname, "client","build")))
 

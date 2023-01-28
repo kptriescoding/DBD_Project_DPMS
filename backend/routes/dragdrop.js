@@ -11,10 +11,10 @@ const router=Router()
 router.post("/create",async(req,res)=>{
     const project=req.body.data
     try{
-        let dragTask=await draggableTasks.findOne({ProjectID:user.projectID})
+        let dragTask=await draggableTasks.findOne({ProjectID:project.projectID})
     if(dragTask)throw Error("Drag Task Exists")
     const newDragTask=new draggableTasks({
-        ProjectID:user.projectID,
+        ProjectID:project.projectID,
         Tasks:[],
         Columns:["To Do","In Progress","To Be Reviewed","Completed"]
     })
@@ -68,6 +68,7 @@ router.post("/update",async (req,res)=>{
         let dragTask=await draggableTasks.findOne({ProjectID:user.projectID})
     if(!dragTask)throw Error("Drag Task Doesn't Exists")
         dragTask=await draggableTasks.findOneAndReplace({ProjectID:user.projectID},user.dragTask)
+        if(!dragTask)throw Error("Replace Failed")
     return res.status(200).json({
         dragTask:dragTask,
         success:true

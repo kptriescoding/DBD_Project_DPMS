@@ -4,8 +4,6 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { signInWithGoogle, useAuth } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from "./Components/Login";
-import Dashboard from "./Components/Dashboard";
 import { NextUIProvider } from '@nextui-org/react';
 
 
@@ -15,6 +13,7 @@ import ProfessorSignup from "./Components/Professor/Login/Signup"
 import ProfessorLogin from "./Components/Login"
 import ProfessorDashboard from "./Components/Professor/Dashboard"
 import DragDrop from "./Components/DragDropComponents/DragDrop";
+import ProfessorProject from "./Components/Professor/Projects.js";
 
 /**
  TODO
@@ -46,6 +45,7 @@ function App() {
           <Route exact path="/student/signup" element={<StudentSignup/>}/>
           <Route exact path="/professor/dashboard" element={<ProfessorDashboard/>}/>
           <Route exact path="/professor/signup" element={<ProfessorSignup/>}/>
+          <Route exact path="/professor/project" element={<ProfessorProject/>}/>
         </Routes>
       </Router>
       </NextUIProvider>
