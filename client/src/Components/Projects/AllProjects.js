@@ -2,7 +2,7 @@ import { Card, Text } from "@nextui-org/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 
 export default function AllProjects(props) {
   // const [myProject, setmyProject] = useState([])

@@ -81,32 +81,6 @@ router.post("/get_projects", async (req, res) => {
   }
 })
 
-router.post("/get_projects", async (req,res)=>{
-  let query = `select * from Project`;
-  try{
-    var projects = [];
-    const sqlRes = await mysqlPool.query(query);
-    for (let i = 0; i < sqlRes[0].length ; i=i+1) {
-      let cur = sqlRes[0][i];
-      console.log(cur + i);
-      projects.push({
-        projectName: cur.Title,
-        projectDescription: cur.Description,
-        projectId: cur.Project_ID,
-        collaborator: cur.Collaborator,
-      });
-    }
-    return res.status(200).json({
-      success: true,
-      projects: projects,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(200).json({
-      success: false,
-    });
-  }
-});
 
 router.post("/get_projects_for_word_search", async (req, res) => {
   let words = req.body.data.words.split(" ");

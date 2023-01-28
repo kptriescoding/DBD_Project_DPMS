@@ -2,7 +2,7 @@ import { Card, Text } from "@nextui-org/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 
 export default function MyProjects(props) {
   // const [myProject, setmyProject] = useState([])
@@ -24,7 +24,7 @@ export default function MyProjects(props) {
         "/project/get_my_projects",
         {
           data: {
-            email: "dilsharma0220@gmail.com",
+            email: props.email,
             isProfessor: props.isProfessor,
           },
         }

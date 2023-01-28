@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { auth, db, logout } from "../../firebase";
 import Navbar from "./Navbar";
 import axios from "axios";
-import MyProjects from "../MyProjects";
-import AllProjects from "../AllProjects";
+import MyProjects from "../Projects/MyProjects";
+import AllProjects from "../Projects/AllProjects";
 import ProfessorNavbar from "./Navbar";
 import MyProjectsCentre from "../Projects/MyProjectsCentre";
 

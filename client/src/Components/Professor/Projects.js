@@ -5,7 +5,7 @@ import { auth, db, logout } from "../../firebase";
 import Navbar from "./Navbar";
 import axios from "axios";
 import ProjectNotifications from "../Projects/ProjectNotifications";
-import MyProjectsSide from "../MyProjects";
+import MyProjectsSide from "../Projects/MyProjects";
 import DragDrop from "../DragDropComponents/DragDrop";
 
 export default function Projects() {

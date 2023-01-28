@@ -7,7 +7,7 @@ import { Row, Container, Button } from "@nextui-org/react";
 import Navbar from "../Professor/Navbar";
 
 import "../../assets/styles/DragDrop.css";
-import MyProjects from "../MyProjects";
+import MyProjects from "../Projects/MyProjects";
 import { auth } from "../../firebase";
 
 const DragDrop = ({projectID}) => {

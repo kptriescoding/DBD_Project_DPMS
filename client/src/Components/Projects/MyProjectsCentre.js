@@ -22,7 +22,7 @@ export default function MyProjectsCentre(props) {
         "/project/get_my_projects",
         {
           data: {
-            email: "dilsharma0220@gmail.com",
+            email: props.email,
             isProfessor: props.isProfessor,
           },
         }

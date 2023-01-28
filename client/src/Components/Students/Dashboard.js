@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { auth, db, logout } from "../../firebase";
 import Navbar from "./Navbar";
 import axios from "axios";
-import MyProjects from "../MyProjects";
+import MyProjects from "../Projects/MyProjects";
 
 export default function Dashboard() {
   const [user, loading, error] = useAuthState(auth);
