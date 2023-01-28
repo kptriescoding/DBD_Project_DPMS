@@ -54,16 +54,41 @@ router.post("/create", async (req, res) => {
   });
 });
 
+router.post("/get_projects", async (req, res) => {
+  let query = `select * from Project`;
+  try {
+    var projects = [];
+    const sqlRes = await mysqlPool.query(query);
+    for (let i = 0; i < sqlRes[0].length ; i=i+1) {
+      let cur = sqlRes[0][i];
+      console.log(cur+i)
+      projects.push({
+        projectName: cur.Title,
+        projectDescription: cur.Description,
+        projectId: cur.Project_ID,
+        collaborator: cur.Collaborator,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      projects: projects,
+    });
+  }catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
+})
 
 router.post("/get_projects", async (req,res)=>{
   let query = `select * from Project`;
   try{
     var projects = [];
     const sqlRes = await mysqlPool.query(query);
-    console.log(sqlRes)
     for (let i = 0; i < sqlRes[0].length ; i=i+1) {
       let cur = sqlRes[0][i];
-      console.log(cur+i)
+      console.log(cur + i);
       projects.push({
         projectName: cur.Title,
         projectDescription: cur.Description,
@@ -75,28 +100,32 @@ router.post("/get_projects", async (req,res)=>{
       success: true,
       projects: projects,
     });
-  }catch (err) {
+  } catch (err) {
     console.log(err);
     return res.status(200).json({
       success: false,
     });
   }
-})
+});
 
-router.post("/get_projects_for_word_search", async(req,res)=>{
-  let words = req.body.data.words.split(' ');
-  let query = 'select * from Project where '
-  query = query + `Project.Title like "%${words[0]}%" OR Project.Description like "%${words[0]}%" `;
-  for(let i = 1;i<words.length;i++){
-    query = query + `OR Project.Title like "%${words[i]}%" OR Project.Description like "%${words[i]}%" `
+router.post("/get_projects_for_word_search", async (req, res) => {
+  let words = req.body.data.words.split(" ");
+  let query = "select * from Project where ";
+  query =
+    query +
+    `Project.Title like "%${words[0]}%" OR Project.Description like "%${words[0]}%" `;
+  for (let i = 1; i < words.length; i++) {
+    query =
+      query +
+      `OR Project.Title like "%${words[i]}%" OR Project.Description like "%${words[i]}%" `;
   }
   console.log(query);
-  try{
+  try {
     var projects = [];
     const sqlRes = await mysqlPool.query(query);
-    for (let i = 0; i < sqlRes[0].length ; i=i+1) {
+    for (let i = 0; i < sqlRes[0].length; i = i + 1) {
       let cur = sqlRes[0][i];
-      console.log(cur+i)
+      console.log(cur + i);
       projects.push({
         projectName: cur.Title,
         projectDescription: cur.Description,
@@ -108,14 +137,13 @@ router.post("/get_projects_for_word_search", async(req,res)=>{
       success: true,
       projects: projects,
     });
-  }catch (err) {
+  } catch (err) {
     console.log(err);
     return res.status(200).json({
       success: false,
     });
   }
-
-})
+});
 
 router.post("/get_my_projects", async (req, res) => {
   console.log(req.body.data);
@@ -135,9 +163,9 @@ router.post("/get_my_projects", async (req, res) => {
     var projects = [];
     if (isProfessor) {
       const sqlRes = await mysqlPool.query(query);
-      for (let i = 0; i < sqlRes[0].length ; i=i+1) {
+      for (let i = 0; i < sqlRes[0].length; i = i + 1) {
         let cur = sqlRes[0][i];
-        console.log(cur+i)
+        console.log(cur + i);
         projects.push({
           projectName: cur.Title,
           projectDescription: cur.Description,
@@ -151,10 +179,10 @@ router.post("/get_my_projects", async (req, res) => {
       });
     } else {
       const sqlRes = await mysqlPool.query(studentQuery);
-      for (let i = 0; i < sqlRes[0].length ; i++) {
+      for (let i = 0; i < sqlRes[0].length; i++) {
         let cur = sqlRes[0][i];
-        console.log(cur)
-        console.log(sqlRes[0][0])
+        console.log(cur);
+        console.log(sqlRes[0][0]);
         projects.push({
           projectName: cur.Title,
           projectDescription: cur.Description,

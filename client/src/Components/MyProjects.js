@@ -24,7 +24,7 @@ export default function MyProjects(props) {
         "/project/get_my_projects",
         {
           data: {
-            email: "karthikpai.is20@rvce.edu.in",
+            email: "dilsharma0220@gmail.com",
             isProfessor: props.isProfessor,
           },
         }
