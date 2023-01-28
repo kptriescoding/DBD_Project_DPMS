@@ -62,6 +62,7 @@ const Column = ({
       >
         <Card
         borderWeight="extrabold"
+        borderRadius="1"
         style={{
             background: "rgb(235,235,240)",
             margin: "0.5rem",
@@ -78,9 +79,9 @@ const Column = ({
           </Card.Header>
           <Card.Divider />
           <Card.Body
-          
-            style={{
-            }}
+          style={{
+            flex: "1 1 auto"
+          }}
           />
           {returnItemsForColumn()}
           <Card.Divider />

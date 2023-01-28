@@ -65,22 +65,28 @@ const DragDrop = () => {
         <Navbar className="" />
       </div>
       <div className=" flex h-full">
-        <div className=" sticky  flex flex-col w-1/5">
-          <MyProjects email={auth.email}isProfessor={true}/>
+        <div className=" sticky  flex flex-col w-1/5 mt-2 z border-gray-300 border-x-2">
+          <MyProjects
+            email={auth.email}
+            isProfessor={
+              localStorage.getItem("user") === "professor" ? true : false
+            }
+          />
         </div>
         <DndProvider backend={HTML5Backend}>
           <Container
             style={{
               backgroudColor: "blue",
-              flexGrow:"initial"
+              flexGrow: "initial",
             }}
           >
             <Row
               style={{
-                justifyContent: "center",
+                justifySelf: "start",
+                justifyContent: "flex-start",
+                justifyItems: "flex-start",
                 margin: "0.25rem",
               }}
-              gap={0}
             >
               {
                 // console.log(columns)
@@ -92,6 +98,7 @@ const DragDrop = () => {
                         title={e}
                         items={items}
                         style={{
+                          height: "inherit",
                           display: "flex",
                           borderRadius: "0.25rem",
 

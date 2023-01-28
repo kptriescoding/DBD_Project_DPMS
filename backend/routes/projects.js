@@ -72,8 +72,9 @@ router.post("/get_my_projects", async (req, res) => {
     var projects = [];
     if (isProfessor) {
       const sqlRes = await mysqlPool.query(query);
-      for (let i = 0; i < sqlRes.length ; i++) {
+      for (let i = 0; i < sqlRes[0].length ; i=i+1) {
         let cur = sqlRes[0][i];
+        console.log(cur+i)
         projects.push({
           projectName: cur.Title,
           projectDescription: cur.Description,
@@ -87,9 +88,10 @@ router.post("/get_my_projects", async (req, res) => {
       });
     } else {
       const sqlRes = await mysqlPool.query(studentQuery);
-      for (let i = 0; i < sqlRes.length - 1; i++) {
-        let cur = sqlRes[i][0];
+      for (let i = 0; i < sqlRes[0].length ; i++) {
+        let cur = sqlRes[0][i];
         console.log(cur)
+        console.log(sqlRes[0][0])
         projects.push({
           projectName: cur.Title,
           projectDescription: cur.Description,

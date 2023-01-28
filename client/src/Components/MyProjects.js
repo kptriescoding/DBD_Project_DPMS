@@ -30,7 +30,7 @@ export default function MyProjects(props) {
         }
       );
       // if (myProjectsFromDatabase.data.success) closeHandler();
-      console.log(myProjectsFromDatabase);
+      // console.log(myProjectsFromDatabase);
        arr = myProjectsFromDatabase.data.projects;
     } catch (e) {
       console.log(e);
@@ -47,7 +47,7 @@ export default function MyProjects(props) {
           variant="bordered "
           style={{
             width: "inherit",
-          
+            borderRadius:"0.6rem",
             margin: "1.5px",
           }}
           key={proj.projectId}
