@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button, StyledDivider } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
@@ -94,20 +94,30 @@ export default function Dashboard(props) {
         searchListener={handleSetFilterAllProjects}
         setsearchText={setsearchText}
       />
-      <div>
-        {user ? (
-          <MyProjectsCentre
-            email={user.email}
+      <div className=" flex flex-row">
+        <div className=" w-1/6 mt-2 ">
+          <AllProjects
+            projects={allProjects}
+            setsearchText={setsearchText}
+            searchListener={handleSetFilterAllProjects}
             isProfessor={
               localStorage.getItem("user") === "professor" ? true : false
             }
           />
-        ) : (
-          <div />
-        )}
-      </div>
-      <div className=" mt-2 ">
-        <AllProjects projects={allProjects} />
+        </div>
+
+        <div className=" w-full mt-2 ">
+          {user ? (
+            <MyProjectsCentre
+              email={user.email}
+              isProfessor={
+                localStorage.getItem("user") === "professor" ? true : false
+              }
+            />
+          ) : (
+            <div style={{ width: "inherit" }} />
+          )}
+        </div>
       </div>
     </div>
   );

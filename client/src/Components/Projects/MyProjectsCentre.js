@@ -38,7 +38,7 @@ export default function MyProjectsCentre(props) {
       let curColor = pickRandom();
     //   console.log("curColor")
       return (
-        <div className="flex mx-2 w-80 h-80">
+       
         <Card
           isPressable
           isHoverable
@@ -78,7 +78,7 @@ export default function MyProjectsCentre(props) {
             </Text>
           </Card.Footer>
         </Card>
-        </div>
+    
       );
     });
     console.log(ret);
@@ -88,5 +88,5 @@ export default function MyProjectsCentre(props) {
     GetMyProjects();
   }, []);
 
-  return <div className=" flex px-2 flex-row flex-wrap ">{myProjects}</div>;
+  return <div className=" flex px-2 flex-col">{myProjects}</div>;
 }

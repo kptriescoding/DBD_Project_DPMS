@@ -21,6 +21,7 @@ router.post("/create",async (req,res)=>{
     appliedStudents:[]
   })
   const success=await newApplication.save()
+  console.log("sfvds fdf ")
   if(!success)throw Error("Something Went Wrong")
   return res.status(200).json({
       success:true,
