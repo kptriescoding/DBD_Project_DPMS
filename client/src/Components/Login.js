@@ -21,8 +21,8 @@ import rvce from "../assets/styles/download-removebg-preview.png";
 export default function Login() {
   const [user, loading, error] = useAuthState(auth);
   const [email, setEmail] = useState("");
-  const [password,setPassword]=useState("");
   const [loginState, setLoginState] = useState("login");
+  const [errorMessage,setErrorMessage]=useState("")
   const navigate = useNavigate();
   let isProfessor
   const [radioInput,setRadioInput]=useState("1")
@@ -34,15 +34,26 @@ export default function Login() {
     if (user&&localStorage.getItem("user")==="professor") navigate("/professor/dashboard");
     else if(user&&localStorage.getItem("user")==="student")navigate("/student/dashboard");
   }, [user, loading]);
-  const loginThroughPassword = (event) => {
+  const loginThroughPassword = async(event) => {
+    setErrorMessage("")
     event.preventDefault();
     let password=document.forms[0].password.value
-    logInWithEmailAndPassword(email, password);
+    try{
+    await logInWithEmailAndPassword(email, password);
+    }
+    catch(err){
+      setErrorMessage("Invalid Password")
+    }
   };
 
   const checkUserLoggedIn = async (event) => {
     event.preventDefault();
+    setErrorMessage("")
     let email=document.forms[0].email.value
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))){
+      setErrorMessage("Enter Valid Email")
+      return;
+    }
     setEmail(email)
     const data = {
       email: email,
@@ -140,10 +151,10 @@ export default function Login() {
             </Radio>
           </Radio.Group>
             </div>
+            <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">{errorMessage}</p>
             <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
               <p className="text-center font-semibold mx-4 mb-0">OR</p>
             </div>
-
             <div className=" flex justify-center w-full my-3">
               <GoogleButton
                 onClickCapture={logInWithGoogle}
@@ -168,7 +179,7 @@ export default function Login() {
 
   return (loginState === "login"|| loginState==="isSignup" )? (
     <EmailInput />
-  ) : isProfessor === true ? (
+  ) : radioInput === "2" ? (
     <ProfessorSignup email={email} />
   ) : (
     <StudentSignup email={email} />
