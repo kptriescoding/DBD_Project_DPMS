@@ -1,5 +1,6 @@
 import {Router} from "express"
 import { mysqlPool } from "../models/sqlInit.js"
+import studentApplicationSchema from "../models/StudentAppplications.js"
 
 const router=Router()
 
@@ -70,6 +71,11 @@ router.post("/save_user",async(req,res)=>{
     `
     try{
      await mysqlPool.query(query)
+     const newStudent= new studentApplicationSchema({
+        email:user.Email,
+        appliedApplications:[]
+     })
+     const res=await newStudent.save()
     }
     catch(err){
         console.log(err)
