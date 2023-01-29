@@ -7,6 +7,12 @@ const applicationSchema=new mongoose.Schema({
     professorEmail:{
         type:String
     },
+    projectName:{
+        type:String
+    },
+    applicationStatus:{
+        type:String
+    },
     announcement:[{
         name:{
         type:String
@@ -22,7 +28,7 @@ const applicationSchema=new mongoose.Schema({
         name:{
             type:String
         },
-        USN:{
+        CGPA:{
             type:String
         },
         email:{

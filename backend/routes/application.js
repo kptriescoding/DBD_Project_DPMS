@@ -1,6 +1,7 @@
 import Router from "express"
 import { mysqlPool } from "../models/sqlInit.js"
 import applicationSchema from "../models/Application.js"
+import studentApplicationSchema from "../models/StudentAppplications.js"
 
 const router=Router()
 
@@ -17,6 +18,8 @@ router.post("/create",async (req,res)=>{
   const newApplication=new applicationSchema({
     projectID:application.projectID,
     professorEmail:application.professorEmail,
+    projectName:application.projectName,
+    applicationStatus:"Open",
     announcement:[],
     appliedStudents:[]
   })
@@ -65,19 +68,28 @@ router.post("/students_apply",async (req,res)=>{
     const student=req.body.data
   try{
       let check=await applicationSchema.findOne({projectID:student.projectID})
+      let studentcheck=await studentApplicationSchema.findOne({email:student.email})
+      if(!studentcheck)throw Error("Student Doesn;t Exists")
   if(!check)throw Error("Application Doesn't Exists")
   const newStudents=check.appliedStudents
   for(let i=0;i<newStudents.length;i++){
     if(newStudents[i].email===student.email)throw Error("Student Already Applied")
+    studentcheck.appliedApplications.push({
+        projectName:check.projectName,
+        projectID:check.projectID,
+        professorEmail:check.professorEmail,
+        status:"Applied"
+    })
   }
   newStudents.push({
     name:student.name,
-    USN:student.USN,
+    CGPA:student.CGPA,
     email:student.email,
     status:"Applied"
   })
   let success=await applicationSchema.findOneAndUpdate({projectID:student.projectID},{appliedStudents:newStudents})
   if(!success)throw Error("Something Went Wrong")
+  success=await studentApplicationSchema.findOneAndUpdate({email:student.email},{appliedApplications:studentcheck.appliedApplications})
   return res.status(200).json({
       success:true,
       application:success

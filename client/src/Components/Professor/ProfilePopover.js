@@ -14,7 +14,7 @@ return <Popover>
 </Popover.Trigger>
 <Popover.Content>
 <button
-onClickCapture={()=>{navigate("/professor/profile")}}
+onClickCapture={()=>{return navigate("/professor/profile")}}
 className="w-full px-4 py-2.5 tracking-wide text-white transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-650"
 >
 Profile
@@ -22,7 +22,7 @@ Profile
 <button
 onClickCapture={()=>{
     logout()
-    navigate("/login")
+   return navigate("/login")
 }}
 className="w-full px-4 py-2.5 tracking-wide text-white transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-650"
 >
