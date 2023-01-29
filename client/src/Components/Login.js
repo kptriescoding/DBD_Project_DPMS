@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Checkbox, Input, Spacer } from "@nextui-org/react";
+import { Button, Checkbox, Input, Spacer,Radio } from "@nextui-org/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import {
@@ -23,8 +23,9 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password,setPassword]=useState("");
   const [loginState, setLoginState] = useState("login");
-  const [isProfessor, setisProfessor] = useState(false);
   const navigate = useNavigate();
+  let isProfessor
+  const [radioInput,setRadioInput]=useState("1")
   useEffect(() => {
     if (loading) {
       // maybe trigger a loading screen
@@ -33,7 +34,6 @@ export default function Login() {
     if (user&&localStorage.getItem("user")==="professor") navigate("/professor/dashboard");
     else if(user&&localStorage.getItem("user")==="student")navigate("/student/dashboard");
   }, [user, loading]);
-  const handleOnClickIsProfessor = () => setisProfessor(!isProfessor);
   const loginThroughPassword = (event) => {
     event.preventDefault();
     let password=document.forms[0].password.value
@@ -47,6 +47,9 @@ export default function Login() {
     const data = {
       email: email,
     };
+   isProfessor=(document.forms[0].isProfessor.value==="2")?true:false
+   setRadioInput(document.forms[0].isProfessor.value)
+    console.log(isProfessor)
     if (isProfessor) {
       localStorage.setItem("user","professor")
       const res = await axios.post("/professor/is_signup", { data: data });
@@ -128,13 +131,14 @@ export default function Login() {
             </div> 
     }
             <div class="flex justify-between items-center mt-2.5">
-              <Checkbox
-                isSelected={isProfessor}
-                size="sm"
-                
-                onChange={handleOnClickIsProfessor}
-                label="Login As Professor"
-              />
+            <Radio.Group aria-label="Login-Type" defaultValue={radioInput} orientation="horizontal" name="isProfessor">
+            <Radio value="1" isDisabled={(loginState!=="login")}>
+              Student
+            </Radio>
+            <Radio value="2" isDisabled={(loginState!=="login")}>
+              Professor
+            </Radio>
+          </Radio.Group>
             </div>
             <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
               <p className="text-center font-semibold mx-4 mb-0">OR</p>
