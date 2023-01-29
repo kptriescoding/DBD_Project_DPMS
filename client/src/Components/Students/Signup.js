@@ -24,12 +24,14 @@ TODO:
 
 export default function Signup(props) {
   const [dept,setDept]=useState("")
+  const [errorMessage,setErrorMessage]=useState("")
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
   const departmentNames = [
     "AS","ISE","CSE","ECE","ETE","ME","CV",
   ]
   const saveUser = async (event) => {
+    setErrorMessage("")
     event.preventDefault();
     let email;
     if (props && props.email) email = props.email;
@@ -48,8 +50,21 @@ export default function Signup(props) {
       email: email,
       deptName: dept,
     };
-    let res = await axios.post("/student/save_user", { data: data });
     const password = document.forms[0].password.value;
+    const rpassword=document.forms[0].rpassword.value;
+    if(!data.firstName||!data.lastName||!data.tempAddress||!data.permAddress||!data.CGPA||!data.USN||!data.Sem||!data.deptName||!password||!rpassword){
+      setErrorMessage("Enter All Values")
+      return
+    }
+    if(!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password))){
+      setErrorMessage("Password must have Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character")
+      return
+    }
+    if(password!==rpassword){
+      setErrorMessage("Both the passwords entered must be same")
+      return
+    }
+    let res = await axios.post("/student/save_user", { data: data });
     //  console.log(email+password+"!")
     if (res.data.success) {
       if (!user)
@@ -94,7 +109,8 @@ export default function Signup(props) {
               <div className="flex flex-col items-start ">
                 <input
                   type="text"
-                  placeholder="First Name"
+                  required
+                  placeholder="First Name *"
                   name="firstName"
                   className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
                 />
@@ -114,7 +130,8 @@ export default function Signup(props) {
               <div className="flex flex-col items-start ">
                 <input
                   type="textarea"
-                  placeholder="Last Name"
+                  required
+                  placeholder="Last Name *"
                   name="lastName"
                   className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
                 />
@@ -124,7 +141,8 @@ export default function Signup(props) {
               <div className="flex flex-col items-start ">
                 <input
                   type="text"
-                  placeholder="USN"
+                  placeholder="USN *"
+                  required
                   name="USN"
                   enterKeyHint="next"
                   className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
@@ -136,7 +154,8 @@ export default function Signup(props) {
               <div className="flex flex-col items-start ">
                 <input
                   type="password"
-                  placeholder="Enter password"
+                  required
+                  placeholder="Enter password *"
                   name="password"
                   className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
                 />
@@ -146,7 +165,8 @@ export default function Signup(props) {
               <div className="flex flex-col items-start ">
                 <input
                   type="password"
-                  placeholder="Confirm password"
+                  required
+                  placeholder="Confirm password *"
                   name="rpassword"
                   className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
                 />
@@ -156,9 +176,10 @@ export default function Signup(props) {
               <div className="flex flex-col items-start ">
                 <input
                   type="Number"
-                  placeholder="SEM"
+                  placeholder="SEM *"
                   name="Sem"
                   enterKeyHint="next"
+                  required
                   className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
                 />
               </div>
@@ -167,8 +188,9 @@ export default function Signup(props) {
               <div className="flex flex-col items-start ">
                 <input
                   type="number"
-                  placeholder="CGPA"
+                  placeholder="CGPA *"
                   name="CGPA"
+                  required
                   className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
                 />
               </div>
@@ -180,8 +202,9 @@ export default function Signup(props) {
             <div className="mt-4">
               <div className="flex flex-col items-start ">
                 <textarea
-                  placeholder="Local Address"
+                  placeholder="Local Address *"
                   name="tempAddress"
+                  required
                   className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
                 />
               </div>
@@ -189,11 +212,12 @@ export default function Signup(props) {
             <div className="mt-4">
               <div className="flex flex-col items-start ">
                 <textarea
-                  placeholder="Permanent Address"
+                  placeholder="Permanent Address *"
                   name="permAddress"
                   style={{
                     width: "100%",
                   }}
+                  required
                   className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
                 />
               </div>
@@ -201,11 +225,13 @@ export default function Signup(props) {
             <ReactDropdown
             options={departmentNames}
             className=" flex w-full h-40 px-2 py-2 mt-4"
-            placeholder="Choose Department"
+            placeholder="Choose Department *"
               onChange={(event)=>setDept(event.value)}
           >
             {" "}
           </ReactDropdown>
+
+          <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">{errorMessage}</p>
 
             <div className="flex items-center mt-4">
               <button onClickCapture={saveUser} className="w-full px-4 py-2.5 tracking-wide text-white transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-650">

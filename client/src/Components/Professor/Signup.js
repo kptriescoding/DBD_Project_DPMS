@@ -30,6 +30,7 @@ export default function Signup(props) {
   const navigate = useNavigate();
   const [dept,setDept]=useState("")
   const departmentNames = ["AS", "ISE", "CSE", "ECE", "ETE", "ME", "CV"];
+  const [errorMessage,setErrorMessage]=useState()
   const saveUser = async (event) => {
     event.preventDefault();
     let email;
@@ -41,10 +42,23 @@ export default function Signup(props) {
       middleName: document.forms[0].middleName.value,
       yearOfJoining: document.forms[0].yearOfJoining.value,
       email: email,
-      deptName: "IS",
+      deptName: dept,
     };
-    let res = await axios.post("/professor/save_user", { data: data });
     const password = document.forms[0].password.value;
+    const rpassword = document.forms[0].rpassword.value;
+    if(!data.firstName||!data.lastName||!data.email||!data.yearOfJoining||!data.deptName||!password||!rpassword){
+      setErrorMessage("Enter All Values")
+      return
+    }
+    if(!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password))){
+      setErrorMessage("Password must have Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character")
+      return
+    }
+    if(password!==rpassword){
+      setErrorMessage("Both the passwords entered must be same")
+      return
+    }
+    let res = await axios.post("/professor/save_user", { data: data });
     //  console.log(email+password+"!")
     if (res.data.success) {
       if (!user)
@@ -75,68 +89,6 @@ export default function Signup(props) {
     checkUserSignup();
   }, [user, loading]);
   return (
-    //     <div className="flex content-center flex-col flex-wrap">
-    //     <h1>Enter Details </h1>
-    //     <Spacer y={1.5}/>
-    //     <form>
-    //     <Input
-    //         clearable
-    //         underlined
-    //         labelPlaceholder="First Name"
-    //         name="firstName"
-    //       />
-    //       <Spacer y={2}/>
-    //       <Input
-    //         clearable
-    //         underlined
-    //         labelPlaceholder="Middle Name"
-    //         name="middleName"
-    //       />
-    //       <Spacer y={2}/>
-    //       <Input
-    //         clearable
-    //         underlined
-    //         labelPlaceholder="Last Name"
-    //         name="lastName"
-    //       />
-    //       <Spacer y={2}/>
-    //       <Input
-    //         clearable
-    //         underlined
-    //         labelPlaceholder="Year Of Joining"
-    //         name="yearOfJoining"
-    //       />
-    //       <Spacer y={2}/>
-    //       <Input
-    //           clearable
-    //           underlined
-    //           labelPlaceholder="Password"
-    //           name="password"
-    //           type="password"
-    //         />
-    //       <Spacer y={2}/>
-    //       <Input
-    //           clearable
-    //           underlined
-    //           labelPlaceholder=" Renter Password"
-    //           name="rpassword"
-    //           type="password"
-    //         />
-    //       <Spacer y={1.5}/>
-    //       {/*<Dropdown>
-    //       <Dropdown.Button light>Department</Dropdown.Button>
-    //       <Dropdown.Menu aria-label="Static Actions">
-    //         <Dropdown.Item key="IS">IS</Dropdown.Item>
-    //         <Dropdown.Item key="CS">CS</Dropdown.Item>
-    //         <Dropdown.Item key="CV">CV</Dropdown.Item>
-    //       </Dropdown.Menu>
-    //       </Dropdown>*/}
-    //       </form>
-    //       <Button onClickCapture={saveUser}>Enter Details
-    //       </Button>
-    //       <Spacer y={1}/>
-    //     </div>
-
     <div>
       <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-neutral-100">
         <div className="w-full px-10 pt-6 pb-10 mt-6 overflow-hidden bg-white shadow-md sm:max-w-lg sm:rounded-lg">
@@ -219,7 +171,7 @@ export default function Signup(props) {
             >
               {" "}
             </ReactDropdown>
-           
+            <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">{errorMessage}</p>
 
             <div className="flex items-center mt-4">
               <button

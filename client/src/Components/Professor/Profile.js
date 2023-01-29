@@ -29,11 +29,11 @@ export default function Profile(props) {
   const navigate = useNavigate();
   const [isEditable,setIsEditable]=useState(false)
   const [dept,setDept]=useState("")
+  const [errorMessage,setErrorMessage]=useState("")
   const departmentNames = ["AS", "ISE", "CSE", "ECE", "ETE", "ME", "CV"];
   const updateUser = async (event) => {
     event.preventDefault();
     let email;
-    console.log(document.forms[0].deptName.value)
     if (props && props.email) email = props.email;
     else email = user.email;
     const data = {
@@ -42,8 +42,12 @@ export default function Profile(props) {
       middleName: document.forms[0].middleName.value,
       yearOfJoining: document.forms[0].yearOfJoining.value,
       email: email,
-      deptName: "IS",
+      deptName: dept,
     };
+    if(!data.firstName||!data.lastName||!data.email||!data.yearOfJoining||!data.deptName){
+        setErrorMessage("Enter All Values")
+        return
+      }
     let res = await axios.post("/professor/update_user", { data: data });
     if(res.data.success)setIsEditable(false)
   };
@@ -152,7 +156,9 @@ export default function Profile(props) {
             >
               {" "}
             </ReactDropdown>
-           
+
+            <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">{errorMessage}</p>
+
 
             <div className="flex items-center mt-4">
             {(!isEditable)?
