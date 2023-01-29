@@ -95,10 +95,17 @@ export default function Dashboard(props) {
         setsearchText={setsearchText}
       />
       <div className=" flex flex-row">
-      <div className=" w-1/6 mt-2 ">
-          <AllProjects projects={allProjects} />
+        <div className=" w-1/6 mt-2 ">
+          <AllProjects
+            projects={allProjects}
+            setsearchText={setsearchText}
+            searchListener={handleSetFilterAllProjects}
+            isProfessor={
+              localStorage.getItem("user") === "professor" ? true : false
+            }
+          />
         </div>
-    
+
         <div className=" w-full mt-2 ">
           {user ? (
             <MyProjectsCentre
@@ -111,7 +118,6 @@ export default function Dashboard(props) {
             <div style={{ width: "inherit" }} />
           )}
         </div>
-        
       </div>
     </div>
   );
