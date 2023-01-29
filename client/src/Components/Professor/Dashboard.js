@@ -7,6 +7,7 @@ import axios from "axios";
 import AllProjects from "../Projects/AllProjects";
 import ProfessorNavbar from "./Navbar";
 import MyProjectsCentre from "../Projects/MyProjectsCentre";
+import MyApplications from "../MyApplications";
 
 export default function Dashboard(props) {
   const navigate = useNavigate();
@@ -117,6 +118,9 @@ export default function Dashboard(props) {
           ) : (
             <div style={{ width: "inherit" }} />
           )}
+        </div>
+        <div className=" w-1/6 mt-2">
+<MyApplications/>
         </div>
       </div>
     </div>

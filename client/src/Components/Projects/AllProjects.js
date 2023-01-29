@@ -43,25 +43,37 @@ export default function AllProjects(props) {
     //   console.log(e);
     // }
     // console.log(arr);
-    async function handleApplyForProject(proj){
-     console.log("ABCDEDF")
-        const data = {
-          projectID: proj.projectID,
-          email:user.email,
-          professorEmail:user.email
-        };
-        // TODO remove this
-        const r1 = await axios.post("/project/application/create",{data:data});
-        if(!r1.status.success) console.log("err")
-        const res = await axios.post("/project/application/students_apply", { data: data });
-        if (!res.data.success) console.log("Error");
-        else {
-         console.log("Applied successfully")
-        }
+    async function handleOpenApplication(proj){
+      console.log("ABCDEDF");
+      const data = {
+        projectID: proj.projectID,
+        projectName:proj.projectName,
+        professorEmail: user.email,
+      };
+   
+      const r1 = await axios.post("/project/application/create/", {
+        data: data
+      });
+      if (!r1.status.success) console.log("Asasd");
      
     }
-    const ret = props.projects.map((proj) => {
+    async function handleApplyForProject(proj) {
+      console.log("ABCDEDF");
+      const data = {
+        projectID: proj.projectID,
+        email: user.email,
+      };
+      // TODO remove this
       
+      const res = await axios.post("/project/application/students_apply/", {
+        data: data,
+      });
+      if (!res.data.success) console.log("Error");
+      else {
+        console.log("Applied successfully");
+      }
+    }
+    const ret = props.projects.map((proj) => {
       return (
         <Card
           isPressable
@@ -88,7 +100,7 @@ export default function AllProjects(props) {
               {proj.projectName}
             </Text>
           </Card.Header>
-         
+
           <Card.Divider />
 
           <Card.Body
@@ -98,29 +110,33 @@ export default function AllProjects(props) {
               textDecoration: "italic",
             }}
           >
-            <Text
-              small
-            
-            >
-              {proj.projectDuration}
-            </Text>
-            <Text
-              small
-          
-            >
-              {proj.collaborator}
-            </Text>
+            <Text small>{proj.projectDuration}</Text>
+            <Text small>{proj.collaborator}</Text>
           </Card.Body>
-          {props.isProfessor ? 
+          {!props.isProfessor ? (
             <Card.Footer style={{ backgroundColor: "blue" }}>
-              <button className="  w-full font-bold text-white text-sm" onClickCapture={()=>{
-                handleApplyForProject(proj)
-              }}> 
+
+              <button
+                className="  w-full font-bold text-white text-sm"
+                onClickCapture={() => {
+                  handleApplyForProject(proj);
+                }}
+              >
                 APPLY
               </button>
             </Card.Footer>
-           : (
-            <div></div>
+          ) : (
+            <Card.Footer style={{ backgroundColor: "blue" }}>
+              
+              <button
+                className="  w-full font-bold text-white text-sm"
+                onClickCapture={() => {
+                  handleOpenApplication(proj);
+                }}
+              >
+                Open Application
+              </button>
+            </Card.Footer>
           )}
         </Card>
       );
@@ -128,6 +144,10 @@ export default function AllProjects(props) {
     console.log(ret);
     setProjects(() => ret);
   };
+  useEffect(() => {
+    GetMyProjects();
+  }, []);
+
   useEffect(() => {
     GetMyProjects();
   }, [props.projects]);

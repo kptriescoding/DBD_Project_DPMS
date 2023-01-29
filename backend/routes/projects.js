@@ -53,14 +53,19 @@ router.post("/create", async (req, res) => {
     success: true,
   });
 });
-function getDuration(days){
-  if(days/30<1) return days+" days"
+function getDuration(days) {
+  if (days / 30 < 1) return days + " days";
   else {
-    days = days/30;
-    if(days<12) return days==1? Math.round(days)+" month": (Math.round(days)+" months")
+    days = days / 30;
+    if (days < 12)
+      return days == 1
+        ? Math.round(days) + " month"
+        : Math.round(days) + " months";
     else {
-      days = days/12;
-      return days==1? Math.round(days)+" year":(Math.round(days)+" years")
+      days = days / 12;
+      return days == 1
+        ? Math.round(days) + " year"
+        : Math.round(days) + " years";
     }
   }
 }
@@ -69,29 +74,28 @@ router.post("/get_projects", async (req, res) => {
   try {
     var projects = [];
     const sqlRes = await mysqlPool.query(query);
-    for (let i = 0; i < sqlRes[0].length ; i=i+1) {
+    for (let i = 0; i < sqlRes[0].length; i = i + 1) {
       let cur = sqlRes[0][i];
-      console.log(getDuration(cur.days))
+      console.log(getDuration(cur.days));
       projects.push({
         projectName: cur.Title,
         projectDescription: cur.Description,
         projectId: cur.Project_ID,
         collaborator: cur.Collaborator,
-        projectDuration:getDuration(cur.days)
+        projectDuration: getDuration(cur.days),
       });
     }
     return res.status(200).json({
       success: true,
       projects: projects,
     });
-  }catch (err) {
+  } catch (err) {
     console.log(err);
     return res.status(200).json({
       success: false,
     });
   }
-})
-
+});
 
 router.post("/get_projects_for_word_search", async (req, res) => {
   let words = req.body.data.words.split(" ");
@@ -186,6 +190,24 @@ router.post("/get_my_projects", async (req, res) => {
       success: false,
     });
   }
+});
+
+router.post("/add_student", async (req, res) => {
+  let query = `insert into Works_on values (
+    "${req.body.data.studentEmail}",
+    "${req.body.data.projectID}"
+    )`;
+  try {
+    await mysqlPool.query(query);
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
+  return res.status(200).json({
+    success: true,
+  });
 });
 
 export default router;
