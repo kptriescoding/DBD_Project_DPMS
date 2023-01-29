@@ -53,20 +53,31 @@ router.post("/create", async (req, res) => {
     success: true,
   });
 });
-
+function getDuration(days){
+  if(days/30<1) return days+" days"
+  else {
+    days = days/30;
+    if(days<12) return days==1? Math.round(days)+" month": (Math.round(days)+" months")
+    else {
+      days = days/12;
+      return days==1? Math.round(days)+" year":(Math.round(days)+" years")
+    }
+  }
+}
 router.post("/get_projects", async (req, res) => {
-  let query = `select * from Project`;
+  let query = `select *,DATEDIFF(End_Date, Start_Date) AS days from Project`;
   try {
     var projects = [];
     const sqlRes = await mysqlPool.query(query);
     for (let i = 0; i < sqlRes[0].length ; i=i+1) {
       let cur = sqlRes[0][i];
-      console.log(cur+i)
+      console.log(getDuration(cur.days))
       projects.push({
         projectName: cur.Title,
         projectDescription: cur.Description,
         projectId: cur.Project_ID,
         collaborator: cur.Collaborator,
+        projectDuration:getDuration(cur.days)
       });
     }
     return res.status(200).json({
@@ -99,7 +110,7 @@ router.post("/get_projects_for_word_search", async (req, res) => {
     const sqlRes = await mysqlPool.query(query);
     for (let i = 0; i < sqlRes[0].length; i = i + 1) {
       let cur = sqlRes[0][i];
-      console.log(cur + i);
+      console.log(cur);
       projects.push({
         projectName: cur.Title,
         projectDescription: cur.Description,

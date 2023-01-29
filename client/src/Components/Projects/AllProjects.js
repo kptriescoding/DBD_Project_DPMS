@@ -1,4 +1,4 @@
-import { Card, Text } from "@nextui-org/react";
+import { Button, Card, Text } from "@nextui-org/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -6,20 +6,27 @@ import { auth } from "../../firebase";
 
 export default function AllProjects(props) {
   // const [myProject, setmyProject] = useState([])
-  const bgColors = []
+  const bgColors = [];
   const [user, loading, error] = useAuthState(auth);
   const [projects, setProjects] = useState([]);
   const GetMyProjects = async () => {
-    let colorArray = ["#858585","#1e69c0","#425b64","#4f3ed9","#546d7b","#00b96f"];
+    let colorArray = [
+      "#858585",
+      "#1e69c0",
+      "#425b64",
+      "#4f3ed9",
+      "#546d7b",
+      "#00b96f",
+    ];
 
-    const pickRandom=()=>{
-      console.log( colorArray[Math.floor(Math.random()*colorArray.length)])
-      return colorArray[Math.floor(Math.random()*colorArray.length)]
-    }
+    const pickRandom = () => {
+      console.log(colorArray[Math.floor(Math.random() * colorArray.length)]);
+      return colorArray[Math.floor(Math.random() * colorArray.length)];
+    };
     // let arr
     // try {
     //   console.log(user.email);
-      
+
     //   const projectsFromDatabase = await axios.post(
     //     "/project/get_projects",
     //     {
@@ -38,42 +45,57 @@ export default function AllProjects(props) {
     // console.log(arr);
     const ret = props.projects.map((proj) => {
       let curColor = pickRandom();
-      console.log("curColor")
+      console.log("curColor");
       return (
         <Card
           isPressable
           isHoverable
-        
           variant="bordered "
           style={{
             width: "inherit",
-            borderRadius:"0.6rem",
+            borderRadius: "0.6rem",
             margin: "1.5px",
           }}
           key={proj.projectId}
         >
-          <Card.Header css={{
-            backgroundColor:curColor
-          }} >
-            <Text    style={{
-              color:"#ffffff"
-            }} >{proj.projectName}</Text>
+          <Card.Header
+          //  css={{
+          //   backgroundColor:curColor
+          // }}
+          >
+            <Text
+              className=" font-bold text-2xl"
+              style={{
+                color: "#000000",
+              }}
+            >
+              {proj.projectName}
+            </Text>
           </Card.Header>
-          <Card.Divider
+          {/* <Card.Divider
             style={{
-              backgroundColor: "white",
+              backgroundColor: "black",
             }}
           />
           <Card.Body>
             <Text >{proj.projectDescription}</Text>
-          </Card.Body>
-          <Card.Divider
+          </Card.Body> */}
+          <Card.Divider />
           
-          />
-          <Card.Footer style={{justifyContent:"end"}}>
-            <Text small style={{ justifyContent: "end" }}>
+          <Card.Body style={{ flexDirection: 'row' ,justifyContent: 'space-between',textDecoration:"italic"}}>
+            <Text small 
+            // style={{ justifyContent: "end" }}
+            >
+              {proj.projectDuration}
+            </Text>
+            <Text small
+            //  style={{ justifyContent: "end" }}
+             >
               {proj.collaborator}
             </Text>
+          </Card.Body>
+          <Card.Footer style={{backgroundColor:"blue"}}>
+            <button className="  w-full font-bold text-white text-sm">APPLY</button>
           </Card.Footer>
         </Card>
       );
