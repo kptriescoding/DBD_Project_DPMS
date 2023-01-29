@@ -1,3 +1,4 @@
+import { async } from '@firebase/util'
 import React from 'react'
 
 export default function MyApplications(props) {
@@ -7,7 +8,14 @@ export default function MyApplications(props) {
 
     }
     async function handleSetApplications(){
-        
+
+    }
+    async function handleDeleteApplications(){
+
+    }
+
+    async function handleAcceptOrRejectApplications(projectId,Student_Email,isAccept){
+
     }
     useEffect(() => {
       handleSetApplications()
@@ -19,6 +27,7 @@ export default function MyApplications(props) {
       <div>
         <span className=' font-bold text-2xl'>Applications</span>
         <div>
+{/* @todo Professor side : student name year cgpa  accept reject*/}
 
         </div>
       </div>
