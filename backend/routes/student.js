@@ -131,4 +131,43 @@ router.post("/get_user",async(req,res)=>{
         }
     )
 })
+
+/**
+ * @route   POST student/update_user
+ * @desc    Saves the Student Details
+ * @access  Logged in
+ */
+router.post("/update_user",async(req,res)=>{
+    console.log(req.body.data);
+    let user=req.body.data;
+    let query = `
+  UPDATE Student SET
+    First_Name="${user.firstName}",
+    Last_Name="${user.lastName}",
+    Middle_Name="${user.middleName}",
+    Local_Address="${user.tempAddress}",
+    Permanent_Address="${user.permAddress}",
+    USN="${user.USN}",
+    CGPA="${user.CGPA}",
+    Resume="${user.resume}",
+    Semester="${user.Sem}",
+    Department_Name="${user.deptName}"
+    WHERE Email="${user.email}"
+    `;
+    try{
+     await mysqlPool.query(query)
+    }
+    catch(err){
+        console.log(err)
+        return res.status(200).json(
+            {
+                success:false
+            })
+    }
+    return res.status(200).json(
+        {
+            success:true
+        }
+    )
+})
 export default router;

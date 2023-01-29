@@ -2,8 +2,6 @@ import { Button, Input, Spacer, Textarea } from "@nextui-org/react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import ReactDropdown from "react-dropdown"
-import  {Multiselect} from "multiselect-react-dropdown"
-
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import {
@@ -33,39 +31,42 @@ export default function Profile(props) {
   const updateUser = async (event) => {
     event.preventDefault();
     let email;
-    console.log(document.forms[0].deptName.value)
     if (props && props.email) email = props.email;
     else email = user.email;
     const data = {
-      firstName: document.forms[0].firstName.value,
-      lastName: document.forms[0].lastName.value,
-      middleName: document.forms[0].middleName.value,
-      yearOfJoining: document.forms[0].yearOfJoining.value,
-      email: email,
-      deptName: "IS",
-    };
-    let res = await axios.post("/professor/update_user", { data: data });
+        firstName: document.forms[0].firstName.value,
+        lastName: document.forms[0].lastName.value,
+        middleName: document.forms[0].middleName.value,
+        tempAddress: document.forms[0].tempAddress.value,
+        permAddress: document.forms[0].permAddress.value,
+        CGPA: document.forms[0].CGPA.value,
+        USN: document.forms[0].USN.value,
+        Sem: document.forms[0].Sem.value,
+        resume: "404 Error Not Found",
+        email: email,
+        deptName: dept,
+      };
+    let res = await axios.post("/student/update_user", { data: data });
     if(res.data.success)setIsEditable(false)
   };
   const checkUserSignup = async () => {
     const data = {
       email: user.email,
     };
-    const res = await axios.post("/professor/is_signup", { data: data });
+    const res = await axios.post("/student/is_signup", { data: data });
     let isSignup = res.data.isSignup;
     if (!isSignup && localStorage.getItem("user") === "student")
       return navigate("/student/signup");
     if (!isSignup && localStorage.getItem("user") === "professor")
       return navigate("/professor/signup");
-    if (localStorage.getItem("user") === "student")
-      return navigate("/student/dashboard");
+    if (localStorage.getItem("user") === "professor")
+      return navigate("/professor/dashboard");
   };
   const getUser = async () => {
     const data = {
       email: user.email,
     };
-    const res = await axios.post("/professor/get_user", { data: data });
-    console.log(res.data.user);
+    const res = await axios.post("/student/get_user", { data: data });
     setProfile(res.data.user);
     setDept(res.data.user.deptName)
   };
@@ -111,7 +112,7 @@ export default function Profile(props) {
                   type="textarea"
                   placeholder="Middle Name"
                   name="middleName"
-                  defaultValue={profile.middleName}
+                defaultValue={profile.middleName}
                   disabled={!isEditable}
                   className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
                 />
@@ -129,26 +130,80 @@ export default function Profile(props) {
                 />
               </div>
             </div>
-
             <div className="mt-4">
               <div className="flex flex-col items-start ">
                 <input
-                  type="number"
-                  placeholder="Year of Joining"
-                  name="yearOfJoining"
-                  defaultValue={profile.yearOfJoining}
+                  type="text"
+                  placeholder="USN"
+                  name="USN"
+                  enterKeyHint="next"
+                  defaultValue={profile.USN}
                   disabled={!isEditable}
                   className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
                 />
               </div>
             </div>
+
+            <div className="mt-4">
+            <div className="flex flex-col items-start ">
+              <input
+                type="Number"
+                placeholder="SEM"
+                name="Sem"
+                enterKeyHint="next"
+                defaultValue={profile.Sem}
+                disabled={!isEditable}
+                className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
+              />
+            </div>
+          </div>
+          <div className="mt-4">
+            <div className="flex flex-col items-start ">
+              <input
+                type="number"
+                placeholder="CGPA"
+                name="CGPA"
+                defaultValue={profile.CGPA}
+                disabled={!isEditable}
+                className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
+              />
+            </div>
+          </div>
+         
+            
+            
+          
+          <div className="mt-4">
+            <div className="flex flex-col items-start ">
+              <textarea
+                placeholder="Local Address"
+                name="tempAddress"
+                defaultValue={profile.tempAddress}
+                disabled={!isEditable}
+                className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
+              />
+            </div>
+          </div>
+          <div className="mt-4">
+            <div className="flex flex-col items-start ">
+              <textarea
+                placeholder="Permanent Address"
+                name="permAddress"
+                defaultValue={profile.permAddress}
+                disabled={!isEditable}
+                style={{
+                  width: "100%",
+                }}
+                className="block w-full mt-1 border-gray-300 px-2 py-2 border-2 rounded-md  shadow-sm focus:border-blue-300 "
+              />
+            </div>
+          </div>
             <ReactDropdown
               options={departmentNames}
               className=" flex w-full h-40 px-2 py-2 mt-4"
               placeholder="Choose Department"
-              disabled={!isEditable}
-              onChange={(event)=>setDept(event.value)}
-              value={dept}
+                value={dept}
+                onChange={(event)=>setDept(event.value)}
             >
               {" "}
             </ReactDropdown>

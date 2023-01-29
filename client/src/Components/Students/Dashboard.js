@@ -11,6 +11,7 @@ import MyProjects from "../Projects/MyProjects";
 export default function Dashboard() {
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = useState("");
+  const [profile,setProfile]=useState({})
   const navigate = useNavigate();
 
   const checkUserSignup = async () => {
@@ -31,6 +32,7 @@ export default function Dashboard() {
       email: user.email,
     };
     const res = await axios.post("/student/get_user", { data: data });
+    setProfile(res.data.user)
   };
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function Dashboard() {
   }, [user, loading]);
   return (
     <div>
-      <Navbar />
+      <Navbar user={profile}/>
     
       <div>Hello Student {name}</div>
     </div>

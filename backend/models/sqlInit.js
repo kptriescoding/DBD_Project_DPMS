@@ -11,7 +11,8 @@ import {
     queryStudentAchievementTable,
     queryStudentSkillTable,
     queryStudentTable,
-    queryWorksOnTable
+    queryWorksOnTable,
+    defaultDepartmentQueries
 } from "./sqlTableQuery.js"
    
 
@@ -56,6 +57,7 @@ const sqlInit=async()=>{
         await pool.execute(queryAnnouncementTable)
         
         await pool.execute(queryWorksOnTable)
+        await pool.execute(defaultDepartmentQueries)
     }
     catch(err){
         console.log(err)
