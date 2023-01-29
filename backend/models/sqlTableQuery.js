@@ -117,13 +117,13 @@ export const queryWorksOnTable=`CREATE TABLE IF NOT EXISTS Works_on
   FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID) ON DELETE CASCADE
 );`
 
-export const defaultDepartmentQueries=`REPLACE INTO Department VALUES
-("AS",1967),
-("ISE",1967),
-("CSE",1967),
-("ECE",1967),
-("ETE",1967),
-("ME",1967),
-("CV",1967)
-`
+// export const defaultDepartmentQueries=`REPLACE INTO Department VALUES
+// ("AS",1967),
+// ("ISE",1967),
+// ("CSE",1967),
+// ("ECE",1967),
+// ("ETE",1967),
+// ("ME",1967),
+// ("CV",1967)
+// `
 
