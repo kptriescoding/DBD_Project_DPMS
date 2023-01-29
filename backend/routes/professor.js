@@ -84,7 +84,7 @@ router.post("/get_user", async (req, res) => {
       firstName: user.First_Name,
       lastName: user.Last_Name,
       middleName: user.Middle_Name,
-      dateOfJoining: user.Date_Of_Joining,
+      yearOfJoining: user.Year_Of_Joining,
       email: user.Email,
       deptName: user.Department_Name,
     };
@@ -142,4 +142,37 @@ router.post("/get_students_working_under_me", async (req, res) => {
     studetns:students
   })
 });
+
+
+/**
+ * @route   POST professor/update_user
+ * @desc    Update the professor Details
+ * @access  Logged in
+ */
+router.post("/update_user", async (req, res) => {
+  console.log(req.body.data);
+  let user = req.body.data;
+  let query = `
+  UPDATE Professor SET
+    First_Name="${user.firstName}",
+    Last_Name="${user.lastName}",
+    Middle_Name="${user.middleName}",
+    Year_of_Joining="${user.yearOfJoining}",
+    Department_Name="${user.deptName}"
+    WHERE Email="${user.email}"
+    `;
+  try {
+    await mysqlPool.query(query);
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
+  return res.status(200).json({
+    success: true,
+  });
+});
+
+
 export default router;

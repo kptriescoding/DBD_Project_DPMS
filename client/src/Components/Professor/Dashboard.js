@@ -3,9 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, db, logout } from "../../firebase";
-import Navbar from "./Navbar";
 import axios from "axios";
-import MyProjects from "../Projects/MyProjects";
 import AllProjects from "../Projects/AllProjects";
 import ProfessorNavbar from "./Navbar";
 import MyProjectsCentre from "../Projects/MyProjectsCentre";
@@ -24,7 +22,7 @@ export default function Dashboard(props) {
         "/project/get_projects",
         {
           data: {
-            email: props.email,
+            email: user.email,
           },
         }
       );
@@ -45,7 +43,7 @@ export default function Dashboard(props) {
         "/project/get_projects_for_word_search",
         {
           data: {
-            email: props.email,
+            email: user.email,
             words: searchText,
           },
         }
@@ -81,9 +79,11 @@ export default function Dashboard(props) {
   };
 
   useEffect(() => {
-    console.log("dsfs");
+    if (loading) return;
+    if (!user) return navigate("/login");
+    checkUserSignup()
+    getUser()
     setAllProjects(() => {
-      console.log("dsfs");
       handleSetAllProjects();
     });
   }, []);

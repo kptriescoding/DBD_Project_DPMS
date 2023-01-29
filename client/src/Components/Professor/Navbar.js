@@ -3,6 +3,8 @@ import { Button, Navbar } from "@nextui-org/react";
 import { logout } from "../../firebase";
 import ModalCreateProject from "../Projects/ModalCreate";
 import { useNavigate } from "react-router-dom";
+import {Popover} from "@nextui-org/react";
+import ProfilePopover from "./ProfilePopover";
 export default function ProfessorNavbar(props) {
   const [createProjectVisible, setCreateProjectVisible] = useState(false);
   const createProjectHandler = () => setCreateProjectVisible(true);
@@ -63,9 +65,7 @@ export default function ProfessorNavbar(props) {
 
           {/* <Navbar.Content> */}
           <Navbar.Item>
-            <Button onClick={logout} className="">
-              Logout
-            </Button>
+          <ProfilePopover user={props.user}/>
           </Navbar.Item>
         </Navbar.Content>
       </Navbar>

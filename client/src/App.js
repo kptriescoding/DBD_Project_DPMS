@@ -7,13 +7,14 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { NextUIProvider } from '@nextui-org/react';
 
 
-import StudentSignup from "./Components/Students/Login/Signup"
+import StudentSignup from "./Components/Students/Signup"
 import StudentDashboard from "./Components/Students/Dashboard"
-import ProfessorSignup from "./Components/Professor/Login/Signup"
+import ProfessorSignup from "./Components/Professor/Signup"
 import ProfessorLogin from "./Components/Login"
 import ProfessorDashboard from "./Components/Professor/Dashboard"
 import DragDrop from "./Components/DragDropComponents/DragDrop";
 import ProfessorProject from "./Components/Professor/Projects.js";
+import ProfessorProfile from "./Components/Professor/Profile"
 
 /**
  TODO
@@ -46,6 +47,7 @@ function App() {
           <Route exact path="/professor/dashboard" element={<ProfessorDashboard/>}/>
           <Route exact path="/professor/signup" element={<ProfessorSignup/>}/>
           <Route exact path="/professor/project" element={<ProfessorProject/>}/>
+          <Route exact path="/professor/profile" element={<ProfessorProfile/>}/>
         </Routes>
       </Router>
       </NextUIProvider>

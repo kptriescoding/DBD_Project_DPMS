@@ -9,8 +9,8 @@ import {
 } from "../firebase";
 import GoogleButton from "react-google-button";
 import axios from "axios";
-import ProfessorSignup from "./Professor/Login/Signup";
-import StudentSignup from "./Students/Login/Signup";
+import ProfessorSignup from "./Professor/Signup";
+import StudentSignup from "./Students/Signup";
 import rvce from "../assets/styles/download-removebg-preview.png";
 /**TODO
  1. Check if email belongs to correct domain
