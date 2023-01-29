@@ -15,6 +15,7 @@ import ProfessorDashboard from "./Components/Professor/Dashboard"
 import DragDrop from "./Components/DragDropComponents/DragDrop";
 import ProfessorProject from "./Components/Professor/Projects.js";
 import ProfessorProfile from "./Components/Professor/Profile"
+import StudentProfile from "./Components/Students/Profile";
 
 /**
  TODO
@@ -44,6 +45,7 @@ function App() {
           <Route exact path="/login" element={<ProfessorLogin/>}/>
           <Route exact path="/student/dashboard" element={<StudentDashboard/>}/>
           <Route exact path="/student/signup" element={<StudentSignup/>}/>
+          <Route exact path="/student/profile" element={<StudentProfile/>}/>
           <Route exact path="/professor/dashboard" element={<ProfessorDashboard/>}/>
           <Route exact path="/professor/signup" element={<ProfessorSignup/>}/>
           <Route exact path="/professor/project" element={<ProfessorProject/>}/>

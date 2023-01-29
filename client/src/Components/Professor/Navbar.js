@@ -35,9 +35,6 @@ export default function ProfessorNavbar(props) {
           >
           Dashboard
           </Navbar.Link>
-          {/* </Navbar.Content> */}
-
-          {/* <Navbar.Content> */}
           <Navbar.Item>
           <ProfilePopover user={props.user}/>
           </Navbar.Item>

@@ -28,6 +28,7 @@ TODO:
 export default function Signup(props) {
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
+  const [dept,setDept]=useState("")
   const departmentNames = ["AS", "ISE", "CSE", "ECE", "ETE", "ME", "CV"];
   const saveUser = async (event) => {
     event.preventDefault();
@@ -214,6 +215,7 @@ export default function Signup(props) {
               options={departmentNames}
               className=" flex w-full h-40 px-2 py-2 mt-4"
               placeholder="Choose Department"
+              onChange={(event)=>setDept(event.value)}
             >
               {" "}
             </ReactDropdown>
