@@ -96,10 +96,11 @@ export default function Dashboard() {
       <Navbar user={profile} />
       <div className=" flex flex-row">
         <div className=" w-1/6 mt-2 ">
-          <AllProjects
+          <AllProjects 
             projects={allProjects}
             setsearchText={setsearchText}
             searchListener={handleSetFilterAllProjects}
+            user = {profile}
             isProfessor={
               localStorage.getItem("user") === "professor" ? true : false
             }

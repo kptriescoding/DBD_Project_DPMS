@@ -6,17 +6,24 @@ import { auth } from "../../firebase";
 
 export default function MyProjects(props) {
   // const [myProject, setmyProject] = useState([])
-  const bgColors = []
+  const bgColors = [];
   const [user, loading, error] = useAuthState(auth);
   const [myProjects, setmyProjects] = useState();
   const GetMyProjects = async () => {
-    let colorArray = ["#858585","#1e69c0","#425b64","#4f3ed9","#546d7b","#00b96f"];
+    let colorArray = [
+      "#858585",
+      "#1e69c0",
+      "#425b64",
+      "#4f3ed9",
+      "#546d7b",
+      "#00b96f",
+    ];
 
-    const pickRandom=()=>{
+    const pickRandom = () => {
       // console.log( colorArray[Math.floor(Math.random()*colorArray.length)])
-      return colorArray[Math.floor(Math.random()*colorArray.length)]
-    }
-    let arr
+      return colorArray[Math.floor(Math.random() * colorArray.length)];
+    };
+    let arr;
     try {
       // console.log(user.email);
       // console.log(props.email)
@@ -31,7 +38,7 @@ export default function MyProjects(props) {
       );
       // if (myProjectsFromDatabase.data.success) closeHandler();
       // console.log(myProjectsFromDatabase);
-       arr = myProjectsFromDatabase.data.projects;
+      arr = myProjectsFromDatabase.data.projects;
     } catch (e) {
       console.log(e);
     }
@@ -43,21 +50,30 @@ export default function MyProjects(props) {
         <Card
           isPressable
           isHoverable
-        
+          onPress={() => {
+            localStorage.setItem("projectID", proj.projectId);
+            window.location.reload();
+          }}
           variant="bordered "
           style={{
             width: "inherit",
-            borderRadius:"0.6rem",
+            borderRadius: "0.6rem",
             margin: "1.5px",
           }}
           key={proj.projectId}
         >
-          <Card.Header css={{
-            backgroundColor:curColor
-          }} >
-            <Text    style={{
-              color:"#ffffff"
-            }} >{proj.projectName}</Text>
+          <Card.Header
+            css={{
+              backgroundColor: curColor,
+            }}
+          >
+            <Text
+              style={{
+                color: "#ffffff",
+              }}
+            >
+              {proj.projectName}
+            </Text>
           </Card.Header>
           <Card.Divider
             style={{
@@ -65,12 +81,10 @@ export default function MyProjects(props) {
             }}
           />
           <Card.Body>
-            <Text >{proj.projectDescription}</Text>
+            <Text>{proj.projectDescription}</Text>
           </Card.Body>
-          <Card.Divider
-          
-          />
-          <Card.Footer style={{justifyContent:"end"}}>
+          <Card.Divider />
+          <Card.Footer style={{ justifyContent: "end" }}>
             <Text small style={{ justifyContent: "end" }}>
               {proj.collaborator}
             </Text>

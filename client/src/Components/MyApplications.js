@@ -1,5 +1,5 @@
 import { async } from "@firebase/util";
-import { Card, Text } from "@nextui-org/react";
+import { Card, Divider, Text } from "@nextui-org/react";
 import axios from "axios";
 
 import React, { useEffect, useState } from "react";
@@ -62,11 +62,13 @@ export default function MyApplications({isProfessor,user}) {
   //  console.log(applications)
    if(applications){
     const students = applications.map((student)=> {
+      console.log(student.student.name)
         return (
           <Card
             isPressable
             isHoverable
-            variant="bordered "
+            
+            variant="bordered shadow"
             style={{
               width: "inherit",
               borderRadius: "0.6rem",
@@ -79,22 +81,44 @@ export default function MyApplications({isProfessor,user}) {
                 backgroundColor: "#ffffff",
               }}
             >
-              <Text
+              <span
                 style={{
-                  color: "#ffffff",
+                  color: "#000000",
+
                 }}
+                className=" text-center w-full"
               >
-                {student.student.studentName}
-              </Text>
+                {student.student.name}
+              </span>
             </Card.Header>
             <Card.Divider
               style={{
                 backgroundColor: "gray",
               }}
             />
-            <Card.Footer>
+            {/* <Card.Footer css={{paddding:"unset"}}> */}
+            <div className=" flex flex-grow w-full">
+            <button
+                className=" bg-red-500 font-bold text-white py-2 hover:bg-red-700"
+                style={{
+                  width:"inherit"
+                }}
+                // onClickCapture={() => {
+                //   handleAcceptOrRejectApplications(
+                //     student.projectID,
+                //     student.student.email,
+                //     true
+                //   );
+                // }}
+              >
+                Reject
+              </button>
               <button
-                className=" bg-green-500 font-bold text-white"
+                className=" bg-green-500 font-bold text-white py-2 hover:bg-green-600"
+                style={{
+                  width:"inherit",
+                  height:"inherit"
+                }}
                 onClickCapture={() => {
                   handleAcceptOrRejectApplications(
                     student.projectID,
@@ -105,7 +129,9 @@ export default function MyApplications({isProfessor,user}) {
               >
                 Accept
               </button>
-            </Card.Footer>
+              </div>
+            {/* </Card.Footer> */}
+            <Divider/>
           </Card>
         );
       });
@@ -118,7 +144,7 @@ export default function MyApplications({isProfessor,user}) {
   return (
     <div>
       <div>
-        <span className=" font-bold text-2xl">Applications</span>
+        <span className=" font-bold text-2xl text-center w-full">Applications</span>
         <div>
           {/* @todo Professor side : student name year cgpa  accept reject*/}
           {(isProfessor)?<StudentsApplied/>:<div/>}

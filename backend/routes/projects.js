@@ -80,6 +80,7 @@ router.post("/get_projects", async (req, res) => {
       let cur = sqlRes[0][i];
       projects.push({
         projectName: cur.Title,
+        professorEmail:cur.Professor_Email,
         projectDescription: cur.Description,
         projectId: cur.Project_ID,
         collaborator: cur.Collaborator,
@@ -116,6 +117,7 @@ router.post("/get_projects_for_word_search", async (req, res) => {
       let cur = sqlRes[0][i];
       projects.push({
         projectName: cur.Title,
+        professorEmail:cur.Professor_Email,
         projectDescription: cur.Description,
         projectId: cur.Project_ID,
         collaborator: cur.Collaborator,

@@ -58,14 +58,19 @@ export default function AllProjects(props) {
      
     }
     async function handleApplyForProject(proj) {
+      console.log(props.user)
       // console.log(proj);
+      console.log(proj)
       const data = {
         projectID: proj.projectId,
         email: user.email,
         professorEmail:proj.professorEmail,
-        projectName:proj.projectName
+        projectName:proj.projectName,
+        studentName:props.user.firstName+" "+props.user.lastName,
+        CGPA:props.user.CGPA,
 
       };
+      console.log(data)
       // TODO remove this
       
       const res = await axios.post("/project/application/students_apply/", {

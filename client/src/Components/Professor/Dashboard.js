@@ -95,16 +95,17 @@ export default function Dashboard(props) {
         setsearchText={setsearchText}
       />:<div/>}
       <div className=" flex flex-row">
-        <div className=" w-1/6 mt-2 ">
+       {(profile)?<div className=" w-1/6 mt-2 ">
           <AllProjects
             projects={allProjects}
             setsearchText={setsearchText}
             searchListener={handleSetFilterAllProjects}
+            user = {profile}
             isProfessor={
               localStorage.getItem("user") === "professor" ? true : false
             }
           />
-        </div>
+        </div>:<div/>}
 
         <div className=" w-full mt-2 ">
           {user ? (

@@ -38,6 +38,7 @@ export const createApplication= async (req, res) => {
 
 router.post("/students_apply", async (req, res) => {
   const student = req.body.data;
+  console.log(student)
   try {
     let check = await applicationSchema.findOne({
       projectID: student.projectID,
@@ -45,7 +46,13 @@ router.post("/students_apply", async (req, res) => {
     let studentcheck = await studentApplicationSchema.findOne({
       email: student.email,
     });
-    if (!studentcheck) throw Error("Student Doesn;t Exists");
+    if (!studentcheck) {
+      const newStudent= new studentApplicationSchema({
+        email:student.email,
+        appliedApplications:[]
+     })
+     studentcheck=await newStudent.save()
+    }
     if (!check)check= await createApplication(req,res)
     let newStudents = check.appliedStudents;
     for (let i = 0; i < newStudents.length; i++) {
@@ -59,7 +66,7 @@ router.post("/students_apply", async (req, res) => {
       status: "Applied",
     });
     newStudents.push({
-      name: student.name,
+      name: student.studentName,
       CGPA: student.CGPA,
       email: student.email,
       status: "Applied",
@@ -187,9 +194,10 @@ router.post("/get_all_applications_under_me", async (req, res) => {
     if (!check) throw Error("Professor Doesn't Exists");
 
     let ret = [];
+  
     check.forEach((project) => {
       project.appliedStudents.forEach((student) => {
-        if(student.status!=="Applied")return;
+        // if(student.status!=="Applied")return;
         ret.push({
           professorEmail: professorEmail,
           projectID: project.projectID,
