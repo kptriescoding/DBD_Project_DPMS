@@ -65,7 +65,7 @@ export default function AllProjects(props) {
         projectID: proj.projectId,
         email: user.email,
         professorEmail:proj.professorEmail,
-        projectName:proj.projectName,
+        title:proj.projectName,
         studentName:props.user.firstName+" "+props.user.lastName,
         CGPA:props.user.CGPA,
 

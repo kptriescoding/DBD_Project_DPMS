@@ -21,13 +21,13 @@ export const createApplication= async (req, res) => {
     const newApplication = new applicationSchema({
       projectID: application.projectID,
       professorEmail: application.professorEmail,
-      projectName: application.projectName,
+      projectName: application.title,
       applicationStatus: "Open",
       announcement: [],
       appliedStudents: [],
     });
     const success = await newApplication.save();
-    console.log("sfvds fdf ");
+    // console.log("sfvds fdf ");
     if (!success) throw Error("Something Went Wrong");
     return success
   } catch (err) {
@@ -38,7 +38,7 @@ export const createApplication= async (req, res) => {
 
 router.post("/students_apply", async (req, res) => {
   const student = req.body.data;
-  console.log(student)
+  // console.log(student)
   try {
     let check = await applicationSchema.findOne({
       projectID: student.projectID,
@@ -152,7 +152,7 @@ router.post("/get_all_applications", async (req, res) => {
 
 router.post("/accept_or_reject_student", async (req, res) => {
   let data=req.body.data
-  console.log(data)
+  // console.log(data)
   try {
     let studentcheck = await studentApplicationSchema.findOne({
       email: data.studentEmail,
@@ -166,15 +166,17 @@ router.post("/accept_or_reject_student", async (req, res) => {
     arr.forEach((as)=>{ console.log(as)})
    
     var foundIndex = arr.findIndex(
-      (x) => x.projectID === data.projectID
+      (x) => x.projectID === data.projectId
     );
-    arr[foundIndex].accept_or_reject = req.body.data.accept_or_reject;
+    // console.log(arr[foundIndex])
+    arr[foundIndex].status = req.body.data.accept_or_reject;
     let updateSuccess = studentApplicationSchema.findOneAndUpdate(
-      { email: data.studentEmail },
+      { email: data.studentEmail, },
       { appliedApplications: arr }
     );
     if(!updateSuccess)throw Error("Something Went wrong")
     arr=check.appliedStudents;
+    // console.log(arr[foundIndex] +"here")
     foundIndex=arr.findIndex((x)=>x.email===data.studentEmail)
     arr[foundIndex].status=data.accept_or_reject
     updateSuccess=applicationSchema.findOneAndUpdate({projectID:data.projectID},{appliedStudents:arr})
@@ -208,7 +210,7 @@ router.post("/get_all_applications_under_me", async (req, res) => {
         });
       });
     });
-    console.log(ret)
+    // console.log(ret)
     return res.status(200).json({
       success: true,
       applications: ret,

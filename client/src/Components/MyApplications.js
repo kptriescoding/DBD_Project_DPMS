@@ -4,7 +4,7 @@ import axios from "axios";
 
 import React, { useEffect, useState } from "react";
 
-export default function MyApplications({isProfessor,user}) {
+export default function MyApplications({ isProfessor, user }) {
   const [applications, setapplications] = useState([]);
   async function handleSetApplications() {
     try {
@@ -29,7 +29,7 @@ export default function MyApplications({isProfessor,user}) {
     Student_Email,
     isAccept
   ) {
-    console.log(projectId,Student_Email)
+    console.log(projectId, Student_Email);
     if (isAccept) {
       // const update_application = await axios.post("/project/add_student", {
       //   data: {
@@ -38,7 +38,14 @@ export default function MyApplications({isProfessor,user}) {
       //   },
       // });
       // if(!update_application.data.success)return;
-      const update_student_status = await axios.post("/project/application/accept_or_reject_student",
+      const update_works_on_table = await axios.post("/project/add_student", {
+        data: {
+          projectID: projectId,
+          studentEmail: Student_Email,
+        },
+      });
+      const update_student_status = await axios.post(
+        "/project/application/accept_or_reject_student",
         {
           data: {
             projectId: projectId,
@@ -47,34 +54,35 @@ export default function MyApplications({isProfessor,user}) {
           },
         }
       );
+      console.log("done")
+    
     }
   }
   useEffect(() => {
-    console.log(user)
-    if(!user)return
-    if(isProfessor)handleSetApplications();
+    console.log(user);
+    if (!user) return;
+    if (isProfessor) handleSetApplications();
   }, []);
 
   const StudentsApplied = () => {
     {
       /* @todo Professor side : student name year cgpa  accept reject*/
     }
-  //  console.log(applications)
-   if(applications){
-    const students = applications.map((student)=> {
-      console.log(student.student.name)
+    //  console.log(applications)
+    if (applications) {
+      const students = applications.map((student) => {
+        console.log(student.student.name);
         return (
           <Card
             isPressable
             isHoverable
-            
             variant="bordered shadow"
             style={{
               width: "inherit",
               borderRadius: "0.6rem",
               margin: "1.5px",
             }}
-            key={student.projectID}
+           
           >
             <Card.Header
               css={{
@@ -84,7 +92,6 @@ export default function MyApplications({isProfessor,user}) {
               <span
                 style={{
                   color: "#000000",
-
                 }}
                 className=" text-center w-full"
               >
@@ -96,12 +103,15 @@ export default function MyApplications({isProfessor,user}) {
                 backgroundColor: "gray",
               }}
             />
+            <div>
+              <span className=" text-center w-full text-black font-semibold text-sm">{student.projectName}</span>
+            </div>
             {/* <Card.Footer css={{paddding:"unset"}}> */}
             <div className=" flex flex-grow w-full">
-            <button
+              <button
                 className=" bg-red-500 font-bold text-white py-2 hover:bg-red-700"
                 style={{
-                  width:"inherit"
+                  width: "inherit",
                 }}
                 // onClickCapture={() => {
                 //   handleAcceptOrRejectApplications(
@@ -116,8 +126,8 @@ export default function MyApplications({isProfessor,user}) {
               <button
                 className=" bg-green-500 font-bold text-white py-2 hover:bg-green-600"
                 style={{
-                  width:"inherit",
-                  height:"inherit"
+                  width: "inherit",
+                  height: "inherit",
                 }}
                 onClickCapture={() => {
                   handleAcceptOrRejectApplications(
@@ -129,25 +139,26 @@ export default function MyApplications({isProfessor,user}) {
               >
                 Accept
               </button>
-              </div>
+            </div>
             {/* </Card.Footer> */}
-            <Divider/>
+            <Divider />
           </Card>
         );
       });
-    
-    return students
-   }
-   else return <div/>
+
+      return students;
+    } else return <div />;
   };
 
   return (
     <div>
       <div>
-        <span className=" font-bold text-2xl text-center w-full">Applications</span>
+        <span className=" font-bold text-2xl text-center w-full">
+          Applications
+        </span>
         <div>
           {/* @todo Professor side : student name year cgpa  accept reject*/}
-          {(isProfessor)?<StudentsApplied/>:<div/>}
+          {isProfessor ? <StudentsApplied /> : <div />}
           {/* student side:project name remove application  */}
         </div>
       </div>

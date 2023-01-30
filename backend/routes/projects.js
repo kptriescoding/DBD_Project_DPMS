@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { mysqlPool } from "../models/sqlInit.js";
 import { createApplication } from "./application.js";
-
+import applicationSchema from "../models/Application.js";
 const router = Router();
 
 /**
@@ -26,7 +26,16 @@ router.post("/create", async (req, res) => {
     `;
 
   try {
-    await createApplication(req,res)
+
+
+    const application = req.body.data;
+    // console.log(application)
+    // console.log("hereI");
+    
+   await createApplication(req,res)
+
+
+
     await mysqlPool.query(query);
     let skills = project.skills;
     for (let i = 0; i < skills.length; i++) {
@@ -80,7 +89,7 @@ router.post("/get_projects", async (req, res) => {
       let cur = sqlRes[0][i];
       projects.push({
         projectName: cur.Title,
-        professorEmail:cur.Professor_Email,
+        professorEmail: cur.Professor_Email,
         projectDescription: cur.Description,
         projectId: cur.Project_ID,
         collaborator: cur.Collaborator,
@@ -117,7 +126,7 @@ router.post("/get_projects_for_word_search", async (req, res) => {
       let cur = sqlRes[0][i];
       projects.push({
         projectName: cur.Title,
-        professorEmail:cur.Professor_Email,
+        professorEmail: cur.Professor_Email,
         projectDescription: cur.Description,
         projectId: cur.Project_ID,
         collaborator: cur.Collaborator,
