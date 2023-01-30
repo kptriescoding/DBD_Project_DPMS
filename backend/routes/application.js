@@ -145,23 +145,31 @@ router.post("/get_all_applications", async (req, res) => {
 
 router.post("/accept_or_reject_student", async (req, res) => {
   let data=req.body.data
-  console.log(req)
+  console.log(data)
   try {
     let studentcheck = await studentApplicationSchema.findOne({
-      email: req.body.data.studentEmail,
+      email: data.studentEmail,
     });
-    let check=await applicationSchema.findOne({projectID:req.body.data.projectId})
+    let check=await applicationSchema.findOne({projectID:data.projectId})
+    if(!check)throw new Error("Application doesn;t exist")
     if (!studentcheck) throw new Error("Student doesn't exist ");
+    
 
     let arr = studentcheck.appliedApplications;
     var foundIndex = arr.findIndex(
-      (x) => x.projectID == req.body.data.projectID
+      (x) => x.projectID == data.projectID
     );
     arr[foundIndex].status = req.body.data.accept_or_reject;
     let updateSuccess = studentApplicationSchema.findOneAndUpdate(
-      { email: student.email },
+      { email: data.studentEmail },
       { appliedApplications: arr }
     );
+    if(!updateSuccess)throw Error("Something Went wrong")
+    arr=check.appliedStudents;
+    foundIndex=arr.findIndex((x)=>x.email===data.studentEmail)
+    arr[foundIndex].status=data.accept_or_reject
+    updateSuccess=applicationSchema.findOneAndUpdate({projectID:data.projectID},{appliedStudents:arr})
+    if(!updateSuccess)throw Error("Something went wrong")
   } catch (err) {
     console.log(err);
     return res.status(200).json({

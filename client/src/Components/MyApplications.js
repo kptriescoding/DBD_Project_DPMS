@@ -38,8 +38,7 @@ export default function MyApplications({isProfessor,user}) {
       //   },
       // });
       // if(!update_application.data.success)return;
-      const update_student_status = await axios.post(
-        "/project/applicaton/accept_or_reject_student",
+      const update_student_status = await axios.post("/project/application/accept_or_reject_student",
         {
           data: {
             projectId: projectId,
