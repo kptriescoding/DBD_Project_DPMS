@@ -47,10 +47,9 @@ export default function Dashboard() {
     getUser();
     handleSetAllProjects();
   }, [user, loading]);
-   useEffect(() => {
-     handleSetAllProjects();
+  useEffect(() => {
+    handleSetAllProjects();
   }, []);
-  
 
   async function handleSetAllProjects() {
     let arr;
@@ -96,31 +95,45 @@ export default function Dashboard() {
       <Navbar user={profile} />
       <div className=" flex flex-row">
         <div className=" w-1/6 mt-2 ">
-          <AllProjects 
+          <AllProjects
             projects={allProjects}
             setsearchText={setsearchText}
             searchListener={handleSetFilterAllProjects}
-            user = {profile}
+            user={profile}
             isProfessor={
               localStorage.getItem("user") === "professor" ? true : false
             }
           />
         </div>
 
-        <div className=" w-3/5 mt-2 ">
+        <div className=" w-full mt-2 ">
           {user ? (
-            <MyProjectsCentre
-              email={user.email}
-              isProfessor={
-                localStorage.getItem("user") === "professor" ? true : false
-              }
-            />
+            <>
+              <span className="flex flex-wrap items-center font-bold text-black text-2xl w-full text-center">
+                Your Projects
+              </span>
+              <MyProjectsCentre
+                email={user.email}
+                isProfessor={
+                  localStorage.getItem("user") === "professor" ? true : false
+                }
+              />
+            </>
           ) : (
             <div style={{ width: "inherit" }} />
           )}
         </div>
         <div className=" w-1/6 mt-2">
-        {(profile)?<MyApplications isProfessor={localStorage.getItem("user")==="student"?false:true} user={profile}/>:<div/>}
+          {profile ? (
+            <MyApplications
+              isProfessor={
+                localStorage.getItem("user") === "student" ? false : true
+              }
+              user={profile}
+            />
+          ) : (
+            <div />
+          )}
         </div>
       </div>
     </div>

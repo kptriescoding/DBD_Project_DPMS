@@ -38,7 +38,7 @@ export default function MyProjectsCentre(props) {
       let curColor = pickRandom();
     //   console.log("curColor")
       return (
-       
+      
         <Card
           isPressable
           isHoverable
@@ -48,9 +48,12 @@ export default function MyProjectsCentre(props) {
             }}
           variant="bordered "
           style={{
-            width: "inherit",
+            width:'20%',
+           
             borderRadius:"0.6rem",
             margin: "1.5px",
+            
+            
           }}
           key={proj.projectId}
         >
@@ -59,7 +62,7 @@ export default function MyProjectsCentre(props) {
           }} >
             <Text    style={{
               color:"#ffffff"
-            }} >{proj.projectName}</Text>
+            }} >{proj.projectName.length>20?proj.projectName.substring(0,20)+"...":proj.projectName}</Text>
           </Card.Header>
           <Card.Divider
             style={{
@@ -78,7 +81,7 @@ export default function MyProjectsCentre(props) {
             </Text>
           </Card.Footer>
         </Card>
-    
+      
       );
     });
     // console.log(ret);
@@ -88,5 +91,5 @@ export default function MyProjectsCentre(props) {
     GetMyProjects();
   }, []);
 
-  return <div className=" flex px-2 flex-col">{myProjects}</div>;
+  return <div className=" flex flex-wrap px-2 w-full content-center ">{myProjects}</div>;
 }

@@ -1,4 +1,4 @@
-import { Button, StyledDivider } from "@nextui-org/react";
+import { Button, Spacer, StyledDivider } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
@@ -106,15 +106,17 @@ export default function Dashboard(props) {
             }
           />
         </div>:<div/>}
-
-        <div className=" w-full mt-2 ">
-          {user ? (
+     
+        <div className=" w-full mt-2 items-center ">
+          {user ? (<>
+            <span className="flex flex-wrap items-center font-bold text-black text-2xl w-full text-center">Your Projects</span>
             <MyProjectsCentre
               email={user.email}
               isProfessor={
                 localStorage.getItem("user") === "professor" ? true : false
               }
             />
+            </>
           ) : (
             <div style={{ width: "inherit" }} />
           )}

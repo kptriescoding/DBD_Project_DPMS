@@ -163,10 +163,12 @@ router.post("/accept_or_reject_student", async (req, res) => {
     
 
     let arr = studentcheck.appliedApplications;
+    arr.forEach((as)=>{ console.log(as)})
+   
     var foundIndex = arr.findIndex(
-      (x) => x.projectID == data.projectID
+      (x) => x.projectID === data.projectID
     );
-    arr[foundIndex].status = req.body.data.accept_or_reject;
+    arr[foundIndex].accept_or_reject = req.body.data.accept_or_reject;
     let updateSuccess = studentApplicationSchema.findOneAndUpdate(
       { email: data.studentEmail },
       { appliedApplications: arr }
