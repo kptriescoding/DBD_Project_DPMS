@@ -72,7 +72,7 @@ router.post("/save_user",async(req,res)=>{
     try{
      await mysqlPool.query(query)
      const newStudent= new studentApplicationSchema({
-        email:user.Email,
+        email:user.email,
         appliedApplications:[]
      })
      const res=await newStudent.save()

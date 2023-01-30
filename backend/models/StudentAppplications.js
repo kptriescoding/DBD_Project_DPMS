@@ -5,6 +5,9 @@ const studentApplicationSchema=new mongoose.Schema({
         type:String
     },
     appliedApplications:[{
+        projectName:{
+            type:String
+        },
         projectID:{
             type:String
         },

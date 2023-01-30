@@ -9,10 +9,10 @@ const router = Router();
  * GENERAL APPLICATION ONLY PROJECT RELATED IN project.js
  */
 
-router.post("/create", async (req, res) => {
+export const createApplication= async (req, res) => {
   try {
     const application = req.body.data;
-    // console.log(application)
+    console.log(application)
     console.log("hereI");
     let check = await applicationSchema.findOne({
       projectID: application.projectID,
@@ -29,47 +29,11 @@ router.post("/create", async (req, res) => {
     const success = await newApplication.save();
     console.log("sfvds fdf ");
     if (!success) throw Error("Something Went Wrong");
-    return res.status(200).json({
-      success: true,
-      application: success,
-    });
   } catch (err) {
-    console.log(err);
-    return res.status(200).json({
-      success: err,
-    });
-  }
-});
+    throw err
 
-router.post("/create_announcement", async (req, res) => {
-  const announcement = req.body.data;
-  try {
-    let check = await applicationSchema.findOne({
-      projectID: announcement.projectID,
-    });
-    if (!check) throw Error("Application Doesn't Exists");
-    const newAnnouncement = check.announcement;
-    newAnnouncement.push({
-      name: announcement.name,
-      description: announcement.description,
-    });
-    let success = await applicationSchema.findOneAndUpdate(
-      { projectID: announcement.projectID },
-      { announcement: newAnnouncement }
-    );
-    if (!success) throw Error("Something Went Wrong");
-    return res.status(200).json({
-      success: true,
-      application: success,
-    });
-  } catch (err) {
-    console.log("fsfsdfs");
-    console.log(err);
-    return res.status(200).json({
-      success: false,
-    });
   }
-});
+}
 
 router.post("/students_apply", async (req, res) => {
   const student = req.body.data;
@@ -82,18 +46,18 @@ router.post("/students_apply", async (req, res) => {
       email: student.email,
     });
     if (!studentcheck) throw Error("Student Doesn;t Exists");
-    if (!check) throw Error("Application Doesn't Exists");
-    const newStudents = check.appliedStudents;
+    if (!check) await createApplication(req,res)
+    let newStudents = check.appliedStudents;
     for (let i = 0; i < newStudents.length; i++) {
       if (newStudents[i].email === student.email)
         throw Error("Student Already Applied");
-      studentcheck.appliedApplications.push({
-        projectName: check.projectName,
-        projectID: check.projectID,
-        professorEmail: check.professorEmail,
-        status: "Applied",
-      });
     }
+    studentcheck.appliedApplications.push({
+      projectName: check.projectName,
+      projectID: check.projectID,
+      professorEmail: check.professorEmail,
+      status: "Applied",
+    });
     newStudents.push({
       name: student.name,
       CGPA: student.CGPA,

@@ -59,7 +59,6 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
     let res = await axios.post("/project/create", { data: newProject });
     if(res.data.success) {
       await axios.post("/project/dragdrop/create",{data:newProject})
-      await axios.post("/project/application/create",{data:newProject})
     }
     if (res.data.success) closeHandler();
   };

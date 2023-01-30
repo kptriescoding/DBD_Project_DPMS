@@ -9,6 +9,7 @@ import axios from "axios";
 import MyProjects from "../Projects/MyProjects";
 import AllProjects from "../Projects/AllProjects";
 import MyProjectsCentre from "../Projects/MyProjectsCentre";
+import MyApplications from "../MyApplications";
 
 export default function Dashboard() {
   const [user, loading, error] = useAuthState(auth);
@@ -118,6 +119,9 @@ export default function Dashboard() {
           ) : (
             <div style={{ width: "inherit" }} />
           )}
+        </div>
+        <div className=" w-1/6 mt-2">
+        <MyApplications isProfessor={localStorage.getItem("user")==="student"?false:true}/>
         </div>
       </div>
     </div>

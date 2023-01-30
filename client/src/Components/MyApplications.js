@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 
-export default function MyApplications(props) {
+export default function MyApplications({isProfessor}) {
   const [applications, setapplications] = useState([]);
   const [user, loading, error] = useAuthState(auth);
   async function handleSetApplications() {
@@ -23,7 +23,7 @@ export default function MyApplications(props) {
     // TODo this is if professor
     try {
       const tapplications = await axios.post(
-        "/application/get_all_applications_under_me",
+        "/project/application/get_all_applications_under_me",
         {
           data: {
             professorEmail: user.email,
@@ -31,7 +31,7 @@ export default function MyApplications(props) {
         }
       );
       // console.log(tapplications);
-      setapplications(() => tapplications.data);
+      setapplications(() => tapplications.data.applications);
     } catch (err) {
       console.log(err);
     }
@@ -70,7 +70,7 @@ export default function MyApplications(props) {
     {
       /* @todo Professor side : student name year cgpa  accept reject*/
     }
-   
+   console.log(applications)
     const students = applications.map((student)=> {
         return (
           <Card
@@ -82,7 +82,7 @@ export default function MyApplications(props) {
               borderRadius: "0.6rem",
               margin: "1.5px",
             }}
-            key={project.projectId}
+            key={student.projectId}
           >
             <Card.Header
               css={{
@@ -94,7 +94,7 @@ export default function MyApplications(props) {
                   color: "#ffffff",
                 }}
               >
-                {student.studentName}
+                {student.student.studentName}
               </Text>
             </Card.Header>
             <Card.Divider
@@ -107,8 +107,8 @@ export default function MyApplications(props) {
                 className=" bg-green-500 font-bold text-white"
                 onClickCapture={() => {
                   handleAcceptOrRejectApplications(
-                    project.projectId,
-                    student.email,
+                    student.projectId,
+                    student.student.email,
                     true
                   );
                 }}
@@ -129,7 +129,7 @@ export default function MyApplications(props) {
         <span className=" font-bold text-2xl">Applications</span>
         <div>
           {/* @todo Professor side : student name year cgpa  accept reject*/}
-          <StudentsApplied/>
+          {(isProfessor)?<StudentsApplied/>:<div/>}
           {/* student side:project name remove application  */}
         </div>
       </div>
