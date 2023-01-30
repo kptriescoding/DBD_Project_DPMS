@@ -20,7 +20,7 @@ export default function AllProjects(props) {
     ];
 
     const pickRandom = () => {
-      console.log(colorArray[Math.floor(Math.random() * colorArray.length)]);
+      // console.log(colorArray[Math.floor(Math.random() * colorArray.length)]);
       return colorArray[Math.floor(Math.random() * colorArray.length)];
     };
     // let arr
@@ -44,7 +44,7 @@ export default function AllProjects(props) {
     // }
     // console.log(arr);
     async function handleOpenApplication(proj){
-      console.log("ABCDEDF");
+      // console.log("ABCDEDF");
       const data = {
         projectID: proj.projectID,
         projectName:proj.projectName,
@@ -54,14 +54,17 @@ export default function AllProjects(props) {
       const r1 = await axios.post("/project/application/create/", {
         data: data
       });
-      if (!r1.status.success) console.log("Asasd");
+      if (!r1.status.success) ;
      
     }
     async function handleApplyForProject(proj) {
-      console.log("ABCDEDF");
+      // console.log(proj);
       const data = {
-        projectID: proj.projectID,
+        projectID: proj.projectId,
         email: user.email,
+        professorEmail:proj.professorEmail,
+        projectName:proj.projectName
+
       };
       // TODO remove this
       
@@ -141,7 +144,7 @@ export default function AllProjects(props) {
         </Card>
       );
     });
-    console.log(ret);
+    // console.log(ret);
     setProjects(() => ret);
   };
   useEffect(() => {

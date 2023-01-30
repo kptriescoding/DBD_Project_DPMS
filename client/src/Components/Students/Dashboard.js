@@ -64,8 +64,6 @@ export default function Dashboard() {
         }
       );
       arr = allProjectsFromDatabase.data.projects;
-      console.log(arr);
-      console.log("svvx")
     } catch (err) {
       console.log(err);
     }
@@ -121,7 +119,7 @@ export default function Dashboard() {
           )}
         </div>
         <div className=" w-1/6 mt-2">
-        <MyApplications isProfessor={localStorage.getItem("user")==="student"?false:true}/>
+        {(profile)?<MyApplications isProfessor={localStorage.getItem("user")==="student"?false:true} user={profile}/>:<div/>}
         </div>
       </div>
     </div>

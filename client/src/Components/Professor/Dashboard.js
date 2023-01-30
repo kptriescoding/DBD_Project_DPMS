@@ -11,7 +11,7 @@ import MyApplications from "../MyApplications";
 
 export default function Dashboard(props) {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState({});
+  const [profile, setProfile] = useState(null);
   const [user, loading, error] = useAuthState(auth);
   const [allProjects, setAllProjects] = useState([]);
   const [searchText, setsearchText] = useState("");
@@ -29,8 +29,7 @@ export default function Dashboard(props) {
       );
 
       arr = allProjectsFromDatabase.data.projects;
-      console.log(arr);
-    } catch (err) {
+      } catch (err) {
       console.log(err);
     }
     setAllProjects(() => {
@@ -75,7 +74,7 @@ export default function Dashboard(props) {
       email: user.email,
     };
     const res = await axios.post("/professor/get_user", { data: data });
-    console.log(res.data.user);
+    // console.log(res.data.user);
     setProfile(res.data.user);
   };
 
@@ -83,18 +82,18 @@ export default function Dashboard(props) {
     if (loading) return;
     if (!user) return navigate("/login");
     checkUserSignup()
-    getUser()
+    if(profile===null)getUser()
     setAllProjects(() => {
       handleSetAllProjects();
     });
-  }, []);
+  }, [user,loading,profile]);
   return (
     <div className="">
-      <ProfessorNavbar
+      {(profile)?<ProfessorNavbar
         user={profile}
         searchListener={handleSetFilterAllProjects}
         setsearchText={setsearchText}
-      />
+      />:<div/>}
       <div className=" flex flex-row">
         <div className=" w-1/6 mt-2 ">
           <AllProjects
@@ -120,7 +119,7 @@ export default function Dashboard(props) {
           )}
         </div>
         <div className=" w-1/6 mt-2" >
-<MyApplications isProfessor={localStorage.getItem("user")==="student"?false:true}/>
+{(profile)?<MyApplications isProfessor={localStorage.getItem("user")==="student"?false:true} user={profile}/>:<div/>}
         </div>
       </div>
     </div>

@@ -11,13 +11,13 @@ export default function MyProjectsCentre(props) {
     let colorArray = ["#858585","#1e69c0","#425b64","#4f3ed9","#546d7b","#00b96f"];
 
     const pickRandom=()=>{
-      console.log( colorArray[Math.floor(Math.random()*colorArray.length)])
+      // console.log( colorArray[Math.floor(Math.random()*colorArray.length)])
       return colorArray[Math.floor(Math.random()*colorArray.length)]
     }
     let arr
     try {
       // console.log(user.email);
-      console.log(props.email)
+      // console.log(props.email)
       const myProjectsFromDatabase = await axios.post(
         "/project/get_my_projects",
         {
@@ -33,7 +33,7 @@ export default function MyProjectsCentre(props) {
     } catch (e) {
       console.log(e);
     }
-    console.log(arr);
+    // console.log(arr);
     const ret = arr.map((proj) => {
       let curColor = pickRandom();
     //   console.log("curColor")
@@ -81,7 +81,7 @@ export default function MyProjectsCentre(props) {
     
       );
     });
-    console.log(ret);
+    // console.log(ret);
     setmyProjects(() => ret);
   };
   useEffect(() => {

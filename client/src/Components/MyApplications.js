@@ -3,24 +3,10 @@ import { Card, Text } from "@nextui-org/react";
 import axios from "axios";
 
 import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
 
-export default function MyApplications({isProfessor}) {
+export default function MyApplications({isProfessor,user}) {
   const [applications, setapplications] = useState([]);
-  const [user, loading, error] = useAuthState(auth);
   async function handleSetApplications() {
-    
-    // let arr
-    // try {
-    //   // console.log(user.email);
-    //   // console.log(props.email)
-    //   const myProjectsFromDatabase = await axios.post(
-    //     "/project/get_my_projects",
-    //     {
-    //       data:
-
-    // TODo this is if professor
     try {
       const tapplications = await axios.post(
         "/project/application/get_all_applications_under_me",
@@ -30,7 +16,7 @@ export default function MyApplications({isProfessor}) {
           },
         }
       );
-      // console.log(tapplications);
+      console.log(tapplications);
       setapplications(() => tapplications.data.applications);
     } catch (err) {
       console.log(err);
@@ -63,14 +49,17 @@ export default function MyApplications({isProfessor}) {
     }
   }
   useEffect(() => {
-    handleSetApplications();
+    console.log(user)
+    if(!user)return
+    if(isProfessor)handleSetApplications();
   }, []);
 
   const StudentsApplied = () => {
     {
       /* @todo Professor side : student name year cgpa  accept reject*/
     }
-   console.log(applications)
+  //  console.log(applications)
+   if(applications){
     const students = applications.map((student)=> {
         return (
           <Card
@@ -121,6 +110,8 @@ export default function MyApplications({isProfessor}) {
       });
     
     return students
+   }
+   else return <div/>
   };
 
   return (

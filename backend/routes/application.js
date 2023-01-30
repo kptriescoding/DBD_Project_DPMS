@@ -12,8 +12,8 @@ const router = Router();
 export const createApplication= async (req, res) => {
   try {
     const application = req.body.data;
-    console.log(application)
-    console.log("hereI");
+    // console.log(application)
+    // console.log("hereI");
     let check = await applicationSchema.findOne({
       projectID: application.projectID,
     });
@@ -29,6 +29,7 @@ export const createApplication= async (req, res) => {
     const success = await newApplication.save();
     console.log("sfvds fdf ");
     if (!success) throw Error("Something Went Wrong");
+    return success
   } catch (err) {
     throw err
 
@@ -38,7 +39,6 @@ export const createApplication= async (req, res) => {
 router.post("/students_apply", async (req, res) => {
   const student = req.body.data;
   try {
-    console.log("here");
     let check = await applicationSchema.findOne({
       projectID: student.projectID,
     });
@@ -46,7 +46,7 @@ router.post("/students_apply", async (req, res) => {
       email: student.email,
     });
     if (!studentcheck) throw Error("Student Doesn;t Exists");
-    if (!check) await createApplication(req,res)
+    if (!check)check= await createApplication(req,res)
     let newStudents = check.appliedStudents;
     for (let i = 0; i < newStudents.length; i++) {
       if (newStudents[i].email === student.email)
@@ -168,9 +168,10 @@ router.post("/accept_or_reject_student", async (req, res) => {
 });
 
 router.post("/get_all_applications_under_me", async (req, res) => {
+  let professorEmail=req.body.data.professorEmail
   try {
     let check = await applicationSchema.find({
-      professorEmail: req.body.data.professorEmail,
+      professorEmail: professorEmail,
     });
     if (!check) throw Error("Professor Doesn't Exists");
 
@@ -185,6 +186,7 @@ router.post("/get_all_applications_under_me", async (req, res) => {
         });
       });
     });
+    console.log(ret)
     return res.status(200).json({
       success: true,
       applications: ret,

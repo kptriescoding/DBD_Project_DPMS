@@ -11,8 +11,6 @@ const router=Router()
  */
 
 router.post("/is_signup",async (req,res)=>{
-    // console.log("Here")
-    // console.log(req.body.data)
     let user=req.body.data
     let query=`
     SELECT Email
@@ -52,7 +50,6 @@ router.post("/is_signup",async (req,res)=>{
  * @access  Logged in
  */
 router.post("/save_user",async(req,res)=>{
-    console.log(req.body.data);
     let user=req.body.data;
     let query=`
     INSERT INTO Student VALUES
@@ -144,7 +141,6 @@ router.post("/get_user",async(req,res)=>{
  * @access  Logged in
  */
 router.post("/update_user",async(req,res)=>{
-    console.log(req.body.data);
     let user=req.body.data;
     let query = `
   UPDATE Student SET

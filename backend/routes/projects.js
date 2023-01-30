@@ -10,7 +10,7 @@ const router = Router();
  * @access  Logged in as Professor
  */
 router.post("/create", async (req, res) => {
-  console.log(req.body.data);
+  // console.log(req.body.data);
   let project = req.body.data;
   let query = `
     INSERT INTO Project VALUES
@@ -78,7 +78,6 @@ router.post("/get_projects", async (req, res) => {
     const sqlRes = await mysqlPool.query(query);
     for (let i = 0; i < sqlRes[0].length; i = i + 1) {
       let cur = sqlRes[0][i];
-      console.log(getDuration(cur.days));
       projects.push({
         projectName: cur.Title,
         projectDescription: cur.Description,
@@ -110,13 +109,11 @@ router.post("/get_projects_for_word_search", async (req, res) => {
       query +
       `OR Project.Title like "%${words[i]}%" OR Project.Description like "%${words[i]}%" `;
   }
-  console.log(query);
   try {
     var projects = [];
     const sqlRes = await mysqlPool.query(query);
     for (let i = 0; i < sqlRes[0].length; i = i + 1) {
       let cur = sqlRes[0][i];
-      console.log(cur);
       projects.push({
         projectName: cur.Title,
         projectDescription: cur.Description,
@@ -137,7 +134,6 @@ router.post("/get_projects_for_word_search", async (req, res) => {
 });
 
 router.post("/get_my_projects", async (req, res) => {
-  console.log(req.body.data);
   let email = req.body.data.email;
   let isProfessor = req.body.data.isProfessor;
 
@@ -156,7 +152,6 @@ router.post("/get_my_projects", async (req, res) => {
       const sqlRes = await mysqlPool.query(query);
       for (let i = 0; i < sqlRes[0].length; i = i + 1) {
         let cur = sqlRes[0][i];
-        console.log(cur + i);
         projects.push({
           projectName: cur.Title,
           projectDescription: cur.Description,
@@ -172,8 +167,6 @@ router.post("/get_my_projects", async (req, res) => {
       const sqlRes = await mysqlPool.query(studentQuery);
       for (let i = 0; i < sqlRes[0].length; i++) {
         let cur = sqlRes[0][i];
-        console.log(cur);
-        console.log(sqlRes[0][0]);
         projects.push({
           projectName: cur.Title,
           projectDescription: cur.Description,
