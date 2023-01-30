@@ -30,8 +30,8 @@ export default function MyApplications(props) {
           },
         }
       );
-      console.log(tapplications);
-      // setapplications(() => tapplications);
+      // console.log(tapplications);
+      setapplications(() => tapplications.data);
     } catch (err) {
       console.log(err);
     }
@@ -70,9 +70,8 @@ export default function MyApplications(props) {
     {
       /* @todo Professor side : student name year cgpa  accept reject*/
     }
-
-    const students = applications.map((project) => {
-      project.appliedStudents.map((student) => {
+   
+    const students = applications.map((student)=> {
         return (
           <Card
             isPressable
@@ -120,8 +119,8 @@ export default function MyApplications(props) {
           </Card>
         );
       });
-    });
-    // setapplications(() => students);
+    
+    return students
   };
 
   return (
