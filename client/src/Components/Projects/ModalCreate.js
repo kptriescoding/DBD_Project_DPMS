@@ -26,6 +26,7 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [selectedSkills, setSelectedSkills] = useState();
+  const [errorMessage,setErrorMessage]=useState("")
   const skills = [
     "Java",
     "C++",
@@ -38,6 +39,11 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
     "Block Chain",
   ];
   const addNewProject = async () => {
+    if(!name||!description||!collaborator||!funding||!startDate||!endDate){
+      setErrorMessage("Enter all the details")
+    }
+
+
     const newProject = {
       title: name,
       description: description,
@@ -148,6 +154,7 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
             aria-label="End Date"
             onChangeCapture={(event) => setEndDate(event.target.value)}
           />
+          <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">{errorMessage}</p>
         </Modal.Body>
         <Modal.Footer autoMargin={false}>
           <Button auto onPress={addNewProject} style={{ width: "100%" }}>

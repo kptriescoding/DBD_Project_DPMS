@@ -31,7 +31,7 @@ export default function ProfessorNavbar(props) {
             Create Project
           </Navbar.Link>
           <Navbar.Link
-          onClick={()=>{navigate("/professor/dashboard")}}
+          onClickCapture={()=>{navigate("/professor/dashboard")}}
           >
           Dashboard
           </Navbar.Link>

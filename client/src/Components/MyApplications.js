@@ -31,7 +31,7 @@ export default function MyApplications(props) {
         }
       );
       console.log(tapplications);
-      setapplications(() => tapplications);
+      // setapplications(() => tapplications);
     } catch (err) {
       console.log(err);
     }
@@ -121,7 +121,7 @@ export default function MyApplications(props) {
         );
       });
     });
-    setapplications(() => students);
+    // setapplications(() => students);
   };
 
   return (
