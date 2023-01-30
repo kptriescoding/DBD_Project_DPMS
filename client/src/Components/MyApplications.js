@@ -29,20 +29,22 @@ export default function MyApplications({isProfessor,user}) {
     Student_Email,
     isAccept
   ) {
+    console.log(projectId,Student_Email)
     if (isAccept) {
-      const update_application = await axios.post("/project/add_student", {
-        data: {
-          projectId: projectId,
-          studentEmail: Student_Email,
-        },
-      });
+      // const update_application = await axios.post("/project/add_student", {
+      //   data: {
+      //     projectID: projectId,
+      //     studentEmail: Student_Email,
+      //   },
+      // });
+      // if(!update_application.data.success)return;
       const update_student_status = await axios.post(
-        "/applicaton/accept_or_reject_student",
+        "/project/applicaton/accept_or_reject_student",
         {
           data: {
             projectId: projectId,
             studentEmail: Student_Email,
-            accept_or_reject: "accept",
+            accept_or_reject: "Accept",
           },
         }
       );
@@ -71,7 +73,7 @@ export default function MyApplications({isProfessor,user}) {
               borderRadius: "0.6rem",
               margin: "1.5px",
             }}
-            key={student.projectId}
+            key={student.projectID}
           >
             <Card.Header
               css={{
@@ -96,7 +98,7 @@ export default function MyApplications({isProfessor,user}) {
                 className=" bg-green-500 font-bold text-white"
                 onClickCapture={() => {
                   handleAcceptOrRejectApplications(
-                    student.projectId,
+                    student.projectID,
                     student.student.email,
                     true
                   );

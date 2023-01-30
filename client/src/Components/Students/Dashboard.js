@@ -106,7 +106,7 @@ export default function Dashboard() {
           />
         </div>
 
-        <div className=" w-full mt-2 ">
+        <div className=" w-3/5 mt-2 ">
           {user ? (
             <MyProjectsCentre
               email={user.email}

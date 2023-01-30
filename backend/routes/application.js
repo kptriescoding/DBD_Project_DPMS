@@ -144,10 +144,13 @@ router.post("/get_all_applications", async (req, res) => {
 });
 
 router.post("/accept_or_reject_student", async (req, res) => {
+  let data=req.body.data
+  console.log(req)
   try {
     let studentcheck = await studentApplicationSchema.findOne({
       email: req.body.data.studentEmail,
     });
+    let check=await applicationSchema.findOne({projectID:req.body.data.projectId})
     if (!studentcheck) throw new Error("Student doesn't exist ");
 
     let arr = studentcheck.appliedApplications;
@@ -178,6 +181,7 @@ router.post("/get_all_applications_under_me", async (req, res) => {
     let ret = [];
     check.forEach((project) => {
       project.appliedStudents.forEach((student) => {
+        if(student.status!=="Applied")return;
         ret.push({
           professorEmail: professorEmail,
           projectID: project.projectID,
