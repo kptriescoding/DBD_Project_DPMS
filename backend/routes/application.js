@@ -10,11 +10,10 @@ const router = Router();
  */
 
 router.post("/create", async (req, res) => {
-  
   try {
     const application = req.body.data;
     // console.log(application)
-    console.log("hereI")
+    console.log("hereI");
     let check = await applicationSchema.findOne({
       projectID: application.projectID,
     });
@@ -64,7 +63,7 @@ router.post("/create_announcement", async (req, res) => {
       application: success,
     });
   } catch (err) {
-    console.log("fsfsdfs")
+    console.log("fsfsdfs");
     console.log(err);
     return res.status(200).json({
       success: false,
@@ -75,7 +74,7 @@ router.post("/create_announcement", async (req, res) => {
 router.post("/students_apply", async (req, res) => {
   const student = req.body.data;
   try {
-    console.log("here")
+    console.log("here");
     let check = await applicationSchema.findOne({
       projectID: student.projectID,
     });
@@ -210,9 +209,21 @@ router.post("/get_all_applications_under_me", async (req, res) => {
       professorEmail: req.body.data.professorEmail,
     });
     if (!check) throw Error("Professor Doesn't Exists");
+
+    let ret = [];
+    check.forEach((project) => {
+      project.appliedStudents.forEach((student) => {
+        ret.push({
+          professorEmail: professorEmail,
+          projectID: project.projectID,
+          projectName: project.projectName,
+          student: student,
+        });
+      });
+    });
     return res.status(200).json({
       success: true,
-      applications: check,
+      applications: ret,
     });
   } catch (err) {
     console.log(err);
