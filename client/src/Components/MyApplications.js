@@ -120,7 +120,7 @@ export default function MyApplications(props) {
         );
       });
     
-    setapplications(() => students);
+    return students
   };
 
   return (
