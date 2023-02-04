@@ -3,6 +3,7 @@ import axios from "axios";
 
 import React, { useState } from "react";
 import Dropdown from "react-dropdown";
+import * as XLSX from "xlsx";
 import Table from "./Table";
 export default function AdminDashboard() {
   const viewType = ["Professor", "Student", "Project"];
@@ -57,7 +58,7 @@ export default function AdminDashboard() {
         },
       });
       setsqlData(tempData.data.data);
-      return ;
+      return;
     }
     if (type == "Student") {
       const tempData = await axios.post("/student/get_students_admin", {
@@ -73,22 +74,30 @@ export default function AdminDashboard() {
         },
       });
       setsqlData(tempData.data.projects);
-    }else {
+    } else {
       const tempData = await axios.post("/professor/get_professor_admin", {
         data: {
           query: queryType,
         },
       });
-      setsqlData(tempData.data.professors)
+      setsqlData(tempData.data.professors);
     }
+  }
+  function generateXL() {
+    const worksheet = XLSX.utils.json_to_sheet(sqlData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+    //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+    XLSX.writeFile(workbook, "DataSheet.xlsx");
   }
   return (
     <>
-      <div className="flex flex-col w-full py-4 justify-center bg-slate-100">
-        <div className="flex justify-center my-2 ">
+      <div className="flex justify-around w-full py-4  bg-slate-100">
+        <div className="flex justify-center my-2">
           <Dropdown
             options={viewType}
-            className=" mx-2 px-4 py-2 rounded-md text-white self-center bg-blue-500 hover:bg-blue-600"
+            className=" mx-2 px-4 py-2 w-60 rounded-md  text-white self-center bg-blue-500 hover:bg-blue-600"
             style={{
               position: "relative",
               overflow: "hidden",
@@ -107,7 +116,7 @@ export default function AdminDashboard() {
           />
           <Dropdown
             options={optionForQueryState}
-            className=" mx-2 px-4 py-2 rounded-md text-white self-center bg-blue-500 hover:bg-blue-600"
+            className=" mx-2 px-4 py-2 w-60 rounded-md text-white self-center bg-blue-500 hover:bg-blue-600"
             onChange={(option) => handleOnChangeForQueryType(option)}
           />
         </div>
@@ -117,15 +126,16 @@ export default function AdminDashboard() {
             className=" py-2 px-2  mx-2 my-2 bg-gray-200 items-center border-black border-2"
             onChangeCapture={(val) => handleSqlQueryChange(val)}
           ></input>
-        </div>
-        <div className="flex w-fit self-center justify-center items-center mx-1 py-2 my-2 px-14 rounded-lg bg-blue-200 relative ">
-          <span className="mx-1">Use SQL Query</span>
-          <Switch
-            animated={false}
-            bordered={true}
-            on
-            onChange={handleOnChangeForSwitch}
-          />
+
+          <div className="flex w-fit self-center justify-center items-center mx-1 py-2 my-2 px-14 rounded-lg bg-blue-200 relative ">
+            <span className="mx-1">Use SQL Query</span>
+            <Switch
+              animated={false}
+              bordered={true}
+              on
+              onChange={handleOnChangeForSwitch}
+            />
+          </div>
         </div>
         <div className=" flex flex-column justify-center items-center bias">
           <Button
@@ -138,8 +148,18 @@ export default function AdminDashboard() {
           </Button>
         </div>
       </div>
-      <div className=" mx-10">
+      <div className="flex flex-col mx-10">
         <Table data={sqlData} />
+        {sqlData != null && sqlData.length != 0 ? (
+          <button
+            className=" px-4 py-2 bg-gray-300"
+            onClickCapture={generateXL}
+          >
+            Convert To XL
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );
