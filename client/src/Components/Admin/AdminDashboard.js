@@ -1,14 +1,19 @@
 import { Button, Input, Switch } from "@nextui-org/react";
 import axios from "axios";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
 import * as XLSX from "xlsx";
+import Bargraph from "./Bargraph";
 import Table from "./Table";
 export default function AdminDashboard() {
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const viewType = ["Professor", "Student", "Project"];
   const [type, settype] = useState("Professor");
-
+  const [barData, setbarData] = useState([]);
   const queryOptionsForProfessors = [
     "List Of Professors",
     "No Of Projects,total funding raised,  Under Each Professor",
@@ -18,6 +23,7 @@ export default function AdminDashboard() {
     "List Of Students",
     "No Of Projects Each Student is Working On",
   ];
+
   const [optionForQueryState, setoptionForQueryState] = useState(
     queryOptionsForProfessors
   );
@@ -26,6 +32,7 @@ export default function AdminDashboard() {
   const [sqlData, setsqlData] = useState([]);
   const [isSQLQuery, setisSQLQuery] = useState(false);
   const [sqlQuery, setsqlQuery] = useState("");
+
   const handleOnChangeForViewType = (option) => {
     settype(option.value);
     console.log(option);
@@ -90,6 +97,19 @@ export default function AdminDashboard() {
     //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
     //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
     XLSX.writeFile(workbook, "DataSheet.xlsx");
+  }
+
+  async function fetchData() {
+    const tempData = await axios.post("/project/collaborator", {
+      data: {
+        limit: 10,
+      },
+    });
+
+    setbarData(() => {
+      return tempData.data.collaborators;
+    });
+    console.log(barData);
   }
   return (
     <>
@@ -160,6 +180,9 @@ export default function AdminDashboard() {
         ) : (
           <></>
         )}
+      </div>
+      <div>
+        <Bargraph data={barData} />
       </div>
     </>
   );

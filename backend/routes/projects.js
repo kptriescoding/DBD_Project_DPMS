@@ -244,6 +244,24 @@ router.post("/sql_query", async (req, res) => {
     data:sqlRes[0]
   });
 });
+router.post("/collaborator",async(req,res)=>{
+  let data = req.body.data;
+  let query = `select Collaborator,sum(Funding) as Total_Funding  from Project group by Collaborator order by Total_Funding desc  LIMIT ${data.limit};`
+  let sqlRes
+  try {
+     sqlRes = await mysqlPool.query(query);
+    
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    collaborators:sqlRes[0]
+  });
+})
 
 router.post("/add_student", async (req, res) => {
   let query = `insert into Works_on values (
