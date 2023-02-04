@@ -1,12 +1,15 @@
 import { Card, Text } from "@nextui-org/react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { CreateProjectContext } from "./ModalCreate";
 
 export default function MyProjectsCentre(props) {
+  
   // const [myProject, setmyProject] = useState([])
   const navigate=useNavigate();
   const [myProjects, setmyProjects] = useState();
+  const createProjectContext  = useContext(CreateProjectContext)
   const GetMyProjects = async () => {
     let colorArray = ["#858585","#1e69c0","#425b64","#4f3ed9","#546d7b","#00b96f"];
 
@@ -88,6 +91,8 @@ export default function MyProjectsCentre(props) {
     setmyProjects(() => ret);
   };
   useEffect(() => {
+    console.log("here")
+    console.log(createProjectContext)
     GetMyProjects();
   }, []);
 

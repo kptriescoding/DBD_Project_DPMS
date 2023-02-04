@@ -43,36 +43,34 @@ export default function AllProjects(props) {
     //   console.log(e);
     // }
     // console.log(arr);
-    async function handleOpenApplication(proj){
+    async function handleOpenApplication(proj) {
       // console.log("ABCDEDF");
       const data = {
         projectID: proj.projectID,
-        projectName:proj.projectName,
+        projectName: proj.projectName,
         professorEmail: user.email,
       };
-   
+
       const r1 = await axios.post("/project/application/create/", {
-        data: data
+        data: data,
       });
-      if (!r1.status.success) ;
-     
+      if (!r1.status.success);
     }
     async function handleApplyForProject(proj) {
-      console.log(props.user)
+      console.log(props.user);
       // console.log(proj);
-      console.log(proj)
+      console.log(proj);
       const data = {
         projectID: proj.projectId,
         email: user.email,
-        professorEmail:proj.professorEmail,
-        title:proj.projectName,
-        studentName:props.user.firstName+" "+props.user.lastName,
-        CGPA:props.user.CGPA,
-
+        professorEmail: proj.professorEmail,
+        title: proj.projectName,
+        studentName: props.user.firstName + " " + props.user.lastName,
+        CGPA: props.user.CGPA,
       };
-      console.log(data)
+      console.log(data);
       // TODO remove this
-      
+
       const res = await axios.post("/project/application/students_apply/", {
         data: data,
       });
@@ -123,7 +121,6 @@ export default function AllProjects(props) {
           </Card.Body>
           {!props.isProfessor ? (
             <Card.Footer style={{ backgroundColor: "blue" }}>
-
               <button
                 className="  w-full font-bold text-white text-sm"
                 onClickCapture={() => {
@@ -135,7 +132,6 @@ export default function AllProjects(props) {
             </Card.Footer>
           ) : (
             <Card.Footer style={{ backgroundColor: "blue" }}>
-              
               <button
                 className="  w-full font-bold text-white text-sm"
                 onClickCapture={() => {
@@ -150,7 +146,11 @@ export default function AllProjects(props) {
       );
     });
     // console.log(ret);
-    setProjects(() => ret);
+    setProjects(() => (
+      <div >
+     { ret}
+      </div>
+      ));
   };
   useEffect(() => {
     GetMyProjects();
@@ -185,7 +185,7 @@ export default function AllProjects(props) {
           </button>
         </div>
       </div>
-      <div>{projects}</div>
+      <div className=" h-screen ">{projects}</div>
     </div>
   );
 }

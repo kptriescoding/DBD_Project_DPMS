@@ -16,6 +16,7 @@ import DragDrop from "./Components/DragDropComponents/DragDrop";
 import ProfessorProject from "./Components/Professor/Projects.js";
 import ProfessorProfile from "./Components/Professor/Profile"
 import StudentProfile from "./Components/Students/Profile";
+import AdminDashboard from "./Components/Admin/AdminDashboard";
 
 /**
  TODO
@@ -50,6 +51,7 @@ function App() {
           <Route exact path="/professor/signup" element={<ProfessorSignup/>}/>
           <Route exact path="/professor/project" element={<ProfessorProject/>}/>
           <Route exact path="/professor/profile" element={<ProfessorProfile/>}/>
+          <Route exact path="/admin/dashboard" element={<AdminDashboard/>}/>
         </Routes>
       </Router>
       </NextUIProvider>

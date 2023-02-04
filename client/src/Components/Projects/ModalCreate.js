@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import {
   Button,
   Modal,
@@ -17,7 +17,7 @@ import { Multiselect } from "multiselect-react-dropdown";
  * TODO
  * handle input cvalidation and error correction
  */
-
+export const CreateProjectContext = createContext();
 const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -60,7 +60,10 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
     if(res.data.success) {
       await axios.post("/project/dragdrop/create",{data:newProject})
     }
-    if (res.data.success) closeHandler();
+    if (res.data.success){
+       closeHandler();
+       triggerOnAdditionOfProject();
+    }
   };
   const handleSkillSelected = ((lis)=>{
     setSelectedSkills(() => {
@@ -69,7 +72,11 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
     });
   }
   )
+  function triggerOnAdditionOfProject(){
+    console.log("trigeered insaan");
+  }
   return (
+    <CreateProjectContext.Provider value={triggerOnAdditionOfProject}>
     <div>
       <Modal closeButton onClose={closeHandler} open={visible}>
         <Modal.Header>
@@ -162,6 +169,7 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
         </Modal.Footer>
       </Modal>
     </div>
+    </CreateProjectContext.Provider>
   );
 };
 export default ModalCreate;

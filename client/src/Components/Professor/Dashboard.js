@@ -88,13 +88,13 @@ export default function Dashboard(props) {
     });
   }, [user,loading,profile]);
   return (
-    <div className="">
+    <div className=" ">
       {(profile)?<ProfessorNavbar
         user={profile}
         searchListener={handleSetFilterAllProjects}
         setsearchText={setsearchText}
       />:<div/>}
-      <div className=" flex flex-row">
+      <div className=" flex flex-row" >
        {(profile)?<div className=" w-1/6 mt-2 ">
           <AllProjects
             projects={allProjects}

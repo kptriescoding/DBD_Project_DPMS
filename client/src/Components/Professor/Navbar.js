@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { createContext, useState } from "react";
 import { Button, Navbar } from "@nextui-org/react";
 import { logout } from "../../firebase";
 import ModalCreateProject from "../Projects/ModalCreate";
 import { useNavigate } from "react-router-dom";
 import {Popover} from "@nextui-org/react";
 import ProfilePopover from "./ProfilePopover";
+
+
 export default function ProfessorNavbar(props) {
   const [createProjectVisible, setCreateProjectVisible] = useState(false);
   const createProjectHandler = () => setCreateProjectVisible(true);
@@ -12,6 +14,7 @@ export default function ProfessorNavbar(props) {
   const navigate=useNavigate()
 
   return (
+    
     <section className=" flex flex-grow justify-between ">
       <Navbar
         variant={"sticky"}
@@ -51,5 +54,6 @@ export default function ProfessorNavbar(props) {
         <div />
       )}
     </section>
+  
   );
 }

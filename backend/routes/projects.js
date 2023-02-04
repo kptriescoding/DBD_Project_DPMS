@@ -93,6 +93,7 @@ router.post("/get_projects", async (req, res) => {
         projectDescription: cur.Description,
         projectId: cur.Project_ID,
         collaborator: cur.Collaborator,
+        funding:cur.Funding,
         projectDuration: getDuration(cur.days),
       });
     }
@@ -108,6 +109,38 @@ router.post("/get_projects", async (req, res) => {
   }
 });
 
+router.post("/get_projects_admin",async(req,res) => {
+  let queryOption = req.body.data;
+  let query = ""
+  if(queryOption.query==="List Of Projects")
+   query = `select *,DATEDIFF(End_Date, Start_Date) AS days from Project`;
+  // else if(queryOption.query==="")
+  try {
+    var projects = [];
+    const sqlRes = await mysqlPool.query(query);
+    for (let i = 0; i < sqlRes[0].length; i = i + 1) {
+      let cur = sqlRes[0][i];
+      projects.push({
+        Project_ID : cur.Project_ID,
+        Project_Name: cur.Title,
+        Professor_Email: cur.Professor_Email,
+        Collaborator: cur.Collaborator,
+        Funding:cur.Funding,
+        Duration: getDuration(cur.days),
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      
+      projects: projects,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
+});
 router.post("/get_projects_for_word_search", async (req, res) => {
   let words = req.body.data.words.split(" ");
   let query = "select * from Project where ";
