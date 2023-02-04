@@ -26,15 +26,11 @@ router.post("/create", async (req, res) => {
     `;
 
   try {
-
-
     const application = req.body.data;
     // console.log(application)
     // console.log("hereI");
-    
-   await createApplication(req,res)
 
-
+    await createApplication(req, res);
 
     await mysqlPool.query(query);
     let skills = project.skills;
@@ -93,7 +89,7 @@ router.post("/get_projects", async (req, res) => {
         projectDescription: cur.Description,
         projectId: cur.Project_ID,
         collaborator: cur.Collaborator,
-        funding:cur.Funding,
+        funding: cur.Funding,
         projectDuration: getDuration(cur.days),
       });
     }
@@ -109,11 +105,11 @@ router.post("/get_projects", async (req, res) => {
   }
 });
 
-router.post("/get_projects_admin",async(req,res) => {
+router.post("/get_projects_admin", async (req, res) => {
   let queryOption = req.body.data;
-  let query = ""
-  if(queryOption.query==="List Of Projects")
-   query = `select *,DATEDIFF(End_Date, Start_Date) AS days from Project`;
+  let query = "";
+  if (queryOption.query === "List Of Projects")
+    query = `select *,DATEDIFF(End_Date, Start_Date) AS days from Project`;
   // else if(queryOption.query==="")
   try {
     var projects = [];
@@ -121,17 +117,17 @@ router.post("/get_projects_admin",async(req,res) => {
     for (let i = 0; i < sqlRes[0].length; i = i + 1) {
       let cur = sqlRes[0][i];
       projects.push({
-        Project_ID : cur.Project_ID,
+        Project_ID: cur.Project_ID,
         Project_Name: cur.Title,
         Professor_Email: cur.Professor_Email,
         Collaborator: cur.Collaborator,
-        Funding:cur.Funding,
+        Funding: cur.Funding,
         Duration: getDuration(cur.days),
       });
     }
     return res.status(200).json({
       success: true,
-      
+
       projects: projects,
     });
   } catch (err) {
@@ -229,6 +225,24 @@ router.post("/get_my_projects", async (req, res) => {
       success: false,
     });
   }
+});
+
+router.post("/sql_query", async (req, res) => {
+  let query = req.body.data.query;
+  let sqlRes
+  try {
+     sqlRes = await mysqlPool.query(query);
+    
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    data:sqlRes[0]
+  });
 });
 
 router.post("/add_student", async (req, res) => {

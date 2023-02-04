@@ -23,6 +23,8 @@ export default function AdminDashboard() {
   const queryOptionsForProjects = ["List Of Projects"];
   const [queryType, setqueryType] = useState("");
   const [sqlData, setsqlData] = useState([]);
+  const [isSQLQuery, setisSQLQuery] = useState(false);
+  const [sqlQuery, setsqlQuery] = useState("");
   const handleOnChangeForViewType = (option) => {
     settype(option.value);
     console.log(option);
@@ -39,8 +41,24 @@ export default function AdminDashboard() {
   const handleOnChangeForQueryType = (option) => {
     setqueryType(option.value);
   };
-
+  const handleOnChangeForSwitch = () => {
+    setisSQLQuery((prev) => {
+      return !prev;
+    });
+  };
+  const handleSqlQueryChange = (quer) => {
+    setsqlQuery(quer.target.value);
+  };
   async function handleSubmitClick() {
+    if (isSQLQuery) {
+      const tempData = await axios.post("/project/sql_query", {
+        data: {
+          query: sqlQuery,
+        },
+      });
+      setsqlData(tempData.data.data);
+      return ;
+    }
     if (type == "Student") {
       const tempData = await axios.post("/student/get_students_admin", {
         data: {
@@ -48,7 +66,6 @@ export default function AdminDashboard() {
         },
       });
       setsqlData(tempData.data.students);
-      console.log("set done");
     } else if (type == "Project") {
       const tempData = await axios.post("/project/get_projects_admin", {
         data: {
@@ -56,6 +73,13 @@ export default function AdminDashboard() {
         },
       });
       setsqlData(tempData.data.projects);
+    }else {
+      const tempData = await axios.post("/professor/get_professor_admin", {
+        data: {
+          query: queryType,
+        },
+      });
+      setsqlData(tempData.data.professors)
     }
   }
   return (
@@ -91,11 +115,17 @@ export default function AdminDashboard() {
           <input
             placeholder="Write Your SQL Query Here"
             className=" py-2 px-2  mx-2 my-2 bg-gray-200 items-center border-black border-2"
+            onChangeCapture={(val) => handleSqlQueryChange(val)}
           ></input>
         </div>
         <div className="flex w-fit self-center justify-center items-center mx-1 py-2 my-2 px-14 rounded-lg bg-blue-200 relative ">
           <span className="mx-1">Use SQL Query</span>
-          <Switch animated={false} bordered={true} name="This is a swithc" />
+          <Switch
+            animated={false}
+            bordered={true}
+            on
+            onChange={handleOnChangeForSwitch}
+          />
         </div>
         <div className=" flex flex-column justify-center items-center bias">
           <Button
