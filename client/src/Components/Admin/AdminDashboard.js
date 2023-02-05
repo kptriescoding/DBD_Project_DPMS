@@ -8,16 +8,11 @@ import Dropdown from "react-dropdown";
 import * as XLSX from "xlsx";
 // import Bargraph from "./Bargraph";
 import Table from "./Table";
+import jsPDF from "jspdf";
 export default function AdminDashboard() {
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const viewType = ["Professor", "Student", "Project"];
   const [type, settype] = useState("Professor");
   const [barData, setbarData] = useState([]);
-  const [userType,setUserType]=useState()
-  const [user,loading,error]=useAuthState(auth)
   const queryOptionsForProfessors = [
     "List Of Professors",
     "No Of Projects,total funding raised,  Under Each Professor",
@@ -52,7 +47,7 @@ export default function AdminDashboard() {
 
   const handleOnChangeForViewType = (option) => {
     settype(option.value);
-    console.log(option);
+    // console.log(option);
     setoptionForQueryState(() => {
       setqueryType("");
       if (option.value === "Professor") return queryOptionsForProfessors;
@@ -115,19 +110,27 @@ export default function AdminDashboard() {
     //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
     XLSX.writeFile(workbook, "DataSheet.xlsx");
   }
+  function generatePDF() {
+    var doc = new jsPDF("p", "pt");
+    doc.text(20, 20, "College Project Management System");
+    doc.setFont("helvetica");
+    // doc.setFontType("normal");
+    doc.text(20, 60, sqlData);
 
-  async function fetchData() {
-    const tempData = await axios.post("/project/collaborator", {
+    doc.save("sample-file.pdf");
+  }
+
+  const fetchData = async () => {
+    const td = await axios.post("/project/collaborator", {
       data: {
         limit: 10,
       },
     });
+    const dataa = td.data.collaborators;
 
-    setbarData(() => {
-      return tempData.data.collaborators;
-    });
+    setbarData(dataa);
     console.log(barData);
-  }
+  };
   return (
     <>
       <div className="flex justify-around w-full py-4  bg-slate-100">
@@ -209,9 +212,7 @@ export default function AdminDashboard() {
         )}
       </div>
       <div>
-        {
-          // <Bargraph data={barData} />
-        }
+        <Bargraph data={barData} />
       </div>
     </>
   );
