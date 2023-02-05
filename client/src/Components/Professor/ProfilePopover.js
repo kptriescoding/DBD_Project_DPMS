@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {Popover} from "@nextui-org/react";
 import Profile from "./Profile";
 
-const ProfilePopover=({user})=>{
+const ProfilePopover=({user,userType})=>{
     const navigate=useNavigate()
 return <Popover>
 <Popover.Trigger>
@@ -28,6 +28,9 @@ className="w-full px-4 py-2.5 tracking-wide text-white transition-colors duratio
 >
 Logout
 </button>
+</Popover.Content>
+<Popover.Content>
+<span>{userType}</span>
 </Popover.Content>
 </Popover>
 }

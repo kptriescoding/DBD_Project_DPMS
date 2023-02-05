@@ -2,7 +2,7 @@ import { Button, Spacer, StyledDivider } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { auth, db, logout } from "../../firebase";
+import { auth, db, logout ,fetchUserType} from "../../firebase";
 import axios from "axios";
 import AllProjects from "../Projects/AllProjects";
 import ProfessorNavbar from "./Navbar";
@@ -15,6 +15,7 @@ export default function Dashboard(props) {
   const [user, loading, error] = useAuthState(auth);
   const [allProjects, setAllProjects] = useState([]);
   const [searchText, setsearchText] = useState("");
+  const [userType,setUserType]=useState("")
 
   async function handleSetAllProjects() {
     let arr;
@@ -57,17 +58,20 @@ export default function Dashboard(props) {
     });
   }
   const checkUserSignup = async () => {
+    let resUserType=await fetchUserType(user.email)
+    setUserType(resUserType)
     const data = {
       email: user.email,
     };
     const res = await axios.post("/professor/is_signup", { data: data });
     let isSignup = res.data.isSignup;
-    if (!isSignup && localStorage.getItem("user") === "student")
+    if (resUserType === "Student")
+    return navigate("/student/dashboard");
+    else if(resUserType==="Admin")navigate("/admin/dashboard");
+    if (!isSignup && resUserType === "Student")
       return navigate("/student/signup");
-    if (!isSignup && localStorage.getItem("user") === "professor")
+    if (!isSignup && resUserType === "Professor")
       return navigate("/professor/signup");
-    if (localStorage.getItem("user") === "student")
-      return navigate("/student/dashboard");
   };
   const getUser = async () => {
     const data = {
@@ -90,6 +94,7 @@ export default function Dashboard(props) {
   return (
     <div className=" ">
       {(profile)?<ProfessorNavbar
+        userType={userType}
         user={profile}
         searchListener={handleSetFilterAllProjects}
         setsearchText={setsearchText}
@@ -101,9 +106,7 @@ export default function Dashboard(props) {
             setsearchText={setsearchText}
             searchListener={handleSetFilterAllProjects}
             user = {profile}
-            isProfessor={
-              localStorage.getItem("user") === "professor" ? true : false
-            }
+            isProfessor={userType}
           />
         </div>:<div/>}
      
@@ -112,9 +115,7 @@ export default function Dashboard(props) {
             <span className="flex flex-wrap items-center font-bold text-black text-2xl w-full text-center">Your Projects</span>
             <MyProjectsCentre
               email={user.email}
-              isProfessor={
-                localStorage.getItem("user") === "professor" ? true : false
-              }
+              isProfessor={userType}
             />
             </>
           ) : (
@@ -122,7 +123,7 @@ export default function Dashboard(props) {
           )}
         </div>
         <div className=" w-1/6 mt-2" >
-{(profile)?<MyApplications isProfessor={localStorage.getItem("user")==="student"?false:true} user={profile}/>:<div/>}
+{(profile)?<MyApplications isProfessor={userType} user={profile}/>:<div/>}
         </div>
       </div>
     </div>

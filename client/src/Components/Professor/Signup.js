@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import {
   auth,
   db,
+  fetchUserType,
   linkMailWithGoogle,
   registerWithEmailAndPassword,
 } from "../../firebase";
@@ -62,7 +63,7 @@ export default function Signup(props) {
     //  console.log(email+password+"!")
     if (res.data.success) {
       if (!user)
-        res = await registerWithEmailAndPassword(props.email, password);
+        res = await registerWithEmailAndPassword(props.email, password,props.userType);
       else res = await linkMailWithGoogle(email, password);
       console.log(res);
       return navigate("/professor/dashboard");
@@ -72,15 +73,20 @@ export default function Signup(props) {
   };
   const checkUserSignup = async () => {
     let email;
-    if (user && user.email) email = user.email;
+    let userType=props.userType
+    if (user && user.email){
+       email = user.email;
+       userType=await fetchUserType(email)
+    }
     else email = props.email;
     const data = {
       email: email,
     };
     const res = await axios.post("/professor/is_signup", { data: data });
     let isSignup = res.data.isSignup;
-    if(isSignup&&localStorage.getItem("user")==="student")return navigate("/student/dashboard")
-   if(isSignup&&localStorage.getItem("user")==="professor")return navigate("/professor/dashboard")
+    if(userType==="Admin")navigate("/admin/dashboard");
+    if(isSignup&&userType==="Student")return navigate("/student/dashboard")
+   if(isSignup&&userType==="Professor")return navigate("/professor/dashboard")
   };
 
   useEffect(() => {

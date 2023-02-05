@@ -5,7 +5,7 @@ import ReactDropdown from "react-dropdown"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import {
-  auth
+  auth,fetchUserType
 } from "../../firebase";
 import axios from "axios";
 import rvce from "../../assets/styles/download-removebg-preview.png";
@@ -29,6 +29,7 @@ export default function Profile(props) {
   const [dept,setDept]=useState("")
   const departmentNames = ["AS", "ISE", "CSE", "ECE", "ETE", "ME", "CV"];
   const [errorMessage,setErrorMessage]=useState("")
+  const [userType,setUserType]=useState("")
   const updateUser = async (event) => {
     event.preventDefault();
     let email;
@@ -55,17 +56,21 @@ export default function Profile(props) {
     if(res.data.success)setIsEditable(false)
   };
   const checkUserSignup = async () => {
+    let resUserType=await fetchUserType(user.email)
+    setUserType(resUserType)
     const data = {
       email: user.email,
     };
     const res = await axios.post("/student/is_signup", { data: data });
     let isSignup = res.data.isSignup;
-    if (!isSignup && localStorage.getItem("user") === "student")
+    if (resUserType === "Professor")
+    return navigate("/professor/dashboard");
+    else if(resUserType==="Admin")
+    navigate("/admin/dashboard");
+    if (!isSignup && resUserType === "Student")
       return navigate("/student/signup");
-    if (!isSignup && localStorage.getItem("user") === "professor")
+    if (!isSignup && resUserType === "Professor")
       return navigate("/professor/signup");
-    if (localStorage.getItem("user") === "professor")
-      return navigate("/professor/dashboard");
   };
   const getUser = async () => {
     const data = {
@@ -84,7 +89,7 @@ export default function Profile(props) {
   }, [user, loading]);
   return (
     <div>
-    <ProfessorNavbar user={profile}/>
+    <ProfessorNavbar user={profile} userType={userType}/>
     {(profile!==null)?
       <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-neutral-100">
         <div className="w-full px-10 pt-6 pb-10 mt-6 overflow-hidden bg-white shadow-md sm:max-w-lg sm:rounded-lg">

@@ -6,6 +6,7 @@ import {
   auth,
   signInWithGoogle,
   logInWithEmailAndPassword,
+  fetchUserType
 } from "../firebase";
 import GoogleButton from "react-google-button";
 import axios from "axios";
@@ -24,22 +25,40 @@ export default function Login() {
   const [loginState, setLoginState] = useState("login");
   const [errorMessage,setErrorMessage]=useState("")
   const navigate = useNavigate();
-  let isProfessor
-  const [radioInput,setRadioInput]=useState("1")
+  let userTypes={
+    "1":"Student",
+    "2":"Professor",
+    "3":"Admin"
+  }
+  const [userRoute,setUserRoute]=useState("")
+  const [defaultUserType,setDefaultUserType]=useState(1)
+
+  let userType
+
+  const checkIfAlreadyLoggedIn=async()=>{
+    let resUserType
+      resUserType=await fetchUserType(user.email)
+    if (resUserType ==="Professor") navigate("/professor/dashboard");
+    else if(resUserType==="Student")navigate("/student/dashboard");
+    else if(resUserType==="Admin")navigate("/admin/dashboard");
+  }
   useEffect(() => {
     if (loading) {
       // maybe trigger a loading screen
       return;
     }
-    if (user&&localStorage.getItem("user")==="professor") navigate("/professor/dashboard");
-    else if(user&&localStorage.getItem("user")==="student")navigate("/student/dashboard");
+    if(user)checkIfAlreadyLoggedIn()
   }, [user, loading]);
+
+
   const loginThroughPassword = async(event) => {
     setErrorMessage("")
     event.preventDefault();
+    userType=userTypes[(document.forms[0].isProfessor.value)]
+    setUserRoute(userType)
     let password=document.forms[0].password.value
     try{
-    await logInWithEmailAndPassword(email, password);
+    await logInWithEmailAndPassword(email, password,userType);
     }
     catch(err){
       setErrorMessage("Invalid Password")
@@ -48,36 +67,44 @@ export default function Login() {
 
   const checkUserLoggedIn = async (event) => {
     event.preventDefault();
+   
+    userType=userTypes[(document.forms[0].isProfessor.value)]
+    setUserRoute(userType)
     setErrorMessage("")
     let email=document.forms[0].email.value
     if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))){
       setErrorMessage("Enter Valid Email")
       return;
     }
+    let resUserType=await fetchUserType(email)
+    if(resUserType){
+      if(resUserType=="Admin")setLoginState("isSignup")
+      userType=resUserType 
+    }
+    if(userType=="Admin"&&!resUserType){
+      setErrorMessage("You don't have access to sign in as admin")
+      return
+    }
     setEmail(email)
     const data = {
       email: email,
     };
-   isProfessor=(document.forms[0].isProfessor.value==="2")?true:false
-   setRadioInput(document.forms[0].isProfessor.value)
-    console.log(isProfessor)
-    if (isProfessor) {
-      localStorage.setItem("user","professor")
+    if (userType=="Professor") {
       const res = await axios.post("/professor/is_signup", { data: data });
       if (res.data.isSignup) setLoginState("isSignup");
       else setLoginState("noSignup");
-    } else {
-      localStorage.setItem("user","student")
+    } else if(userType=="Student"){
       const res = await axios.post("/student/is_signup", { data: data });
       if (res.data.isSignup) setLoginState("isSignup");
       else setLoginState("noSignup");
     }
+    setDefaultUserType(Object.keys(userTypes).find(key => userTypes[key] === userType))
   };
   const changeEmail=()=>setLoginState("login")
   const logInWithGoogle=()=>{
-    if(isProfessor)localStorage.setItem("user","professor")
-    else localStorage.setItem("user","student")
-    signInWithGoogle()
+    userType=userTypes[(document.forms[0].isProfessor.value)]
+    setUserRoute(userType)
+    signInWithGoogle(userType)
   }
   const EmailInput = () => {
     return (
@@ -142,12 +169,15 @@ export default function Login() {
             </div> 
     }
             <div class="flex justify-between items-center mt-2.5">
-            <Radio.Group aria-label="Login-Type" defaultValue={radioInput} orientation="horizontal" name="isProfessor">
+            <Radio.Group aria-label="Login-Type" defaultValue={defaultUserType.toString()} orientation="horizontal" name="isProfessor">
             <Radio value="1" isDisabled={(loginState!=="login")}>
               Student
             </Radio>
             <Radio value="2" isDisabled={(loginState!=="login")}>
               Professor
+            </Radio>
+            <Radio value="3" isDisabled={(loginState!=="login")}>
+              Admin
             </Radio>
           </Radio.Group>
             </div>
@@ -179,9 +209,9 @@ export default function Login() {
 
   return (loginState === "login"|| loginState==="isSignup" )? (
     <EmailInput />
-  ) : radioInput === "2" ? (
-    <ProfessorSignup email={email} />
+  ) : userRoute=="Professor" ? (
+    <ProfessorSignup email={email} userType={userRoute}/>
   ) : (
-    <StudentSignup email={email} />
+    <StudentSignup email={email} userType={userRoute}/>
   );
 }

@@ -25,10 +25,21 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 const googleProvider = new GoogleAuthProvider();
-export const signInWithGoogle = async () => {
+export const signInWithGoogle = async (userType) => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
+    if(res){
+      const q = query(collection(db, "users"), where("uid", "==", user.uid));
+      const docs = await getDocs(q);
+      if (docs.docs.length === 0) {
+        await addDoc(collection(db, "users"), {
+          uid: user.uid,
+          email: user.email,
+          userType:userType
+        });
+      }
+    }
   } catch (err) {
     console.error(err);
     // alert(err.message);
@@ -37,20 +48,31 @@ export const signInWithGoogle = async () => {
 export const logout = () => {
   signOut(auth);
 };
-export const logInWithEmailAndPassword = async (email, password,setErrorMessage) => {
+export const logInWithEmailAndPassword = async (email, password) => {
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    let res=await signInWithEmailAndPassword(auth, email, password);
   } catch (err) {
     // console.error(err);
     throw err
   }
 };
-export const registerWithEmailAndPassword = async (email, password) => {
+export const registerWithEmailAndPassword = async (email, password,userType) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
-    const user = res.user;
+    const user=res.user
+    if(res){
+      const q = query(collection(db, "users"), where("uid", "==", user.uid));
+      const docs = await getDocs(q);
+      if (docs.docs.length === 0) {
+        await addDoc(collection(db, "users"), {
+          uid: user.uid,
+          email: user.email,
+          userType:userType
+        });
+      }
+    }
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     // alert(err.message);
   }
 };
@@ -58,11 +80,20 @@ export const linkMailWithGoogle=async(email,password)=>{
   try{
   const credentials= EmailAuthProvider.credential(email, password);
   const res=await linkWithCredential(auth.currentUser,credentials)
-  console.log(res)
   }
   catch(err){
     console.error(err);
     // alert(err.message)
+  }
+}
+export const fetchUserType=async(email)=>{
+  try{
+  const q = query(collection(db, "users"), where("email", "==", email));
+  const docs = await getDocs(q);
+  return docs.docs[0]._document.data.value.mapValue.fields.userType.stringValue
+  }
+  catch(err){
+    console.log(err)
   }
 }
 export default app;

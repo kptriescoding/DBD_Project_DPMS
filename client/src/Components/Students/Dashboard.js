@@ -3,7 +3,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { auth, db, logout } from "../../firebase";
+import { auth, db, logout,fetchUserType } from "../../firebase";
 import Navbar from "./Navbar";
 import axios from "axios";
 import MyProjects from "../Projects/MyProjects";
@@ -14,23 +14,27 @@ import MyApplications from "../MyApplications";
 export default function Dashboard() {
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = useState("");
+  const [userType,setUserType]=useState("")
   const [profile, setProfile] = useState({});
   const navigate = useNavigate();
   const [allProjects, setAllProjects] = useState([]);
   const [searchText, setsearchText] = useState("");
 
   const checkUserSignup = async () => {
+    let resUserType=await fetchUserType(user.email)
+    setUserType(resUserType)
     const data = {
       email: user.email,
     };
     const res = await axios.post("/student/is_signup", { data: data });
     let isSignup = res.data.isSignup;
-    if (!isSignup && localStorage.getItem("user") === "student")
-      return navigate("/student/signup");
-    if (!isSignup && localStorage.getItem("user") === "professor")
-      return navigate("/professor/signup");
-    if (localStorage.getItem("user") === "professor")
+    if (resUserType === "Professor")
       return navigate("/professor/dashboard");
+      else if(resUserType==="Admin")navigate("/admin/dashboard");
+    if (!isSignup && resUserType === "Student")
+      return navigate("/student/signup");
+    if (!isSignup && resUserType === "Professor")
+      return navigate("/professor/signup");
   };
   const getUser = async () => {
     const data = {
@@ -92,7 +96,7 @@ export default function Dashboard() {
   }
   return (
     <div>
-      <Navbar user={profile} />
+      <Navbar user={profile} userType={userType} />
       <div className=" flex flex-row">
         <div className=" w-1/6 mt-2 ">
           <AllProjects
@@ -100,9 +104,7 @@ export default function Dashboard() {
             setsearchText={setsearchText}
             searchListener={handleSetFilterAllProjects}
             user={profile}
-            isProfessor={
-              localStorage.getItem("user") === "professor" ? true : false
-            }
+            isProfessor={userType}
           />
         </div>
 
@@ -115,7 +117,7 @@ export default function Dashboard() {
               <MyProjectsCentre
                 email={user.email}
                 isProfessor={
-                  localStorage.getItem("user") === "professor" ? true : false
+                  userType
                 }
               />
             </>
@@ -127,7 +129,7 @@ export default function Dashboard() {
           {profile ? (
             <MyApplications
               isProfessor={
-                localStorage.getItem("user") === "student" ? false : true
+                userType
               }
               user={profile}
             />

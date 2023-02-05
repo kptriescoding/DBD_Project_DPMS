@@ -1,10 +1,12 @@
 import { Button, Input, Switch } from "@nextui-org/react";
 import axios from "axios";
-
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
+import { auth, db, logout ,fetchUserType} from "../../firebase";
 import React, { useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
 import * as XLSX from "xlsx";
-import Bargraph from "./Bargraph";
+// import Bargraph from "./Bargraph";
 import Table from "./Table";
 export default function AdminDashboard() {
   useEffect(() => {
@@ -14,6 +16,8 @@ export default function AdminDashboard() {
   const viewType = ["Professor", "Student", "Project"];
   const [type, settype] = useState("Professor");
   const [barData, setbarData] = useState([]);
+  const [userType,setUserType]=useState()
+  const [user,loading,error]=useAuthState(auth)
   const queryOptionsForProfessors = [
     "List Of Professors",
     "No Of Projects,total funding raised,  Under Each Professor",
@@ -32,6 +36,19 @@ export default function AdminDashboard() {
   const [sqlData, setsqlData] = useState([]);
   const [isSQLQuery, setisSQLQuery] = useState(false);
   const [sqlQuery, setsqlQuery] = useState("");
+  const navigate=useNavigate()
+
+  const checkUser=async()=>{
+    let resUserType=await fetchUserType(user.email)
+    if(resUserType==="Professor")navigate("/professor/dashboard")
+    if(resUserType==="Student")navigate("/student/dashboard")
+  }
+
+  useEffect(()=>{
+    if(loading)return;
+    if(!user)navigate("/login")
+    if(user)checkUser()
+  },[user,loading])
 
   const handleOnChangeForViewType = (option) => {
     settype(option.value);
@@ -167,6 +184,16 @@ export default function AdminDashboard() {
             Fetch Data
           </Button>
         </div>
+        <div className=" flex flex-column justify-center items-center bias">
+          <Button
+            style={{
+              padding: "0rem 6.2rem 0rem 6.2rem",
+            }}
+            onClickCapture={logout}
+          >
+            Logout
+          </Button>
+        </div>
       </div>
       <div className="flex flex-col mx-10">
         <Table data={sqlData} />
@@ -182,7 +209,9 @@ export default function AdminDashboard() {
         )}
       </div>
       <div>
-        <Bargraph data={barData} />
+        {
+          // <Bargraph data={barData} />
+        }
       </div>
     </>
   );

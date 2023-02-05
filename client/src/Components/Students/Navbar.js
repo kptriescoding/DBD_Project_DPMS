@@ -15,7 +15,7 @@ export default (props)=>{
     Dashboard
     </Navbar.Link>
     <Navbar.Item>
-    <ProfilePopover user={props.user}/>
+    <ProfilePopover user={props.user} userType={props.userType}/>
     </Navbar.Item>
     </Navbar.Content>
         </Navbar>

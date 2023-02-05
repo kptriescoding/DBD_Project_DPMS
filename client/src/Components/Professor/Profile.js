@@ -3,7 +3,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import ReactDropdown from "react-dropdown"
 import  {Multiselect} from "multiselect-react-dropdown"
-
+import { fetchUserType } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import {
@@ -30,6 +30,7 @@ export default function Profile(props) {
   const [isEditable,setIsEditable]=useState(false)
   const [dept,setDept]=useState("")
   const [errorMessage,setErrorMessage]=useState("")
+  const [userType,setUserType]=useState("")
   const departmentNames = ["AS", "ISE", "CSE", "ECE", "ETE", "ME", "CV"];
   const updateUser = async (event) => {
     event.preventDefault();
@@ -52,17 +53,20 @@ export default function Profile(props) {
     if(res.data.success)setIsEditable(false)
   };
   const checkUserSignup = async () => {
+    let resUserType=await fetchUserType(user.email)
+    setUserType(resUserType)
     const data = {
       email: user.email,
     };
     const res = await axios.post("/professor/is_signup", { data: data });
     let isSignup = res.data.isSignup;
-    if (!isSignup && localStorage.getItem("user") === "student")
+    if (resUserType === "Student")
+    return navigate("/student/dashboard");
+    else if(resUserType==="Admin")navigate("/admin/dashboard");
+    if (!isSignup && resUserType=== "Student")
       return navigate("/student/signup");
-    if (!isSignup && localStorage.getItem("user") === "professor")
+    if (!isSignup && resUserType === "Professor")
       return navigate("/professor/signup");
-    if (localStorage.getItem("user") === "student")
-      return navigate("/student/dashboard");
   };
   const getUser = async () => {
     const data = {
@@ -82,7 +86,7 @@ export default function Profile(props) {
   }, [user, loading]);
   return (
     <div>
-    <ProfessorNavbar user={profile}/>
+    <ProfessorNavbar user={profile} userType={userType}/>
     {(profile!==null)?
       <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-neutral-100">
         <div className="w-full px-10 pt-6 pb-10 mt-6 overflow-hidden bg-white shadow-md sm:max-w-lg sm:rounded-lg">

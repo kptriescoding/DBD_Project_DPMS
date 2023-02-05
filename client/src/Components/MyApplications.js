@@ -16,7 +16,7 @@ export default function MyApplications({ isProfessor, user }) {
           },
         }
       );
-      console.log(tapplications);
+      // console.log(tapplications);
       setapplications(() => tapplications.data.applications);
     } catch (err) {
       console.log(err);
@@ -29,21 +29,15 @@ export default function MyApplications({ isProfessor, user }) {
     Student_Email,
     isAccept
   ) {
-    console.log(projectId, Student_Email);
+    // console.log(projectId, Student_Email);
     if (isAccept) {
-      // const update_application = await axios.post("/project/add_student", {
-      //   data: {
-      //     projectID: projectId,
-      //     studentEmail: Student_Email,
-      //   },
-      // });
-      // if(!update_application.data.success)return;
       const update_works_on_table = await axios.post("/project/add_student", {
         data: {
           projectID: projectId,
           studentEmail: Student_Email,
         },
-      });
+      }); 
+      if(!update_works_on_table.data.success)return;
       const update_student_status = await axios.post(
         "/project/application/accept_or_reject_student",
         {
@@ -59,7 +53,7 @@ export default function MyApplications({ isProfessor, user }) {
     }
   }
   useEffect(() => {
-    console.log(user);
+    // console.log(user);
     if (!user) return;
     if (isProfessor) handleSetApplications();
   }, []);
@@ -71,7 +65,7 @@ export default function MyApplications({ isProfessor, user }) {
     //  console.log(applications)
     if (applications) {
       const students = applications.map((student) => {
-        console.log(student.student.name);
+        // console.log(student.student.name);
         return (
           <Card
             isPressable

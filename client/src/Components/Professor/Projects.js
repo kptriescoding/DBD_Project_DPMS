@@ -7,29 +7,32 @@ import axios from "axios";
 import ProjectNotifications from "../Projects/ProjectNotifications";
 import MyProjectsSide from "../Projects/MyProjects";
 import DragDrop from "../DragDropComponents/DragDrop";
+import { fetchUserType } from "../../firebase";
 
 export default function Projects() {
   const [user, loading, error] = useAuthState(auth);
   const [project,setProject]=useState({})
   const navigate = useNavigate();
+  const [userType,setUserType]=useState("")
   const [profile, setProfile] = useState({});
 
   const checkUserSignup = async () => {
+    let resUserType=await fetchUserType(user.email)
+    setUserType(resUserType)
     const data = {
       email: user.email,
     };
     const res = await axios.post("/professor/is_signup", { data: data });
     let isSignup = res.data.isSignup;
-    if (!isSignup && localStorage.getItem("user") === "student")
+    if(resUserType==="Student")
+    return navigate("/student/dashboard")
+    else if(resUserType==="Admin")navigate("/admin/dashboard");
+    if (!isSignup && resUserType=== "Student")
       return navigate("/student/signup");
-    if (!isSignup && localStorage.getItem("user") === "professor")
+    if (!isSignup && resUserType === "Professor")
       return navigate("/professor/signup");
-    if(localStorage.getItem("user")==="student")
-      return navigate("/student/dashboard")
     if(localStorage.getItem("projectID").length===0)
         return navigate("/professor/dashboard")
-    
-
   };
   const getUser = async () => {
     const data = {
@@ -47,12 +50,11 @@ export default function Projects() {
   }, [user, loading]);
   return (
     <div>
-      <Navbar user={profile} />
+      <Navbar user={profile}  userType={userType}/>
       <div className="flex flex-row">
       <div className=" sticky flex w-1/5 mt-2 z border-gray-300 border-x-2">
       {(user)?<MyProjectsSide email={user.email} 
-      isProfessor={(localStorage.getItem("user")==="professor")?true:false
-      }/>:<div/>}
+      isProfessor={userType}/>:<div/>}
       </div>
       <div className="flex w-3/5">
       <DragDrop 
@@ -61,7 +63,7 @@ export default function Projects() {
       </div>
       <div className="flex w-1/5">
       <ProjectNotifications
-      isProfessor={(localStorage.getItem("user")==="professor")?true:false}
+      isProfessor={userType}
       projectID={localStorage.getItem("projectID")}
       />
       </div>

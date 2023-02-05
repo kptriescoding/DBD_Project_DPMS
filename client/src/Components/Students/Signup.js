@@ -9,6 +9,7 @@ import {
   db,
   linkMailWithGoogle,
   registerWithEmailAndPassword,
+  fetchUserType
 } from "../../firebase";
 import axios from "axios";
 import rvce from "../../assets/styles/download-removebg-preview.png";
@@ -30,6 +31,7 @@ export default function Signup(props) {
   const departmentNames = [
     "AS","ISE","CSE","ECE","ETE","ME","CV",
   ]
+  const [userType,setUserType]=useState("")
   const saveUser = async (event) => {
     setErrorMessage("")
     event.preventDefault();
@@ -68,7 +70,7 @@ export default function Signup(props) {
     //  console.log(email+password+"!")
     if (res.data.success) {
       if (!user)
-        res = await registerWithEmailAndPassword(props.email, password);
+        res = await registerWithEmailAndPassword(props.email, password,props.userType);
       else res = await linkMailWithGoogle(email, password);
       console.log(res);
       return navigate("/student/dashboard");
@@ -78,15 +80,20 @@ export default function Signup(props) {
   };
   const checkUserSignup = async () => {
     let email;
-    if (user && user.email) email = user.email;
+    let resUserType=props.userType
+    if (user && user.email){
+       email = user.email;
+        resUserType=await fetchUserType(user.email)
+    }
     else email = props.email;
     const data = {
       email: email,
     };
     const res = await axios.post("/student/is_signup", { data: data });
     let isSignup = res.data.isSignup;
-    if(isSignup&&localStorage.getItem("user")==="student")return navigate("/student/dashboard")
-   if(isSignup&&localStorage.getItem("user")==="professor")return navigate("/professor/dashboard")
+    if(resUserType==="Admin")navigate("/admin/dashboard");
+    if(isSignup&&resUserType==="Student")return navigate("/student/dashboard")
+   if(isSignup&&resUserType==="Professor")return navigate("/professor/dashboard")
   };
 
   useEffect(() => {
