@@ -33,7 +33,7 @@ export default function Table(props) {
       <DataTable
         data={data}
         columns={columns}
-        responsive
+        responsive={true}
         reorder={true}
         pagination={true}
         customStyles={{
