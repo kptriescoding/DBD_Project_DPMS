@@ -6,7 +6,7 @@ import { auth, db, logout ,fetchUserType} from "../../firebase";
 import React, { useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
 import * as XLSX from "xlsx";
-// import Bargraph from "./Bargraph";
+import Bargraph from "./Bargraph";
 import Table from "./Table";
 import jsPDF from "jspdf";
 export default function AdminDashboard() {
@@ -32,17 +32,21 @@ export default function AdminDashboard() {
   const [isSQLQuery, setisSQLQuery] = useState(false);
   const [sqlQuery, setsqlQuery] = useState("");
   const navigate=useNavigate()
+  const [user,loading,error]=useAuthState(auth)
 
   const checkUser=async()=>{
+    // console.log(user)
     let resUserType=await fetchUserType(user.email)
     if(resUserType==="Professor")navigate("/professor/dashboard")
     if(resUserType==="Student")navigate("/student/dashboard")
   }
 
   useEffect(()=>{
+    // console.log(auth)
     if(loading)return;
     if(!user)navigate("/login")
     if(user)checkUser()
+    if(barData.length==0)fetchData()
   },[user,loading])
 
   const handleOnChangeForViewType = (option) => {
@@ -126,10 +130,11 @@ export default function AdminDashboard() {
         limit: 10,
       },
     });
-    const dataa = td.data.collaborators;
+    // console.log(td)
+    const resData = td.data.collaborators;
 
-    setbarData(dataa);
-    console.log(barData);
+    setbarData(resData);
+    // console.log(resData);
   };
   return (
     <>
@@ -212,7 +217,7 @@ export default function AdminDashboard() {
         )}
       </div>
       <div>
-        <Bargraph data={barData} />
+        {(barData.length!==0)?<Bargraph data={barData} />:<div/>}
       </div>
     </>
   );
