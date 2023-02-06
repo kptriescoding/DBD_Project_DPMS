@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { auth, db, logout, fetchUserType } from "../../firebase";
 import React, { useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
+import "./Dropdown.css";
 import * as XLSX from "xlsx";
 import Bargraph from "./Bargraph";
 import Table from "./Table";
@@ -139,60 +140,7 @@ export default function AdminDashboard() {
   return (
     <div className=" flex flex-col h-screen">
       <div className="flex justify-around w-full py-4  bg-slate-100">
-        <div className="flex justify-center my-2">
-          <Dropdown
-            options={viewType}
-            className=" mx-2 px-4 py-2 w-60 rounded-md  text-white self-center bg-blue-500 hover:bg-blue-600"
-            style={{
-              position: "relative",
-              overflow: "hidden",
-              backgroundColor: "white",
-              border: "1px solid #ccc",
-              borderRadius: "2px",
-              boxSizing: "border-box",
-              color: "#333",
-              cursor: "default",
-              outline: "none",
-              padding: "8px 52px 8px 10px",
-              transition: "all 200ms ease",
-            }}
-            placeholder={viewType[0]}
-            onChange={(option) => handleOnChangeForViewType(option)}
-          />
-          <Dropdown
-            options={optionForQueryState}
-            className=" mx-2 px-4 py-2 w-60 rounded-md text-white self-center bg-blue-500 hover:bg-blue-600"
-            onChange={(option) => handleOnChangeForQueryType(option)}
-          />
-        </div>
-        <div className="flex justify-center">
-          <input
-            placeholder="Write Your SQL Query Here"
-            className=" py-2 px-2  mx-2 my-2 bg-gray-200 items-center border-black border-2 rounded-md"
-            onChangeCapture={(val) => handleSqlQueryChange(val)}
-          ></input>
-
-          <div className="flex w-fit self-center justify-center items-center mx-1 py-2 my-2 px-14 rounded-full bg-blue-200 relative ">
-            <span className="mx-1 rounded-lg">Use SQL Query</span>
-            <Switch
-              animated={false}
-              bordered={true}
-              on
-              onChange={handleOnChangeForSwitch}
-            />
-          </div>
-        </div>
-        <div className=" flex flex-column justify-center items-center bias">
-          <Button
-            style={{
-              padding: "0rem 6.2rem 0rem 6.2rem",
-            }}
-            onClickCapture={handleSubmitClick}
-          >
-            Fetch Data
-          </Button>
-        </div>
-        <div className=" flex flex-column justify-center items-center bias">
+        <div className=" flex flex-column justify-end items-center bias">
           <Button
             style={{
               padding: "0rem 6.2rem 0rem 6.2rem",
@@ -204,11 +152,55 @@ export default function AdminDashboard() {
         </div>
       </div>
       <div className=" flex flex-grow">
-        <div className="flex flex-col mx-10 overflow-x-auto flex-grow my-6 p-4 border-2 ">
+        <div className="flex  flex-col w-1/6 mt-4">
+          <div className="flex flex-col justify-center mt-4 w-full mx-2">
+            <Dropdown
+              className=" mb-1"
+              options={viewType}
+              placeholder={viewType[0]}
+              onChange={(option) => handleOnChangeForViewType(option)}
+            />
+            <Dropdown
+              className=" mb-1"
+              options={optionForQueryState}
+              onChange={(option) => handleOnChangeForQueryType(option)}
+            />
+          </div>
+          <div className="flex flex-col justify-center w-full">
+            <input
+              placeholder="Write Your SQL Query Here"
+              className=" py-2 px-2 w-full mx-2 mb-2 bg-gray-200 items-center border-black border-2  text-black"
+              onChangeCapture={(val) => handleSqlQueryChange(val)}
+            ></input>
+
+            <div className="flex  w-full self-center justify-center items-center mx-2 py-2 my-2 px-14 rounded-full bg-blue-200 relative ">
+              <span className="mx-1 rounded-lg w-fit">Use SQL Query</span>
+              <Switch
+                animated={false}
+                bordered={true}
+                on
+                onChange={handleOnChangeForSwitch}
+              />
+            </div>
+          </div>
+          <div className=" flex  justify-center items-center">
+            <Button
+              style={{
+                padding: "0rem 6.2rem 0rem 6.2rem",
+                width: "100%",
+              }}
+              onClickCapture={handleSubmitClick}
+            >
+              Fetch Data
+            </Button>
+          </div>
+        </div>
+
+        <div className="flex flex-col mx-4 overflow-x-auto flex-grow p-2 border-2 ">
           <Table data={sqlData} />
           {sqlData != null && sqlData.length != 0 ? (
             <button
-              className=" px-4 py-2 bg-gray-300"
+              className=" px-4 py-2 bg-gray-300 mx-2 w-full"
               onClickCapture={generateXL}
             >
               Convert To XL
@@ -216,62 +208,6 @@ export default function AdminDashboard() {
           ) : (
             <></>
           )}
-
-          <div className=" absolute  bottom-6 flex justify-center ">
-            <div className="flex justify-center my-2">
-              <Dropdown
-                options={viewType}
-                className=" mx-2 px-4 py-2 w-60 rounded-md  text-white self-center bg-blue-500 hover:bg-blue-600"
-                style={{
-                  position: "relative",
-                  overflow: "hidden",
-                  backgroundColor: "white",
-                  border: "1px solid #ccc",
-                  borderRadius: "2px",
-                  boxSizing: "border-box",
-                  color: "#333",
-                  cursor: "default",
-                  outline: "none",
-                  padding: "8px 52px 8px 10px",
-                  transition: "all 200ms ease",
-                }}
-                placeholder={viewType[0]}
-                onChange={(option) => handleOnChangeForViewType(option)}
-              />
-              <Dropdown
-                options={optionForQueryState}
-                className=" mx-2 px-4 py-2 w-60 rounded-md text-white self-center bg-blue-500 hover:bg-blue-600"
-                onChange={(option) => handleOnChangeForQueryType(option)}
-              />
-            </div>
-            <div className="flex justify-center">
-              <input
-                placeholder="Write Your SQL Query Here"
-                className=" py-2 px-2  mx-2 my-2 bg-gray-200 items-center border-black border-2 rounded-md"
-                onChangeCapture={(val) => handleSqlQueryChange(val)}
-              ></input>
-
-              <div className="flex w-fit self-center justify-center items-center mx-1 py-2 my-2 px-14 rounded-full bg-blue-200 relative ">
-                <span className="mx-1 rounded-lg">Use SQL Query</span>
-                <Switch
-                  animated={false}
-                  bordered={true}
-                  on
-                  onChange={handleOnChangeForSwitch}
-                />
-              </div>
-            </div>
-            <div className=" flex flex-column justify-center items-center bias">
-              <Button
-                style={{
-                  padding: "0rem 6.2rem 0rem 6.2rem",
-                }}
-                onClickCapture={handleSubmitClick}
-              >
-                Fetch Data
-              </Button>
-            </div>
-          </div>
         </div>
         <div className=" w-1/4 my-4">
           <div className=" border-2 rounded-2xl m-2 border-black py-4">
