@@ -9,7 +9,7 @@ import {
   db,
   linkMailWithGoogle,
   registerWithEmailAndPassword,
-  fetchUserType
+  fetchUserType,
 } from "../../firebase";
 import axios from "axios";
 import rvce from "../../assets/styles/download-removebg-preview.png";
@@ -24,21 +24,19 @@ TODO:
 */
 
 export default function Signup(props) {
-  const [dept,setDept]=useState("")
-  const [errorMessage,setErrorMessage]=useState("")
+  const [dept, setDept] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
-  const departmentNames = [
-    "AS","ISE","CSE","ECE","ETE","ME","CV",
-  ]
-  const [userType,setUserType]=useState("")
+  const departmentNames = ["AS", "ISE", "CSE", "ECE", "ETE", "ME", "CV"];
+  const [userType, setUserType] = useState("");
   const saveUser = async (event) => {
-    setErrorMessage("")
+    setErrorMessage("");
     event.preventDefault();
     let email;
     if (props && props.email) email = props.email;
     else email = user.email;
-    
+
     const data = {
       firstName: document.forms[0].firstName.value,
       lastName: document.forms[0].lastName.value,
@@ -53,24 +51,45 @@ export default function Signup(props) {
       deptName: dept,
     };
     const password = document.forms[0].password.value;
-    const rpassword=document.forms[0].rpassword.value;
-    if(!data.firstName||!data.lastName||!data.tempAddress||!data.permAddress||!data.CGPA||!data.USN||!data.Sem||!data.deptName||!password||!rpassword){
-      setErrorMessage("Enter All Values")
-      return
+    const rpassword = document.forms[0].rpassword.value;
+    if (
+      !data.firstName ||
+      !data.lastName ||
+      !data.tempAddress ||
+      !data.permAddress ||
+      !data.CGPA ||
+      !data.USN ||
+      !data.Sem ||
+      !data.deptName ||
+      !password ||
+      !rpassword
+    ) {
+      setErrorMessage("Enter All Values");
+      return;
     }
-    if(!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password))){
-      setErrorMessage("Password must have Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character")
-      return
+    if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        password
+      )
+    ) {
+      setErrorMessage(
+        "Password must have Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character"
+      );
+      return;
     }
-    if(password!==rpassword){
-      setErrorMessage("Both the passwords entered must be same")
-      return
+    if (password !== rpassword) {
+      setErrorMessage("Both the passwords entered must be same");
+      return;
     }
     let res = await axios.post("/student/save_user", { data: data });
     //  console.log(email+password+"!")
     if (res.data.success) {
       if (!user)
-        res = await registerWithEmailAndPassword(props.email, password,props.userType);
+        res = await registerWithEmailAndPassword(
+          props.email,
+          password,
+          props.userType
+        );
       else res = await linkMailWithGoogle(email, password);
       console.log(res);
       return navigate("/student/dashboard");
@@ -80,20 +99,21 @@ export default function Signup(props) {
   };
   const checkUserSignup = async () => {
     let email;
-    let resUserType=props.userType
-    if (user && user.email){
-       email = user.email;
-        resUserType=await fetchUserType(user.email)
-    }
-    else email = props.email;
+    let resUserType = props.userType;
+    if (user && user.email) {
+      email = user.email;
+      resUserType = await fetchUserType(user.email);
+    } else email = props.email;
     const data = {
       email: email,
     };
     const res = await axios.post("/student/is_signup", { data: data });
     let isSignup = res.data.isSignup;
-    if(resUserType==="Admin")navigate("/admin/dashboard");
-    if(isSignup&&resUserType==="Student")return navigate("/student/dashboard")
-   if(isSignup&&resUserType==="Professor")return navigate("/professor/dashboard")
+    if (resUserType === "Admin") navigate("/admin/dashboard");
+    if (isSignup && resUserType === "Student")
+      return navigate("/student/dashboard");
+    if (isSignup && resUserType === "Professor")
+      return navigate("/professor/dashboard");
   };
 
   useEffect(() => {
@@ -202,10 +222,7 @@ export default function Signup(props) {
                 />
               </div>
             </div>
-           
-              
-              
-            
+
             <div className="mt-4">
               <div className="flex flex-col items-start ">
                 <textarea
@@ -230,18 +247,23 @@ export default function Signup(props) {
               </div>
             </div>
             <ReactDropdown
-            options={departmentNames}
-            className=" flex w-full h-40 px-2 py-2 mt-4"
-            placeholder="Choose Department *"
-              onChange={(event)=>setDept(event.value)}
-          >
-            {" "}
-          </ReactDropdown>
+              options={departmentNames}
+              className=" flex w-full h-40 px-2 py-2 mt-4"
+              placeholder="Choose Department *"
+              onChange={(event) => setDept(event.value)}
+            >
+              {" "}
+            </ReactDropdown>
 
-          <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">{errorMessage}</p>
+            <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">
+              {errorMessage}
+            </p>
 
             <div className="flex items-center mt-4">
-              <button onClickCapture={saveUser} className="w-full px-4 py-2.5 tracking-wide text-white transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-650">
+              <button
+                onClickCapture={saveUser}
+                className="w-full px-4 py-2.5 tracking-wide text-white transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-650"
+              >
                 Sign Up
               </button>
             </div>

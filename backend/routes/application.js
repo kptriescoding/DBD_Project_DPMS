@@ -1,88 +1,61 @@
 import Router from "express";
 import { mysqlPool } from "../models/sqlInit.js";
-import applicationSchema from "../models/Application.js";
-import studentApplicationSchema from "../models/StudentAppplications.js";
+
 
 const router = Router();
 
-/**
- * GENERAL APPLICATION ONLY PROJECT RELATED IN project.js
- */
-
-export const createApplication= async (req, res) => {
+export const createNotifications = async (req, res) => {
+  const notification = req.body.data;
+  const query = `
+    Insert into Application values(
+      ${notification.forStudent},
+      1,
+      "${notification.description}",
+      "${notification.applicationStatus}",
+      "${notification.Project_ID}",
+      "${notification.Email}",
+      "${notification.notificationTime}"
+    )
+    `;
   try {
-    const application = req.body.data;
-    // console.log(application)
-    // console.log("hereI");
-    let check = await applicationSchema.findOne({
-      projectID: application.projectID,
-    });
-    if (check) throw Error("Application Exists");
-    const newApplication = new applicationSchema({
-      projectID: application.projectID,
-      professorEmail: application.professorEmail,
-      projectName: application.title,
-      applicationStatus: "Open",
-      announcement: [],
-      appliedStudents: [],
-    });
-    const success = await newApplication.save();
-    // console.log("sfvds fdf ");
-    if (!success) throw Error("Something Went Wrong");
-    return success
+    await mysqlPool.query(query);
+    // await mysqlPool.query(query1);
   } catch (err) {
-    throw err
-
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
   }
-}
+  return res.status(200).json({
+    success: true,
+  });
+};
 
-router.post("/students_apply", async (req, res) => {
-  const student = req.body.data;
-  // console.log(student)
+// router.post("/ask_student_to_join", async (req, res) => {
+//   createNotifications(req, res);
+// });
+router.post("/apply_for_project", async (req, res) => {
+
+  createNotifications(req, res);
+  console.log("success")
+});
+
+router.post("/get_notification_for_student", async (req, res) => {
+  let student = req.body.data;
+  let query = `(
+    select * from Application where 
+    forStudent=1 AND 
+    Email="${student.Email}" AND
+    applicationStatus!="pending"
+    ORDER BY notificationTime DESC
+
+  )`;
+
   try {
-    let check = await applicationSchema.findOne({
-      projectID: student.projectID,
-    });
-    let studentcheck = await studentApplicationSchema.findOne({
-      email: student.email,
-    });
-    if (!studentcheck) {
-      const newStudent= new studentApplicationSchema({
-        email:student.email,
-        appliedApplications:[]
-     })
-     studentcheck=await newStudent.save()
-    }
-    if (!check)check= await createApplication(req,res)
-    let newStudents = check.appliedStudents;
-    for (let i = 0; i < newStudents.length; i++) {
-      if (newStudents[i].email === student.email)
-        throw Error("Student Already Applied");
-    }
-    studentcheck.appliedApplications.push({
-      projectName: check.projectName,
-      projectID: check.projectID,
-      professorEmail: check.professorEmail,
-      status: "Applied",
-    });
-    newStudents.push({
-      name: student.studentName,
-      CGPA: student.CGPA,
-      email: student.email,
-      status: "Applied",
-    });
-    let success = await applicationSchema.findOneAndUpdate(
-      { projectID: student.projectID },
-      { appliedStudents: newStudents }
-    );
-    if (!success) throw Error("Something Went Wrong");
-    success = await studentApplicationSchema.findOneAndUpdate(
-      { email: student.email },
-      { appliedApplications: studentcheck.appliedApplications }
-    );
+    let result = await mysqlPool.query(query);
     return res.status(200).json({
       success: true,
-      application: success,
+      notification: result[0],
     });
   } catch (err) {
     console.log(err);
@@ -92,14 +65,21 @@ router.post("/students_apply", async (req, res) => {
   }
 });
 
-router.post("/get_application", async (req, res) => {
-  const projectID = req.body.data.projectID;
+router.post("/get_notification_for_professor", async (req, res) => {
+  let professor = req.body.data;
+  let query = `
+    select * from Application where 
+    forStudent=0 AND 
+    Project_ID in (
+      select Project_ID from Project where Professor_Email="${professor.Professor_Email}"
+    ) ORDER BY notificationTime DESC
+  `;
+  let result;
   try {
-    let check = await applicationSchema.findOne({ projectID: projectID });
-    if (!check) throw Error("Application Doesn't Exists");
-    return res.status(200).json({
+     result = await mysqlPool.query(query);
+     return res.status(200).json({
       success: true,
-      application: check,
+      notification: result[0],
     });
   } catch (err) {
     console.log(err);
@@ -107,113 +87,46 @@ router.post("/get_application", async (req, res) => {
       success: false,
     });
   }
-});
-
-//Have to check these routers didn;t check yet below ones
-
-router.post("/update_application", async (req, res) => {
-  const projectID = req.body.data.projectID;
-  const application = req.body.data;
-  try {
-    let check = await applicationSchema.findOne({ projectID: projectID });
-    if (!check) throw Error("Application Doesn't Exists");
-    check = await applicationSchema.findOneAndReplace(
-      { projectID: projectID },
-      application
-    );
-    if (!check)
-      return res.status(200).json({
-        success: true,
-        application: check,
-      });
-  } catch (err) {
-    console.log(err);
-    return res.status(200).json({
-      success: false,
-    });
-  }
-});
-
-router.post("/get_all_applications", async (req, res) => {
-  try {
-    let check = await applicationSchema.find();
-    if (!check) throw Error("Application Doesn't Exists");
-    return res.status(200).json({
-      success: true,
-      application: check,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(200).json({
-      success: false,
-    });
-  }
-});
-
-router.post("/accept_or_reject_student", async (req, res) => {
-  let data=req.body.data
-  // console.log(data)
-  try {
-    let studentcheck = await studentApplicationSchema.findOne({
-      email: data.studentEmail,
-    });
-    let check=await applicationSchema.findOne({projectID:data.projectId})
-    if(!check)throw new Error("Application doesn;t exist")
-    if (!studentcheck) throw new Error("Student doesn't exist ");
-    
-
-    let arr = studentcheck.appliedApplications;
-    arr.forEach((as)=>{ console.log(as)})
-   
-    var foundIndex = arr.findIndex(
-      (x) => x.projectID === data.projectId
-    );
-    // console.log(arr[foundIndex])
-    arr[foundIndex].status = req.body.data.accept_or_reject;
-    let updateSuccess = studentApplicationSchema.findOneAndUpdate(
-      { email: data.studentEmail, },
-      { appliedApplications: arr }
-    );
-    if(!updateSuccess)throw Error("Something Went wrong")
-    arr=check.appliedStudents;
-    // console.log(arr[foundIndex] +"here")
-    foundIndex=arr.findIndex((x)=>x.email===data.studentEmail)
-    arr[foundIndex].status=data.accept_or_reject
-    updateSuccess=applicationSchema.findOneAndUpdate({projectID:data.projectID},{appliedStudents:arr})
-    if(!updateSuccess)throw Error("Something went wrong")
-  } catch (err) {
-    console.log(err);
-    return res.status(200).json({
-      success: false,
-    });
-  }
-});
-
-router.post("/get_all_applications_under_me", async (req, res) => {
-  let professorEmail=req.body.data.professorEmail
-  try {
-    let check = await applicationSchema.find({
-      professorEmail: professorEmail,
-    });
-    if (!check) throw Error("Professor Doesn't Exists");
-
-    let ret = [];
   
-    check.forEach((project) => {
-      project.appliedStudents.forEach((student) => {
-        // if(student.status!=="Applied")return;
-        ret.push({
-          professorEmail: professorEmail,
-          projectID: project.projectID,
-          projectName: project.projectName,
-          student: student,
-        });
-      });
-    });
-    // console.log(ret)
+});
+
+router.post("/update_application_from_professor", async (req, res) => {
+  let professor = req.body.data;
+  let query1 = `
+  UPDATE Application SET 
+    description = "${professor.description}",
+    applicationStatus="${professor.applicationStatus}",
+    notificationTime ="${professor.notificationTime}"
+    WHERE Email="${professor.Email}" AND
+    Project_ID = "${professor.Project_ID}" AND
+    forStudent=0
+  `;
+
+  let query2 = `
+  Insert into Works_on values(
+    "${professor.Email}",
+    "${professor.Project_ID}"
+  )
+  `;
+  let query3 = `
+  Insert into Application values(
+    1,
+    1,
+    "${professor.description}",
+    "${professor.applicationStatus}",
+    "${professor.Project_ID}",
+    "${professor.Email}",
+    "${professor.notificationTime}"
+  )
+  `;
+  try {
+    let res1 = await mysqlPool.query(query1);
+    let res3 = await mysqlPool.query(query3);
+    if (professor.applicationStatus == "accept") {
+      let res2 = await mysqlPool.query(query2);
+    }
     return res.status(200).json({
       success: true,
-      applications: ret,
     });
   } catch (err) {
     console.log(err);
@@ -222,4 +135,50 @@ router.post("/get_all_applications_under_me", async (req, res) => {
     });
   }
 });
+
+router.post("/update_application_from_student", async (req, res) => {
+  let student = req.body.data;
+  let query1 = `
+  UPDATE Application SET 
+    description = "${student.description}",
+    applicationStatus="${student.applicationStatus}",
+    notificationTime ="${student.notificationTime}"
+    WHERE Email="${student.studentEmail}" AND
+    Project_ID = "${student.Project_ID}" AND
+    forStudent=1
+  `;
+
+  let query2 = `
+  Insert into Works_on values(
+    "${student.studentEmail}",
+    "${student.Project_ID}",
+  )
+  `;
+  let query3 = `
+  Insert into Application values(
+    0,
+    1,
+    "${notification.description}",
+    "${notification.applicationStatus}",
+    "${notification.Project_ID}",
+    "${notification.Email}",
+    "${notification.notificationTime}"
+  )
+  `;
+  try {
+    let res1 = await mysqlPool.query(query1);
+    if (req.applicationStatus == "accept") {
+      let res2 = await mysqlPool.query(query2);
+    }
+    return res.status(200).json({
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
+});
+
 export default router;

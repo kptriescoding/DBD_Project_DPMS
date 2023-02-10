@@ -50,8 +50,10 @@ export default function Dashboard() {
     checkUserSignup();
     getUser();
     handleSetAllProjects();
+   
   }, [user, loading]);
   useEffect(() => {
+    console.log(userType)
     handleSetAllProjects();
   }, []);
 
@@ -98,13 +100,13 @@ export default function Dashboard() {
     <div>
       <Navbar user={profile} userType={userType} />
       <div className=" flex flex-row">
-        <div className=" w-1/6 mt-2 ">
+        <div className=" w-1/5 mt-2 ">
           <AllProjects
             projects={allProjects}
             setsearchText={setsearchText}
             searchListener={handleSetFilterAllProjects}
             user={profile}
-            isProfessor={userType}
+            isProfessor={userType==="Professor"}
           />
         </div>
 
@@ -129,7 +131,7 @@ export default function Dashboard() {
           {profile ? (
             <MyApplications
               isProfessor={
-                userType
+                userType=="Student"?false:true
               }
               user={profile}
             />

@@ -3,12 +3,19 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
+import ModalApply from "./ModalApply";
 
 export default function AllProjects(props) {
   // const [myProject, setmyProject] = useState([])
   const bgColors = [];
   const [user, loading, error] = useAuthState(auth);
   const [projects, setProjects] = useState([]);
+
+  const [createApplicationVisible, setCreateApplicationVisible] =
+    useState(false);
+  const createApplicationHandler = () => setCreateApplicationVisible(true);
+  const closeApplicationHandler = () => setCreateApplicationVisible(false);
+  const [clickedProject, setclikcedProject] = useState();
   const GetMyProjects = async () => {
     let colorArray = [
       "#858585",
@@ -43,41 +50,21 @@ export default function AllProjects(props) {
     //   console.log(e);
     // }
     // console.log(arr);
-    async function handleOpenApplication(proj) {
-      // console.log("ABCDEDF");
-      const data = {
-        projectID: proj.projectID,
-        projectName: proj.projectName,
-        professorEmail: user.email,
-      };
 
-      const r1 = await axios.post("/project/application/create/", {
-        data: data,
-      });
-      if (!r1.status.success);
-    }
     async function handleApplyForProject(proj) {
-      console.log(props.user);
+      setclikcedProject(proj);
+      
       // console.log(proj);
-      console.log(proj);
-      const data = {
-        projectID: proj.projectId,
-        email: user.email,
-        professorEmail: proj.professorEmail,
-        title: proj.projectName,
-        studentName: props.user.firstName + " " + props.user.lastName,
-        CGPA: props.user.CGPA,
-      };
-      console.log(data);
-      // TODO remove this
-
-      const res = await axios.post("/project/application/students_apply/", {
-        data: data,
-      });
-      if (!res.data.success) console.log("Error");
-      else {
-        console.log("Applied successfully");
-      }
+      // console.log(proj);
+      // const data = {
+      //   projectID: proj.projectId,
+      //   email: user.email,
+      //   professorEmail: proj.professorEmail,
+      //   title: proj.projectName,
+      //   studentName: props.user.firstName + " " + props.user.lastName,
+      //   CGPA: props.user.CGPA,
+      // };
+      createApplicationHandler();
     }
     const ret = props.projects.map((proj) => {
       return (
@@ -115,6 +102,7 @@ export default function AllProjects(props) {
               justifyContent: "space-between",
               textDecoration: "italic",
             }}
+            
           >
             <Text small>{proj.projectDuration}</Text>
             <Text small>{proj.collaborator}</Text>
@@ -131,26 +119,13 @@ export default function AllProjects(props) {
               </button>
             </Card.Footer>
           ) : (
-            <Card.Footer style={{ backgroundColor: "blue" }}>
-              <button
-                className="  w-full font-bold text-white text-sm"
-                onClickCapture={() => {
-                  handleOpenApplication(proj);
-                }}
-              >
-                Open Application
-              </button>
-            </Card.Footer>
+            <></>
           )}
         </Card>
       );
     });
     // console.log(ret);
-    setProjects(() => (
-      <div >
-     { ret}
-      </div>
-      ));
+    setProjects(() => <div>{ret}</div>);
   };
   useEffect(() => {
     GetMyProjects();
@@ -161,31 +136,44 @@ export default function AllProjects(props) {
   }, [props.projects]);
 
   return (
-    <div className=" flex px-2 flex-col  ">
-      <div class="container flex">
-        <div class="flex border-2 rounded">
-          <input
-            type="text"
-            onInput={(e) => props.setsearchText(e.target.value)}
-            class="px-4 py-2 w-full"
-            placeholder="Search For Projects"
-          />
-          <button
-            class="flex items-center justify-center px-4 border-r hover:bg-blue-200"
-            onClickCapture={props.searchListener}
-          >
-            <svg
-              class="w-6 h-6 text-gray-600 "
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
+    <>
+      <div className=" flex px-2 flex-col  overflow-x-hidden">
+        <div class="container flex">
+          <div class="flex border-2 rounded">
+            <input
+              type="text"
+              onInput={(e) => props.setsearchText(e.target.value)}
+              class="px-4 py-2 w-full"
+              placeholder="Search For Projects"
+            />
+            <button
+              class="flex items-center justify-center px-4 border-r hover:bg-blue-200"
+              onClickCapture={props.searchListener}
             >
-              <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"></path>
-            </svg>
-          </button>
+              <svg
+                class="w-6 h-6 text-gray-600 "
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"></path>
+              </svg>
+            </button>
+          </div>
         </div>
+        <div className=" h-screen ">{projects}</div>
       </div>
-      <div className=" h-screen ">{projects}</div>
-    </div>
+      {createApplicationVisible ? (
+        <ModalApply
+          user={props.user}
+          visible={createApplicationVisible}
+          setVisible={createApplicationVisible}
+          closeHandler={closeApplicationHandler}
+          proj={clickedProject}
+        />
+      ) : (
+        <div />
+      )}
+    </>
   );
 }

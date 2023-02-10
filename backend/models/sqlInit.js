@@ -2,6 +2,7 @@ import { SQL_DB, SQL_HOST,SQL_PASS,SQL_USER } from "../env.js";
 import mysql from "mysql2/promise"
 import {
     queryAnnouncementTable,
+    queryApplicationTable,
     queryDeptTable,
     queryProfessorFieldOfExpertise,
     queryProfessorPaperPublished,
@@ -54,9 +55,11 @@ const sqlInit=async()=>{
         await pool.execute(queryProjectTable)
         await pool.execute(queryProjectSkillTable)
 
-        await pool.execute(queryAnnouncementTable)
+        await pool.execute(queryApplicationTable)
         
         await pool.execute(queryWorksOnTable)
+
+        await pool.execute(queryAnnouncementTable)
         // await pool.execute(defaultDepartmentQueries)
     }
     catch(err){

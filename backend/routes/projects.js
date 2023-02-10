@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { mysqlPool } from "../models/sqlInit.js";
-import { createApplication } from "./application.js";
+// import { createApplication } from "./application.js";
 import applicationSchema from "../models/Application.js";
 const router = Router();
 
@@ -30,7 +30,7 @@ router.post("/create", async (req, res) => {
     // console.log(application)
     // console.log("hereI");
 
-    await createApplication(req, res);
+    // await createApplication(req, res);
 
     await mysqlPool.query(query);
     let skills = project.skills;

@@ -117,6 +117,19 @@ export const queryWorksOnTable=`CREATE TABLE IF NOT EXISTS Works_on
   FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID) ON DELETE CASCADE
 );`
 
+export const queryApplicationTable= `CREATE TABLE IF NOT EXISTS Application
+(
+  forStudent BIT NOT NULL,
+  isClosed BIT NOT NULL,
+  description VARCHAR(255) NOT NULL,
+  applicationStatus VARCHAR(20) NOT NULL,
+  Project_ID VARCHAR(20) NOT NULL,
+  Email VARCHAR(50) NOT NULL,
+  notificationTime DATETIME NOT NULL,
+  FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID) ON DELETE CASCADE, 
+  FOREIGN KEY (Email) REFERENCES Student(Email) ON DELETE CASCADE
+)`
+
 // export const defaultDepartmentQueries=`REPLACE INTO Department VALUES
 // ("AS",1967),
 // ("ISE",1967),

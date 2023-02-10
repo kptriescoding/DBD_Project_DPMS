@@ -27,6 +27,7 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
   const [endDate, setEndDate] = useState("");
   const [selectedSkills, setSelectedSkills] = useState();
   const [errorMessage,setErrorMessage]=useState("")
+  
   const skills = [
     "Java",
     "C++",
@@ -73,7 +74,7 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
   }
   )
   function triggerOnAdditionOfProject(){
-    console.log("trigeered insaan");
+    // console.log("trigeered insaan");
   }
   return (
     <CreateProjectContext.Provider value={triggerOnAdditionOfProject}>
@@ -139,7 +140,7 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
           />
           <Input
             bordered
-            fullWidth
+            fullWidth 
             type="date"
             color="primary"
             value={startDate}

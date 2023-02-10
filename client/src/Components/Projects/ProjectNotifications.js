@@ -14,20 +14,7 @@ export default function ProjectNotifications({
 
     let arr
     try {
-      // console.log(user.email);
-    //   console.log(email)
-    //   const myProjectsFromDatabase = await axios.post(
-    //     "/project/get_my_projects",
-    //     {
-    //       data: {
-    //         email: "karthikpai.is20@rvce.edu.in",
-    //         isProfessor: isProfessor,
-    //       },
-    //     }
-    //   );
-      // if (myProjectsFromDatabase.data.success) closeHandler();
-      // console.log(myProjectsFromDatabase);
-    //    arr = myProjectsFromDatabase.data.projects;
+ 
     } catch (e) {
       console.log(e);
     }

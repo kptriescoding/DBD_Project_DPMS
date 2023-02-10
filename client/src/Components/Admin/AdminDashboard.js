@@ -139,8 +139,8 @@ export default function AdminDashboard() {
   };
   return (
     <div className=" flex flex-col h-screen">
-      <div className="flex justify-around w-full py-4  bg-slate-100">
-        <div className=" flex flex-column justify-end items-center bias">
+      <div className="flex justify-end w-full py-4  bg-slate-100">
+        <div className=" flex flex-column justify-end items-center mx-5">
           <Button
             style={{
               padding: "0rem 6.2rem 0rem 6.2rem",
@@ -173,12 +173,13 @@ export default function AdminDashboard() {
               onChangeCapture={(val) => handleSqlQueryChange(val)}
             ></input>
 
-            <div className="flex  w-full self-center justify-center items-center mx-2 py-2 my-2 px-14 rounded-full bg-blue-200 relative ">
-              <span className="mx-1 rounded-lg w-fit">Use SQL Query</span>
+            <div className="flex  w-full self-center justify-center items-center py-2 my-2 px-14 rounded-full bg-blue-200  ">
+              <span className="mx-1 rounded-lg w-fit h-8 text-center ">Use SQL Query</span>
               <Switch
                 animated={false}
                 bordered={true}
                 on
+              
                 onChange={handleOnChangeForSwitch}
               />
             </div>
@@ -196,7 +197,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="flex flex-col mx-4 overflow-x-auto flex-grow p-2 border-2 ">
+        <div className="flex flex-col mx-4 overflow-x-auto flex-grow p-2 border-  " >
           <Table data={sqlData} />
           {sqlData != null && sqlData.length != 0 ? (
             <button
