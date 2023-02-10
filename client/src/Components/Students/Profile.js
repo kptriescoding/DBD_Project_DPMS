@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import ReactDropdown from "react-dropdown"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
+import { MultiSelect } from "react-multi-select-component";
 import {
   auth,fetchUserType
 } from "../../firebase";
@@ -30,8 +31,21 @@ export default function Profile(props) {
   const departmentNames = ["AS", "ISE", "CSE", "ECE", "ETE", "ME", "CV"];
   const [errorMessage,setErrorMessage]=useState("")
   const [userType,setUserType]=useState("")
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [multiSelectSkills,setMultiSelectSkills] = useState([
+    { label:"Java",value:"Java"},
+    {label:"C++",value:"C++"},
+    {label:"Web Development",value:"Web Development"},
+    {label:"Machine Learning",value:"Machine Learning"},
+    {label:"Deep Learning",value:"Deep Learning"},
+    {label:"DevOps",value:"DevOps"},
+    {label:"Cloud-Computing",value:"Cloud-Computing"},
+    {label:"Android-Development",value:"Android-Development"},
+    {label:"Block Chain",value:"Block Chain"},
+  ]);
   const updateUser = async (event) => {
     event.preventDefault();
+    setErrorMessage("")
     let email;
     if (props && props.email) email = props.email;
     else email = user.email;
@@ -44,12 +58,18 @@ export default function Profile(props) {
         CGPA: document.forms[0].CGPA.value,
         USN: document.forms[0].USN.value,
         Sem: document.forms[0].Sem.value,
+        skills:selectedSkills.map((skill)=>skill.value),
         resume: "404 Error Not Found",
         email: email,
         deptName: dept,
       };
       if(!data.firstName||!data.lastName||!data.tempAddress||!data.permAddress||!data.CGPA||!data.USN||!data.Sem||!data.deptName){
         setErrorMessage("Enter All Values")
+        return
+      }
+      if(!(/^[a-z ,.'-]+$/i).test(data.firstName)||!(/^[a-z ,.'-]*$/i).test(data.middleName)||!(/^[a-z ,.'-]+$/i).test(data.lastName))
+      {
+        setErrorMessage("Name Shouldn't Contain Invalid Characters")
         return
       }
     let res = await axios.post("/student/update_user", { data: data });
@@ -78,6 +98,14 @@ export default function Profile(props) {
     };
     const res = await axios.post("/student/get_user", { data: data });
     setProfile(res.data.user);
+    setSelectedSkills(res.data.user.skills)
+    let skills=[...multiSelectSkills,...res.data.user.skills]
+    skills = skills.filter((value, index, self) =>
+  index === self.findIndex((t) => (
+    t.label === value.label
+  ))
+)
+    setMultiSelectSkills(skills)
     setDept(res.data.user.deptName)
   };
 
@@ -208,6 +236,16 @@ export default function Profile(props) {
               />
             </div>
           </div>
+          <MultiSelect
+                className="mt-5"
+            options={multiSelectSkills}
+            value={selectedSkills}
+            onChange={setSelectedSkills}
+            placeholder="Skills"
+            disabled={!isEditable}
+            isCreatable={true}
+            onCreateOption={newSkill=>({label:newSkill,value:newSkill})}
+          />
             <ReactDropdown
               options={departmentNames}
               className=" flex w-full h-40 px-2 py-2 mt-4"
@@ -218,7 +256,7 @@ export default function Profile(props) {
               {" "}
             </ReactDropdown>
            
-            <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">{errorMessage}</p>
+            <p className="text-center font-semibold mx-4 mb-0 text-2xl text-red-500">{errorMessage}</p>
             <div className="flex items-center mt-4">
             {(!isEditable)?
                 <button

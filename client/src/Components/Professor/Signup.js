@@ -2,7 +2,7 @@ import { Button, Input, Spacer, Textarea } from "@nextui-org/react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import ReactDropdown from "react-dropdown"
-import  {Multiselect} from "multiselect-react-dropdown"
+// import  {Multiselect} from "multiselect-react-dropdown"
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
@@ -55,6 +55,11 @@ export default function Signup(props) {
       setErrorMessage("Password must have Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character")
       return
     }
+    if(!(/^[a-z ,.'-]+$/i).test(data.firstName)||!(/^[a-z ,.'-]*$/i).test(data.middleName)||!(/^[a-z ,.'-]+$/i).test(data.lastName))
+      {
+        setErrorMessage("Name Shouldn't Contain Invalid Characters")
+        return
+      }
     if(password!==rpassword){
       setErrorMessage("Both the passwords entered must be same")
       return

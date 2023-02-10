@@ -79,7 +79,7 @@ export default function AllProjects(props) {
         console.log("Applied successfully");
       }
     }
-    const ret = props.projects.map((proj) => {
+    const ret = props.projects?.map((proj) => {
       return (
         <Card
           isPressable
@@ -119,7 +119,7 @@ export default function AllProjects(props) {
             <Text small>{proj.projectDuration}</Text>
             <Text small>{proj.collaborator}</Text>
           </Card.Body>
-          {!props.isProfessor ? (
+          {!props.isProfessor &&(
             <Card.Footer style={{ backgroundColor: "blue" }}>
               <button
                 className="  w-full font-bold text-white text-sm"
@@ -130,18 +130,8 @@ export default function AllProjects(props) {
                 APPLY
               </button>
             </Card.Footer>
-          ) : (
-            <Card.Footer style={{ backgroundColor: "blue" }}>
-              <button
-                className="  w-full font-bold text-white text-sm"
-                onClickCapture={() => {
-                  handleOpenApplication(proj);
-                }}
-              >
-                Open Application
-              </button>
-            </Card.Footer>
-          )}
+          ) 
+          }
         </Card>
       );
     });
@@ -152,9 +142,6 @@ export default function AllProjects(props) {
       </div>
       ));
   };
-  useEffect(() => {
-    GetMyProjects();
-  }, []);
 
   useEffect(() => {
     GetMyProjects();

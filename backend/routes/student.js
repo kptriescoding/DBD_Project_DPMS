@@ -90,10 +90,19 @@ router.post("/get_user", async (req, res) => {
     FROM Student
     WHERE Email="${user.email}"
     `;
+  let skillQuery=`
+  SELECT *
+  FROM Student_Skill
+  WHERE Student_Email="${user.email}"
+  `
   let data;
+  let skills
   try {
-    const sqlRes = await mysqlPool.query(query);
+    let sqlRes = await mysqlPool.query(query);
     user = sqlRes[0][0];
+    sqlRes=await mysqlPool.query(skillQuery)
+    if(sqlRes[0])skills=sqlRes[0].map((skill)=>({label:skill.Skill,value:skill.Skill}))
+    if(skills===null)skills=[]
     data = {
       firstName: user.First_Name,
       lastName: user.Last_Name,
@@ -107,6 +116,7 @@ router.post("/get_user", async (req, res) => {
       resume: user.Resume,
       email: user.Email,
       deptName: user.Department_Name,
+      skills:skills,
     };
   } catch (err) {
     console.log(err);
@@ -127,6 +137,7 @@ router.post("/get_user", async (req, res) => {
  */
 router.post("/update_user", async (req, res) => {
   let user = req.body.data;
+  let skills=user.skills
   let query = `
   UPDATE Student SET
     First_Name="${user.firstName}",
@@ -141,7 +152,15 @@ router.post("/update_user", async (req, res) => {
     Department_Name="${user.deptName}"
     WHERE Email="${user.email}"
     `;
+    let skillQuery
+    let deleteQuery=`
+        DELETE FROM Student_Skill WHERE Student_Email="${user.email}"`
   try {
+    await mysqlPool.query(deleteQuery)
+    for(let i in skills){
+      skillQuery=`INSERT INTO Student_Skill VALUES ("${skills[i]}","${user.email}")`
+      await mysqlPool.query(skillQuery)
+    }
     await mysqlPool.query(query);
   } catch (err) {
     console.log(err);

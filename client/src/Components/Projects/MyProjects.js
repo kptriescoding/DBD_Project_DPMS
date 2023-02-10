@@ -8,7 +8,7 @@ export default function MyProjects(props) {
   // const [myProject, setmyProject] = useState([])
   const bgColors = [];
   const [user, loading, error] = useAuthState(auth);
-  const [myProjects, setmyProjects] = useState();
+  const [myProjects, setmyProjects] = useState([]);
   const GetMyProjects = async () => {
     let colorArray = [
       "#858585",
@@ -96,8 +96,8 @@ export default function MyProjects(props) {
     setmyProjects(() => ret);
   };
   useEffect(() => {
-    GetMyProjects();
-  }, []);
+    if(myProjects===null||myProjects.length===0)GetMyProjects();
+  }, [myProjects]);
 
   return <div className=" flex px-2 flex-col  ">{myProjects}</div>;
 }

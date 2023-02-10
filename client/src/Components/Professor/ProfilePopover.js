@@ -28,8 +28,6 @@ className="w-full px-4 py-2.5 tracking-wide text-white transition-colors duratio
 >
 Logout
 </button>
-</Popover.Content>
-<Popover.Content>
 <span>{userType}</span>
 </Popover.Content>
 </Popover>

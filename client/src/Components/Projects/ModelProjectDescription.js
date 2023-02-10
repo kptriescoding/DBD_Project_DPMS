@@ -18,7 +18,7 @@ import { MultiSelect  } from "react-multi-select-component";
  * handle input cvalidation and error correction
  */
 export const CreateProjectContext = createContext();
-const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
+const ModalProjectDescription = ({ user, visible, setVisible, closeHandler }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [funding, setFunding] = useState("");
@@ -168,4 +168,4 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
     </CreateProjectContext.Provider>
   );
 };
-export default ModalCreate;
+export default ModalProjectDescription;

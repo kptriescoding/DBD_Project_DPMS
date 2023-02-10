@@ -77,9 +77,19 @@ router.post("/get_user", async (req, res) => {
     WHERE Email="${user.email}"
     `;
   let data;
+  let skills=null
+  let skillQuery=`
+  SELECT Field_Of_Expertise
+  From Professor_Field_Of_Expertise
+  WHERE Professor_Email="${user.email}"
+  `
+
   try {
-    const sqlRes = await mysqlPool.query(query);
+    let sqlRes = await mysqlPool.query(query);
     user = sqlRes[0][0];
+    sqlRes=await mysqlPool.query(skillQuery)
+    if(sqlRes[0])skills=sqlRes[0].map((skill)=>({label:skill.Field_Of_Expertise,value:skill.Field_Of_Expertise}))
+    if(skills===null)skills=[]
     data = {
       firstName: user.First_Name,
       lastName: user.Last_Name,
@@ -87,6 +97,7 @@ router.post("/get_user", async (req, res) => {
       yearOfJoining: user.Year_Of_Joining,
       email: user.Email,
       deptName: user.Department_Name,
+      skills:skills
     };
   } catch (err) {
     console.log(err);
@@ -149,8 +160,8 @@ router.post("/get_students_working_under_me", async (req, res) => {
  * @access  Logged in
  */
 router.post("/update_user", async (req, res) => {
-  console.log(req.body.data);
   let user = req.body.data;
+  let skills=user.skills
   let query = `
   UPDATE Professor SET
     First_Name="${user.firstName}",
@@ -160,7 +171,15 @@ router.post("/update_user", async (req, res) => {
     Department_Name="${user.deptName}"
     WHERE Email="${user.email}"
     `;
-  try {
+    let skillQuery
+    let deleteQuery=`
+    DELETE FROM Professor_Field_Of_Expertise WHERE Professor_Email="${user.email}"`
+try {
+await mysqlPool.query(deleteQuery)
+    for(let i in skills){
+      skillQuery=`REPLACE INTO Professor_Field_Of_Expertise VALUES ("${skills[i]}","${user.email}")`
+      await mysqlPool.query(skillQuery)
+    }
     await mysqlPool.query(query);
   } catch (err) {
     console.log(err);

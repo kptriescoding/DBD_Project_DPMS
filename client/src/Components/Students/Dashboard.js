@@ -99,17 +99,17 @@ export default function Dashboard() {
       <Navbar user={profile} userType={userType} />
       <div className=" flex flex-row">
         <div className=" w-1/6 mt-2 ">
-          <AllProjects
+          {(allProjects&&userType)&&<AllProjects
             projects={allProjects}
             setsearchText={setsearchText}
             searchListener={handleSetFilterAllProjects}
             user={profile}
-            isProfessor={userType}
-          />
+            isProfessor={userType==="Professor"}
+          />}
         </div>
 
         <div className=" w-full mt-2 ">
-          {user ? (
+          {user &&userType? (
             <>
               <span className="flex flex-wrap items-center font-bold text-black text-2xl w-full text-center">
                 Your Projects
@@ -117,7 +117,7 @@ export default function Dashboard() {
               <MyProjectsCentre
                 email={user.email}
                 isProfessor={
-                  userType
+                  userType=="Professor"
                 }
               />
             </>
@@ -126,10 +126,10 @@ export default function Dashboard() {
           )}
         </div>
         <div className=" w-1/6 mt-2">
-          {profile ? (
+          {profile &&userType? (
             <MyApplications
               isProfessor={
-                userType
+                userType==="Professor"
               }
               user={profile}
             />
