@@ -8,7 +8,7 @@ export default function MyProjectsCentre(props) {
   
   // const [myProject, setmyProject] = useState([])
   const navigate=useNavigate();
-  const [myProjects, setmyProjects] = useState();
+  const [myProjects, setmyProjects] = useState(null);
   const createProjectContext  = useContext(CreateProjectContext)
   const GetMyProjects = async () => {
     let colorArray = ["#858585","#1e69c0","#425b64","#4f3ed9","#546d7b","#00b96f"];
@@ -91,10 +91,8 @@ export default function MyProjectsCentre(props) {
     setmyProjects(() => ret);
   };
   useEffect(() => {
-    console.log("here")
-    console.log(createProjectContext)
-    GetMyProjects();
-  }, []);
+    if(myProjects==null||myProjects.length===0)GetMyProjects();
+  }, [myProjects]);
 
   return <div className=" flex flex-wrap px-2 w-full content-center ">{myProjects}</div>;
 }

@@ -77,9 +77,14 @@ export default function Signup(props) {
       );
       return;
     }
-    if (password !== rpassword) {
-      setErrorMessage("Both the passwords entered must be same");
-      return;
+    if(!(/^[a-z ,.'-]+$/i).test(data.firstName)||!(/^[a-z ,.'-]*$/i).test(data.middleName)||!(/^[a-z ,.'-]+$/i).test(data.lastName))
+      {
+        setErrorMessage("Name Shouldn't Contain Invalid Characters")
+        return
+      }
+    if(password!==rpassword){
+      setErrorMessage("Both the passwords entered must be same")
+      return
     }
     let res = await axios.post("/student/save_user", { data: data });
     //  console.log(email+password+"!")

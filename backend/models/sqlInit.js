@@ -60,7 +60,6 @@ const sqlInit=async()=>{
         await pool.execute(queryWorksOnTable)
 
         await pool.execute(queryAnnouncementTable)
-        // await pool.execute(defaultDepartmentQueries)
     }
     catch(err){
         console.log(err)

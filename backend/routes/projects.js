@@ -29,8 +29,10 @@ router.post("/create", async (req, res) => {
     const application = req.body.data;
     // console.log(application)
     // console.log("hereI");
-
-    // await createApplication(req, res);
+    let deleteQuery=`
+        DELETE FROM Project_Skill WHERE Project_ID="${project.projectID}"`
+        await mysqlPool.query(deleteQuery)
+    await createApplication(req, res);
 
     await mysqlPool.query(query);
     let skills = project.skills;
@@ -279,6 +281,57 @@ router.post("/add_student", async (req, res) => {
   return res.status(200).json({
     success: true,
   });
+});
+
+router.post("/create_announcement", async (req, res) => {
+  // console.log(req.body.data);
+  let announcement = req.body.data;
+  let query = `
+    INSERT INTO Announcement VALUES
+    (
+    "${Date.now()}",
+    "${announcement.description}",
+    "${announcement.projectID}",
+    "${announcement.dateOfAnnouncement}",
+    0,
+    "${announcement.email}"
+    )`
+  try {
+    await mysqlPool.query(query);
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
+  return res.status(200).json({
+    success: true,
+  });
+});
+
+router.post("/get_announcements", async (req, res) => {
+  let projectID=req.body.data.projectID
+  let query = `select * FROM Announcement WHERE Project_ID="${projectID}"`;
+  try {
+    let announcements = [];
+    const sqlRes = await mysqlPool.query(query);
+    if(sqlRes[0])announcements=sqlRes[0].map((announcement)=>({announcementID:announcement.Announcement_ID,
+      description:announcement.Description,
+      projectID:announcement.Project_ID,
+      dateOfAnnouncement:announcement.Date_of_Announcement,
+      professorEmail:announcement.Email
+    }
+    ))
+    return res.status(200).json({
+      success: true,
+      announcements:announcements,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
 });
 
 export default router;

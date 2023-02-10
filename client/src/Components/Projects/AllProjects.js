@@ -66,7 +66,7 @@ export default function AllProjects(props) {
       // };
       createApplicationHandler();
     }
-    const ret = props.projects.map((proj) => {
+    const ret = props.projects?.map((proj) => {
       return (
         <Card
           isPressable
@@ -107,7 +107,7 @@ export default function AllProjects(props) {
             <Text small>{proj.projectDuration}</Text>
             <Text small>{proj.collaborator}</Text>
           </Card.Body>
-          {!props.isProfessor ? (
+          {!props.isProfessor &&(
             <Card.Footer style={{ backgroundColor: "blue" }}>
               <button
                 className="  w-full font-bold text-white text-sm"
@@ -127,9 +127,6 @@ export default function AllProjects(props) {
     // console.log(ret);
     setProjects(() => <div>{ret}</div>);
   };
-  useEffect(() => {
-    GetMyProjects();
-  }, []);
 
   useEffect(() => {
     GetMyProjects();

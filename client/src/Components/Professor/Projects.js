@@ -50,11 +50,11 @@ export default function Projects() {
   }, [user, loading]);
   return (
     <div>
-      <Navbar user={profile}  userType={userType}/>
+      { profile &&<Navbar user={profile}  userType={userType}/>}
       <div className="flex flex-row">
       <div className=" sticky flex w-1/5 mt-2 z border-gray-300 border-x-2">
       {(user)?<MyProjectsSide email={user.email} 
-      isProfessor={userType}/>:<div/>}
+      isProfessor={userType==="Professor"}/>:<div/>}
       </div>
       <div className="flex w-3/5">
       <DragDrop 
@@ -62,10 +62,11 @@ export default function Projects() {
       />
       </div>
       <div className="flex w-1/5">
-      <ProjectNotifications
-      isProfessor={userType}
+      {user && <ProjectNotifications
+      isProfessor={userType==="Professor"}
       projectID={localStorage.getItem("projectID")}
-      />
+      email={user.email}
+      />}
       </div>
       </div>
       </div>

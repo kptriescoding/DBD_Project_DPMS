@@ -100,22 +100,22 @@ export default function Dashboard(props) {
         setsearchText={setsearchText}
       />:<div/>}
       <div className=" flex flex-row" >
-       {(profile)?<div className=" w-1/6 mt-2 ">
+       {(profile&&userType)?<div className=" w-1/6 mt-2 ">
           <AllProjects
             projects={allProjects}
             setsearchText={setsearchText}
             searchListener={handleSetFilterAllProjects}
             user = {profile}
-            isProfessor={userType}
+            isProfessor={userType==="Professor"}
           />
         </div>:<div/>}
      
         <div className=" w-full mt-2 items-center ">
-          {user ? (<>
+          {user &&userType? (<>
             <span className="flex flex-wrap items-center font-bold text-black text-2xl w-full text-center">Your Projects</span>
             <MyProjectsCentre
               email={user.email}
-              isProfessor={userType}
+              isProfessor={userType==="Professor"}
             />
             </>
           ) : (
@@ -123,7 +123,7 @@ export default function Dashboard(props) {
           )}
         </div>
         <div className=" w-1/6 mt-2" >
-{(profile)?<MyApplications isProfessor={userType} user={profile}/>:<div/>}
+{(profile&&userType)?<MyApplications isProfessor={userType==="Professor"} user={profile}/>:<div/>}
         </div>
       </div>
     </div>

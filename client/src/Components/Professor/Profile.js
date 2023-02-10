@@ -2,7 +2,8 @@ import { Button, Input, Spacer, Textarea } from "@nextui-org/react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import ReactDropdown from "react-dropdown"
-import  {Multiselect} from "multiselect-react-dropdown"
+// import  {Multiselect} from "multiselect-react-dropdown"
+import { MultiSelect } from "react-multi-select-component";
 import { fetchUserType } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
@@ -31,8 +32,11 @@ export default function Profile(props) {
   const [dept,setDept]=useState("")
   const [errorMessage,setErrorMessage]=useState("")
   const [userType,setUserType]=useState("")
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [multiSelectSkills,setMultiSelectSkills] = useState([]);
   const departmentNames = ["AS", "ISE", "CSE", "ECE", "ETE", "ME", "CV"];
   const updateUser = async (event) => {
+    setErrorMessage("")
     event.preventDefault();
     let email;
     if (props && props.email) email = props.email;
@@ -42,11 +46,17 @@ export default function Profile(props) {
       lastName: document.forms[0].lastName.value,
       middleName: document.forms[0].middleName.value,
       yearOfJoining: document.forms[0].yearOfJoining.value,
+      skills:selectedSkills.map((skill)=>skill.value),
       email: email,
       deptName: dept,
     };
     if(!data.firstName||!data.lastName||!data.email||!data.yearOfJoining||!data.deptName){
         setErrorMessage("Enter All Values")
+        return
+      }
+      if(!(/^[a-z ,.'-]+$/i).test(data.firstName)||!(/^[a-z ,.'-]*$/i).test(data.middleName)||!(/^[a-z ,.'-]+$/i).test(data.lastName))
+      {
+        setErrorMessage("Name Shouldn't Contain Invalid Characters")
         return
       }
     let res = await axios.post("/professor/update_user", { data: data });
@@ -73,9 +83,16 @@ export default function Profile(props) {
       email: user.email,
     };
     const res = await axios.post("/professor/get_user", { data: data });
-    console.log(res.data.user);
     setProfile(res.data.user);
     setDept(res.data.user.deptName)
+    setSelectedSkills(res.data.user.skills)
+    let skills=[...multiSelectSkills,...res.data.user.skills]
+    skills = skills.filter((value, index, self) =>
+  index === self.findIndex((t) => (
+    t.label === value.label
+  ))
+)
+    setMultiSelectSkills(skills)
   };
 
   useEffect(() => {
@@ -150,6 +167,16 @@ export default function Profile(props) {
                 />
               </div>
             </div>
+            <MultiSelect
+                className="mt-5"
+            options={multiSelectSkills}
+            value={selectedSkills}
+            onChange={setSelectedSkills}
+            placeholder="Fields Of Expertise"
+            disabled={!isEditable}
+            isCreatable={true}
+            onCreateOption={newSkill=>({label:newSkill,value:newSkill})}
+          />
             <ReactDropdown
               options={departmentNames}
               className=" flex w-full h-40 px-2 py-2 mt-4"
@@ -161,7 +188,10 @@ export default function Profile(props) {
               {" "}
             </ReactDropdown>
 
-            <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">{errorMessage}</p>
+
+
+
+            <p className="text-center mx-4 mb-0 text-2xl font-light text-red-500">{errorMessage}</p>
 
 
             <div className="flex items-center mt-4">
