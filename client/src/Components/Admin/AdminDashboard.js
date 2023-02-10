@@ -2,7 +2,7 @@ import { Button, Input, Switch } from "@nextui-org/react";
 import axios from "axios";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { auth, db, logout ,fetchUserType} from "../../firebase";
+import { auth, db, logout, fetchUserType } from "../../firebase";
 import React, { useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
 import * as XLSX from "xlsx";
@@ -31,23 +31,23 @@ export default function AdminDashboard() {
   const [sqlData, setsqlData] = useState([]);
   const [isSQLQuery, setisSQLQuery] = useState(false);
   const [sqlQuery, setsqlQuery] = useState("");
-  const navigate=useNavigate()
-  const [user,loading,error]=useAuthState(auth)
+  const navigate = useNavigate();
+  const [user, loading, error] = useAuthState(auth);
 
-  const checkUser=async()=>{
+  const checkUser = async () => {
     // console.log(user)
-    let resUserType=await fetchUserType(user.email)
-    if(resUserType==="Professor")navigate("/professor/dashboard")
-    if(resUserType==="Student")navigate("/student/dashboard")
-  }
+    let resUserType = await fetchUserType(user.email);
+    if (resUserType === "Professor") navigate("/professor/dashboard");
+    if (resUserType === "Student") navigate("/student/dashboard");
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     // console.log(auth)
-    if(loading)return;
-    if(!user)navigate("/login")
-    if(user)checkUser()
-    if(barData.length==0)fetchData()
-  },[user,loading])
+    if (loading) return;
+    if (!user) navigate("/login");
+    if (user) checkUser();
+    if (barData.length == 0) fetchData();
+  }, [user, loading]);
 
   const handleOnChangeForViewType = (option) => {
     settype(option.value);
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
     // console.log(resData);
   };
   return (
-    <>
+    <div className=" flex flex-col h-screen">
       <div className="flex justify-around w-full py-4  bg-slate-100">
         <div className="flex justify-center my-2">
           <Dropdown
@@ -168,12 +168,12 @@ export default function AdminDashboard() {
         <div className="flex justify-center">
           <input
             placeholder="Write Your SQL Query Here"
-            className=" py-2 px-2  mx-2 my-2 bg-gray-200 items-center border-black border-2"
+            className=" py-2 px-2  mx-2 my-2 bg-gray-200 items-center border-black border-2 rounded-md"
             onChangeCapture={(val) => handleSqlQueryChange(val)}
           ></input>
 
-          <div className="flex w-fit self-center justify-center items-center mx-1 py-2 my-2 px-14 rounded-lg bg-blue-200 relative ">
-            <span className="mx-1">Use SQL Query</span>
+          <div className="flex w-fit self-center justify-center items-center mx-1 py-2 my-2 px-14 rounded-full bg-blue-200 relative ">
+            <span className="mx-1 rounded-lg">Use SQL Query</span>
             <Switch
               animated={false}
               bordered={true}
@@ -203,22 +203,82 @@ export default function AdminDashboard() {
           </Button>
         </div>
       </div>
-      <div className="flex flex-col mx-10">
-        <Table data={sqlData} />
-        {sqlData != null && sqlData.length != 0 ? (
-          <button
-            className=" px-4 py-2 bg-gray-300"
-            onClickCapture={generateXL}
-          >
-            Convert To XL
-          </button>
-        ) : (
-          <></>
-        )}
+      <div className=" flex flex-grow">
+        <div className="flex flex-col mx-10 overflow-x-auto flex-grow my-6 p-4 border-2 ">
+          <Table data={sqlData} />
+          {sqlData != null && sqlData.length != 0 ? (
+            <button
+              className=" px-4 py-2 bg-gray-300"
+              onClickCapture={generateXL}
+            >
+              Convert To XL
+            </button>
+          ) : (
+            <></>
+          )}
+
+          <div className=" absolute  bottom-6 flex justify-center ">
+            <div className="flex justify-center my-2">
+              <Dropdown
+                options={viewType}
+                className=" mx-2 px-4 py-2 w-60 rounded-md  text-white self-center bg-blue-500 hover:bg-blue-600"
+                style={{
+                  position: "relative",
+                  overflow: "hidden",
+                  backgroundColor: "white",
+                  border: "1px solid #ccc",
+                  borderRadius: "2px",
+                  boxSizing: "border-box",
+                  color: "#333",
+                  cursor: "default",
+                  outline: "none",
+                  padding: "8px 52px 8px 10px",
+                  transition: "all 200ms ease",
+                }}
+                placeholder={viewType[0]}
+                onChange={(option) => handleOnChangeForViewType(option)}
+              />
+              <Dropdown
+                options={optionForQueryState}
+                className=" mx-2 px-4 py-2 w-60 rounded-md text-white self-center bg-blue-500 hover:bg-blue-600"
+                onChange={(option) => handleOnChangeForQueryType(option)}
+              />
+            </div>
+            <div className="flex justify-center">
+              <input
+                placeholder="Write Your SQL Query Here"
+                className=" py-2 px-2  mx-2 my-2 bg-gray-200 items-center border-black border-2 rounded-md"
+                onChangeCapture={(val) => handleSqlQueryChange(val)}
+              ></input>
+
+              <div className="flex w-fit self-center justify-center items-center mx-1 py-2 my-2 px-14 rounded-full bg-blue-200 relative ">
+                <span className="mx-1 rounded-lg">Use SQL Query</span>
+                <Switch
+                  animated={false}
+                  bordered={true}
+                  on
+                  onChange={handleOnChangeForSwitch}
+                />
+              </div>
+            </div>
+            <div className=" flex flex-column justify-center items-center bias">
+              <Button
+                style={{
+                  padding: "0rem 6.2rem 0rem 6.2rem",
+                }}
+                onClickCapture={handleSubmitClick}
+              >
+                Fetch Data
+              </Button>
+            </div>
+          </div>
+        </div>
+        <div className=" w-1/4 my-4">
+          <div className=" border-2 rounded-2xl m-2 border-black py-4">
+            {barData.length !== 0 ? <Bargraph data={barData} /> : <div />}
+          </div>
+        </div>
       </div>
-      <div>
-        {(barData.length!==0)?<Bargraph data={barData} />:<div/>}
-      </div>
-    </>
+    </div>
   );
 }
