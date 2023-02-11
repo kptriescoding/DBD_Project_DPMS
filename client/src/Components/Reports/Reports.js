@@ -7,13 +7,11 @@ import React, { useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
 import "./Dropdown.css";
 import * as XLSX from "xlsx";
-import Bargraph from "./Bargraph";
+import Graph from "./Graph";
 import Table from "../Reports/Table";
 import jsPDF from "jspdf";
 
 const Reports=({userType})=>{
-  const [type, settype] = useState("Professor");
-  const [barData, setbarData] = useState([]);
 
   let viewType ,queryFunctions
   if(userType==="Admin"){
@@ -40,13 +38,14 @@ const Reports=({userType})=>{
           query: queryType,
         },
       }),
-      "Project":async (queryType)=>  await axios.post("/project/get_project_admin", {
+      "Project":async (queryType)=>  await axios.post("/project/get_projects_admin", {
         data: {
           query: queryType,
         },
       }) 
   }
 }
+const [reRender,shouldReRender]=useState(0)
   const [queryType, setqueryType] = useState("");
   const [sqlData, setsqlData] = useState([]);
   const [isSQLQuery, setisSQLQuery] = useState(false);
@@ -55,6 +54,11 @@ const Reports=({userType})=>{
   const [barCharCol,setBarChartCol]=useState([])
   const [barData1,setBarData1]=useState("")
   const [barData2,setBarData2]=useState("")
+  const [type, settype] = useState("Professor");
+  const [graphType,setGraphType]=useState("Pie")
+    const graphTypes=[
+        // "Bar",
+    "Donut","Pie"]
 
     const handleOnChangeForViewType = (option) => {
         settype(option.value);
@@ -78,6 +82,7 @@ const Reports=({userType})=>{
         // console.log(queryFunctions[type])
         const tempData=await queryFunctions[type](queryType)   
         setsqlData(tempData.data.result);
+        setBarChartCol(Object.keys(tempData.data.result[0]))
       }
 
       function generateXL() {
@@ -98,17 +103,20 @@ const Reports=({userType})=>{
       }
     
       const fetchData = async () => {
-        const td = await axios.post("/project/collaborator", {
-          data: {
-            limit: 10,
-          },
-        });
-        const resData = td.data.collaborators;
+        // const td = await axios.post("/project/collaborator", {
+        //   data: {
+        //     limit: 10,
+        //   },
+        // });
+        // const resData = td.data.collaborators;
     
-        setbarData(resData);
+        // setbarData(resData);
       };
 
-      
+     const generateGraph=()=>{
+        if(!barData1||!barData2)return
+        shouldReRender(reRender+1)
+      }
 
 
       useEffect(() => {
@@ -191,18 +199,29 @@ const Reports=({userType})=>{
             </div>
             <div className=" w-1/4 my-4">
               <div className=" border-2 rounded-2xl m-2 border-black py-4">
-                {barData.length !== 0 ? <Bargraph data={barData} /> : <div />}
+                 <Graph data={sqlData} xCol={barData1} yCol={barData2} reRender={reRender} graphType={graphType}/> : <div />
               </div>
               <Dropdown
                   className=" mb-1"
-                  options={viewType["Options"]}
-                  onChange={(option)=>setBarData1(option)}
+                  options={barCharCol}
+                  onChange={(option)=>setBarData1(option.value)}
                 />
                 <Dropdown
                   className=" mb-1"
-                  options={viewType[type]}
-                  onChange={(option)=>setBarData2(option)}
+                  options={barCharCol}
+                  onChange={(option)=>setBarData2(option.value)}
                 />
+                <Dropdown
+                  className=" mb-1"
+                  options={graphTypes}
+                  placeholder={"Pie"}
+                  onChange={(option)=>setGraphType(option.value)}
+                />
+                <button className=" px-4 py-2 bg-gray-300 mx-2 w-full"
+                onClickCapture={generateGraph}
+                >
+                Generate Graph
+                </button>
             </div>
           </div>
         </div>

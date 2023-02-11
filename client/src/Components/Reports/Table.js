@@ -3,14 +3,11 @@ import { createAvatar } from "@dicebear/core";
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 
-export default function Table(props) {
+export default function Table({data}) {
   const [columns, setcolumns] = useState([]);
-  const [data, setData] = useState([]);
   useEffect(() => {
-    getColumnNames(props.data)
-    setData(props.data);
-    console.log(props.data)
-  }, [props.data]);
+    getColumnNames(data)
+  }, [data]);
 
   function getColumnNames() {
     let ret = [];
