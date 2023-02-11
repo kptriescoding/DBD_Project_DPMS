@@ -1,6 +1,6 @@
 import {Router} from "express"
 import draggableTasks from "../models/DraggableTasks.js"
-import {}
+import { mysqlPool } from "../models/sqlInit.js"
 
 const router=Router()
 /**

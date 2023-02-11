@@ -118,7 +118,7 @@ export default function AllProjects(props) {
             <Text small>{proj.projectDuration}</Text>
             <Text small>{proj.collaborator}</Text>
           </Card.Body>
-          {!props.isProfessor &&(
+          {!props.isProfessor&&(
             <Card.Footer style={{ backgroundColor: "blue" }}>
               <button
                 className="  w-full font-bold text-white text-sm"

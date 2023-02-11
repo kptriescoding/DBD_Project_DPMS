@@ -64,6 +64,7 @@ const ModalCreate = ({ user, visible, setVisible, closeHandler }) => {
     if(res.data.success) {
       await axios.post("/project/dragdrop/create",{data:newProject})
     }
+    
     if (res.data.success){
        closeHandler();
        triggerOnAdditionOfProject();

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { mysqlPool } from "../models/sqlInit.js";
 // import { createApplication } from "./application.js";
 import applicationSchema from "../models/Application.js";
+import { createNotifications } from "./application.js";
 const router = Router();
 
 /**
