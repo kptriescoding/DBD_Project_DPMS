@@ -192,7 +192,6 @@ await mysqlPool.query(deleteQuery)
 });
 
 router.post("/get_professor_admin", async (req, res) => {
-  console.log(req.body.data);
   let queryOption = req.body.data;
   let query = "";
   if (queryOption.query === "List Of Professors")
@@ -217,7 +216,7 @@ router.post("/get_professor_admin", async (req, res) => {
   }
   return res.status(200).json({
     success: true,
-    professors: sqlRes[0],
+    result: sqlRes[0],
   });
 });
 

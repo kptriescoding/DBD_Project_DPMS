@@ -214,7 +214,7 @@ router.post("/get_students_admin", async (req, res) => {
     return res.status(200).json({
       success: true,
 
-      students: students,
+      result: students,
     });
   } catch (err) {
     console.log(err);
