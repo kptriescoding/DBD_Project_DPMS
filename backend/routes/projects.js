@@ -132,7 +132,7 @@ router.post("/get_projects_admin", async (req, res) => {
     return res.status(200).json({
       success: true,
 
-      projects: projects,
+      result: projects,
     });
   } catch (err) {
     console.log(err);

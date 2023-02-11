@@ -24,7 +24,7 @@ export default function Table(props) {
         sortable: true,
       });
     }
-
+    console.log(ret)
     setcolumns(ret);
   }
 
