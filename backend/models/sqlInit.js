@@ -5,11 +5,11 @@ import {
     queryApplicationTable,
     queryDeptTable,
     queryProfessorFieldOfExpertise,
-    queryProfessorPaperPublished,
+    // queryProfessorPaperPublished,
     queryProfessorTable,
     queryProjectSkillTable,
     queryProjectTable,
-    queryStudentAchievementTable,
+    // queryStudentAchievementTable,
     queryStudentSkillTable,
     queryStudentTable,
     queryWorksOnTable,
@@ -46,10 +46,10 @@ const sqlInit=async()=>{
 
         await pool.execute(queryProfessorTable)
         await pool.execute(queryProfessorFieldOfExpertise)
-        await pool.execute(queryProfessorPaperPublished)
+        // await pool.execute(queryProfessorPaperPublished)
 
         await pool.execute(queryStudentTable)
-        await pool.execute(queryStudentAchievementTable)
+        // await pool.execute(queryStudentAchievementTable)
         await pool.execute(queryStudentSkillTable)
 
         await pool.execute(queryProjectTable)
@@ -60,6 +60,7 @@ const sqlInit=async()=>{
         await pool.execute(queryWorksOnTable)
 
         await pool.execute(queryAnnouncementTable)
+        // await pool.execute(defaultDepartmentQueries)
     }
     catch(err){
         console.log(err)

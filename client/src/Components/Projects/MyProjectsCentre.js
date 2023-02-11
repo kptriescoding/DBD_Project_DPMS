@@ -47,7 +47,10 @@ export default function MyProjectsCentre(props) {
           isHoverable
             onPress={(event)=>{
                 localStorage.setItem("projectID",proj.projectId)
+                if(props.isProfessor)
                 return navigate("/professor/project")
+                else
+                return navigate("/student/project")
             }}
           variant="bordered "
           style={{

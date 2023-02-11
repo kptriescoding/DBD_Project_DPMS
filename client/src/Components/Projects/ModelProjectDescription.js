@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState,useEffect } from "react";
 import {
   Button,
   Modal,
@@ -18,7 +18,7 @@ import { MultiSelect  } from "react-multi-select-component";
  * handle input cvalidation and error correction
  */
 export const CreateProjectContext = createContext();
-const ModalProjectDescription = ({ user, visible, setVisible, closeHandler }) => {
+const ModalProjectDescription = ({ user, visible, setVisible, closeHandler,projectID,useCanEdit }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [funding, setFunding] = useState("");
@@ -27,6 +27,7 @@ const ModalProjectDescription = ({ user, visible, setVisible, closeHandler }) =>
   const [endDate, setEndDate] = useState("");
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [errorMessage,setErrorMessage]=useState("")
+  const [editable,setEditable]=useState(false)
   const [multiSelectSkills,setMultiSelectSkills] = useState([
     { label:"Java",value:"Java"},
     {label:"C++",value:"C++"},
@@ -38,7 +39,7 @@ const ModalProjectDescription = ({ user, visible, setVisible, closeHandler }) =>
     {label:"Android-Development",value:"Android-Development"},
     {label:"Block Chain",value:"Block Chain"},
   ]);
-  const addNewProject = async () => {
+  const updateProject = async () => {
     if(!name||!description||!collaborator||!funding||!startDate||!endDate){
       setErrorMessage("Enter all the details")
       return
@@ -47,7 +48,6 @@ const ModalProjectDescription = ({ user, visible, setVisible, closeHandler }) =>
       setErrorMessage("Start Date Can't be greater than end")
       return
     }
-
     const newProject = {
       title: name,
       description: description,
@@ -56,32 +56,63 @@ const ModalProjectDescription = ({ user, visible, setVisible, closeHandler }) =>
       startDate: startDate,
       endDate: endDate,
       professorEmail: user.email,
-      projectID: Date.now(),
+      projectID: projectID,
       skills:selectedSkills.map((skill)=>skill.value)
     };
     // console.log(newProject);
-    let res = await axios.post("/project/create", { data: newProject });
-    if(res.data.success) {
-      await axios.post("/project/dragdrop/create",{data:newProject})
-    }
+    let res = await axios.post("/project/update", { data: newProject });
     if (res.data.success){
-       closeHandler();
-       triggerOnAdditionOfProject();
+      setEditable(false)
     }
   };
-  
-  function triggerOnAdditionOfProject(){
+  const getProject=async()=>{
+    let res=await axios.post("/project/get_by_projectID",{data:{
+      projectID:projectID
+  }})
+    let project=res.data.project
+
+    var pad = function(num) { return ('00'+num).slice(-2) };
+    let date1=new Date(project.startDate)
+    
+date1 = date1.getUTCFullYear()         + '-' +
+        pad(date1.getUTCMonth() + 1)  + '-' +
+        pad(date1.getUTCDate())
+        let date2=new Date(project.endDate)
+        date2 = date2.getUTCFullYear()         + '-' +
+                pad(date2.getUTCMonth() + 1)  + '-' +
+                pad(date2.getUTCDate())
+    setName(project.projectName)
+    setDescription(project.projectDescription)
+    setCollaborator(project.collaborator)
+    setFunding(project.funding)
+    setStartDate(date1)
+    setEndDate(date2)
+
+    setSelectedSkills(project.skills)
+    let skills=[...multiSelectSkills,...project.skills]
+    skills = skills.filter((value, index, self) =>
+  index === self.findIndex((t) => (
+    t.label === value.label
+  ))
+)
+    setMultiSelectSkills(skills)
+
   }
+
+
+
+  useEffect(() => {
+    getProject()
+  }, [projectID])
+  
   return (
-    <CreateProjectContext.Provider value={triggerOnAdditionOfProject}>
     <div>
       <Modal closeButton onClose={closeHandler} open={visible}>
         <Modal.Header>
-          <Text size={18}>Enter New Project Details</Text>
+          <Text size={18}>Project Details</Text>
         </Modal.Header>
         <Modal.Body>
           <Input
-            clearable
             bordered
             fullWidth
             color="primary"
@@ -89,10 +120,10 @@ const ModalProjectDescription = ({ user, visible, setVisible, closeHandler }) =>
             size="lg"
             placeholder="Title"
             aria-label="Title"
+            disabled={!editable}
             onChangeCapture={(event) => setName(event.target.value)}
           />
           <Textarea
-            clearable
             bordered
             fullWidth
             color="primary"
@@ -100,10 +131,10 @@ const ModalProjectDescription = ({ user, visible, setVisible, closeHandler }) =>
             size="lg"
             placeholder="Description"
             aria-label="Description"
+            disabled={!editable}
             onChangeCapture={(event) => setDescription(event.target.value)}
           />
           <Input
-            clearable
             bordered
             fullWidth
             color="primary"
@@ -111,10 +142,10 @@ const ModalProjectDescription = ({ user, visible, setVisible, closeHandler }) =>
             size="lg"
             placeholder="Collaborator"
             aria-label="Collaborator"
+            disabled={!editable}
             onChangeCapture={(event) => setCollaborator(event.target.value)}
           />
           <Input
-            clearable
             bordered
             fullWidth
             color="primary"
@@ -123,6 +154,7 @@ const ModalProjectDescription = ({ user, visible, setVisible, closeHandler }) =>
             size="lg"
             placeholder="Funding in Rs."
             aria-label="Funding in Rs."
+            disabled={!editable}
             onChangeCapture={(event) => setFunding(event.target.value)}
           />
           <MultiSelect
@@ -131,6 +163,7 @@ const ModalProjectDescription = ({ user, visible, setVisible, closeHandler }) =>
             onChange={setSelectedSkills}
             placeholder="Skills"
             isCreatable={true}
+            disabled={!editable}
             onCreateOption={newSkill=>({label:newSkill,value:newSkill})}
           />
           <Input
@@ -142,6 +175,7 @@ const ModalProjectDescription = ({ user, visible, setVisible, closeHandler }) =>
             size="lg"
             placeholder="Start Date"
             aria-label="Start Date"
+            disabled={!editable}
             onChangeCapture={(event) => setStartDate(event.target.value)}
           />
           <Input
@@ -154,18 +188,22 @@ const ModalProjectDescription = ({ user, visible, setVisible, closeHandler }) =>
             size="lg"
             placeholder="End Date"
             aria-label="End Date"
+            disabled={!editable}
             onChangeCapture={(event) => setEndDate(event.target.value)}
           />
           <p className="text-center font-semibold mx-4 mb-0 text-2xl text-red-500">{errorMessage}</p>
         </Modal.Body>
-        <Modal.Footer autoMargin={false}>
-          <Button auto onPress={addNewProject} style={{ width: "100%" }}>
+        {useCanEdit&&<Modal.Footer autoMargin={false}>
+        {(!editable)?<Button auto onPress={()=>setEditable(true)} style={{ width: "100%" }}>
+        Edit
+      </Button>
+      :
+          <Button auto onPress={updateProject} style={{ width: "100%" }}>
             Add
-          </Button>
-        </Modal.Footer>
+          </Button>}
+        </Modal.Footer>}
       </Modal>
     </div>
-    </CreateProjectContext.Provider>
   );
 };
 export default ModalProjectDescription;

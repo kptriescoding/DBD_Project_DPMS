@@ -32,7 +32,6 @@ router.post("/create", async (req, res) => {
     let deleteQuery=`
         DELETE FROM Project_Skill WHERE Project_ID="${project.projectID}"`
         await mysqlPool.query(deleteQuery)
-    await createApplication(req, res);
 
     await mysqlPool.query(query);
     let skills = project.skills;
@@ -62,6 +61,8 @@ router.post("/create", async (req, res) => {
     success: true,
   });
 });
+
+
 function getDuration(days) {
   if (days / 30 < 1) return days + " days";
   else {
@@ -332,6 +333,97 @@ router.post("/get_announcements", async (req, res) => {
       success: false,
     });
   }
+});
+
+
+router.post("/get_by_projectID", async (req, res) => {
+  let projectID = req.body.data.projectID;
+  let query = `
+  select * from Project where Project_ID="${projectID}"
+  `;
+  let projectQuery=`
+  SELECT * FROM Project_Skill
+  WHERE Project_ID="${projectID}"
+  `
+  let skills=[]
+  try {
+      let sqlRes = await mysqlPool.query(query);
+      let cur=sqlRes[0][0]
+      sqlRes=await mysqlPool.query(projectQuery)
+      if(sqlRes[0])skills=sqlRes[0].map((skill)=>({label:skill.Skill,value:skill.Skill}))
+      if(skills===null)skills=[]
+       var project={
+          projectName: cur.Title,
+          projectDescription: cur.Description,
+          projectId: cur.Project_ID,
+          collaborator: cur.Collaborator,
+          funding:cur.Funding,
+          startDate:cur.Start_Date,
+          endDate:cur.End_Date,
+          skills:skills
+        };
+        return res.status(200).json({
+          success: true,
+          project: project,
+        });
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
+});
+
+/**
+ * @route   POST project/update
+ * @desc    Update and Existing Project
+ * @access  Logged in as Professor
+ */
+router.post("/update", async (req, res) => {
+  // console.log(req.body.data);
+  let project = req.body.data;
+  let query = `
+    UPDATE Project SET
+    Title="${project.title}",
+    Description="${project.description}",
+    Collaborator ="${project.collaborator}",
+    Start_Date="${project.startDate}",
+    End_Date="${project.endDate}",
+    Professor_Email="${project.professorEmail}",
+    Funding="${project.funding}"
+    WHERE Project_ID="${project.projectID}"
+    `;
+
+  try {
+    await mysqlPool.query(query);
+    let deleteQuery=`DELETE FROM Project_Skill WHERE Project_ID="${project.projectID}"`
+        await mysqlPool.query(deleteQuery);
+    let skills = project.skills;
+    for (let i = 0; i < skills.length; i++) {
+      let skillQuery = `
+        REPLACE INTO Project_Skill VALUES
+        ("${skills[i]}",
+        "${project.projectID}"
+        )
+        `;
+      try {
+        await mysqlPool.query(skillQuery);
+      } catch (err) {
+        console.log(err);
+        return res.status(200).json({
+          success: false,
+        });
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
+  return res.status(200).json({
+    success: true,
+  });
 });
 
 export default router;

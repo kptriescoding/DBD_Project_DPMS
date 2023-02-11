@@ -1,5 +1,6 @@
 import {Router} from "express"
 import draggableTasks from "../models/DraggableTasks.js"
+import {}
 
 const router=Router()
 /**
@@ -42,6 +43,9 @@ router.post("/get",async (req,res)=>{
     const user=req.body.data
     try{
         let dragTask=await draggableTasks.findOne({ProjectID:user.projectID})
+        let profQuery=`Select * from Project where ProjectID=${user.projectID}`
+        let studentQuery=`Select * from Works_On where ProjectID=${user.projectID}`
+
     if(!dragTask)throw Error("Drag Task Doesn't Exists")
     return res.status(200).json({
         dragTask:dragTask,

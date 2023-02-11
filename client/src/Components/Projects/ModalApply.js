@@ -10,7 +10,6 @@ import {
 } from "@nextui-org/react";
 // import {auth,useAuthState} from "../../firebase"
 import axios from "axios";
-import { Multiselect } from "multiselect-react-dropdown";
 
 /**
  *

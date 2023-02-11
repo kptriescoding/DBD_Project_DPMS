@@ -1,5 +1,6 @@
 import React, { useRef,useState,forwardRef} from "react";
 import { useDrag, useDrop } from "react-dnd";
+import { MultiSelect } from "react-multi-select-component";
 import { Button,Modal,Text,Input,Textarea,Card,Spacer} from "@nextui-org/react";
 /**
  * TODO:
@@ -19,6 +20,20 @@ const ModalItemDescription=forwardRef(({items,
     const [description,setDescription]=useState(item.Description)
 
     const changeEditable=()=>setEditable(true);
+
+    const [selectedMembers, setSelectedMembers] = useState([]);
+    const [multiSelectMembers,setMultiSelectMembers] = useState([
+      { label:"Java",value:"Java"},
+      {label:"C++",value:"C++"},
+      {label:"Web Development",value:"Web Development"},
+      {label:"Machine Learning",value:"Machine Learning"},
+      {label:"Deep Learning",value:"Deep Learning"},
+      {label:"DevOps",value:"DevOps"},
+      {label:"Cloud-Computing",value:"Cloud-Computing"},
+      {label:"Android-Development",value:"Android-Development"},
+      {label:"Block Chain",value:"Block Chain"},
+    ]);
+
     const saveChanges=()=>{
         setEditable(false)
         items[index].Name=name
@@ -30,6 +45,18 @@ const ModalItemDescription=forwardRef(({items,
         updateDragTasksForItems(items)
         closeHandler()
     }
+
+    useEffect(() => {
+      setSelectedSkills(res.data.user.skills)
+    let skills=[...multiSelectSkills,...res.data.user.skills]
+    skills = skills.filter((value, index, self) =>
+  index === self.findIndex((t) => (
+    t.label === value.label
+  ))
+)
+    setMultiSelectSkills(skills)
+    }, [])
+
   
   
     return (
@@ -77,6 +104,16 @@ const ModalItemDescription=forwardRef(({items,
             value={description}
             onChangeCapture={(event)=>setDescription(event.target.value)}
             />
+            <MultiSelect
+                className="mt-5"
+            options={multiSelectSkills}
+            value={selectedSkills}
+            onChange={setSelectedSkills}
+            placeholder="Skills"
+            disabled={!editable}
+            isCreatable={true}
+            onCreateOption={newSkill=>({label:newSkill,value:newSkill})}
+          />
           </Modal.Body>
           <Modal.Footer autoMargin={false}>
             <Button auto flat color="error" onPress={deleteItem} style={{

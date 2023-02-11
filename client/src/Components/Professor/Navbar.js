@@ -7,6 +7,7 @@ import {Popover} from "@nextui-org/react";
 import ProfilePopover from "./ProfilePopover";
 
 
+
 export default function ProfessorNavbar(props) {
   const [createProjectVisible, setCreateProjectVisible] = useState(false);
   const createProjectHandler = () => setCreateProjectVisible(true);

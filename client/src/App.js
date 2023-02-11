@@ -17,6 +17,7 @@ import ProfessorProject from "./Components/Professor/Projects.js";
 import ProfessorProfile from "./Components/Professor/Profile"
 import StudentProfile from "./Components/Students/Profile";
 import AdminDashboard from "./Components/Admin/AdminDashboard";
+import StudentProjects from "./Components/Students/Project";
 
 /**
  TODO
@@ -47,6 +48,7 @@ function App() {
           <Route exact path="/student/dashboard" element={<StudentDashboard/>}/>
           <Route exact path="/student/signup" element={<StudentSignup/>}/>
           <Route exact path="/student/profile" element={<StudentProfile/>}/>
+          <Route exact path="/student/project" element={<StudentProjects/>}/>
           <Route exact path="/professor/dashboard" element={<ProfessorDashboard/>}/>
           <Route exact path="/professor/signup" element={<ProfessorSignup/>}/>
           <Route exact path="/professor/project" element={<ProfessorProject/>}/>

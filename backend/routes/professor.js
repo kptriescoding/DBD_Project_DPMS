@@ -69,7 +69,6 @@ router.post("/save_user", async (req, res) => {
 });
 
 router.post("/get_user", async (req, res) => {
-  console.log(req.body);
   let user = req.body.data;
   let query = `
     SELECT *

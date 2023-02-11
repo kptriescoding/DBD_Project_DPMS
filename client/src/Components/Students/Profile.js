@@ -59,7 +59,6 @@ export default function Profile(props) {
         USN: document.forms[0].USN.value,
         Sem: document.forms[0].Sem.value,
         skills:selectedSkills.map((skill)=>skill.value),
-        resume: "404 Error Not Found",
         email: email,
         deptName: dept,
       };

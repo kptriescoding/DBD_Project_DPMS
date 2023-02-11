@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import ModalApply from "./ModalApply";
+import ModalProjectDescription from "./ModelProjectDescription";
 
 export default function AllProjects(props) {
   // const [myProject, setmyProject] = useState([])
@@ -16,6 +17,14 @@ export default function AllProjects(props) {
   const createApplicationHandler = () => setCreateApplicationVisible(true);
   const closeApplicationHandler = () => setCreateApplicationVisible(false);
   const [clickedProject, setclikcedProject] = useState();
+
+
+  const [projectDescriptionVisible, setProjectDescriptionVisible] = useState(false);
+  const projectDescriptionHandler = (proj) => {
+    setclikcedProject(proj)
+    setProjectDescriptionVisible(true);
+  }
+  const closeProjectDescriptionHandler = () => setProjectDescriptionVisible(false);
   const GetMyProjects = async () => {
     let colorArray = [
       "#858585",
@@ -83,6 +92,7 @@ export default function AllProjects(props) {
           //  css={{
           //   backgroundColor:curColor
           // }}
+          onClickCapture={()=>projectDescriptionHandler(proj)}
           >
             <Text
               className=" font-bold text-2xl"
@@ -92,6 +102,7 @@ export default function AllProjects(props) {
             >
               {proj.projectName}
             </Text>
+
           </Card.Header>
 
           <Card.Divider />
@@ -102,7 +113,7 @@ export default function AllProjects(props) {
               justifyContent: "space-between",
               textDecoration: "italic",
             }}
-            
+            onClickCapture={()=>projectDescriptionHandler(proj)}
           >
             <Text small>{proj.projectDuration}</Text>
             <Text small>{proj.collaborator}</Text>
@@ -118,8 +129,6 @@ export default function AllProjects(props) {
                 APPLY
               </button>
             </Card.Footer>
-          ) : (
-            <></>
           )}
         </Card>
       );
@@ -171,6 +180,19 @@ export default function AllProjects(props) {
       ) : (
         <div />
       )}
+      {projectDescriptionVisible ? (
+        <ModalProjectDescription
+          user={props.user}
+          visible={projectDescriptionVisible}
+          setVisible={setCreateApplicationVisible}
+          closeHandler={closeProjectDescriptionHandler}
+          projectID={clickedProject.projectId}
+          userCanEdit={false}
+        />
+      ) : (
+        <div />
+      )}
+
     </>
   );
 }

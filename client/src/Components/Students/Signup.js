@@ -99,7 +99,7 @@ export default function Signup(props) {
       console.log(res);
       return navigate("/student/dashboard");
     } else {
-      alert("Something is wrong");
+      // alert("Something is wrong");
     }
   };
   const checkUserSignup = async () => {

@@ -53,7 +53,6 @@ router.post("/save_user", async (req, res) => {
     "${user.permAddress}",
     "${user.USN}",
     "${user.CGPA}",
-    "${user.resume}",
     "${user.Sem}",
     "${user.email}",
     "${user.deptName}"
@@ -113,7 +112,6 @@ router.post("/get_user", async (req, res) => {
       USN: user.USN,
       Sem: user.Semester,
       summary: user.Summary,
-      resume: user.Resume,
       email: user.Email,
       deptName: user.Department_Name,
       skills:skills,
@@ -147,7 +145,6 @@ router.post("/update_user", async (req, res) => {
     Permanent_Address="${user.permAddress}",
     USN="${user.USN}",
     CGPA="${user.CGPA}",
-    Resume="${user.resume}",
     Semester="${user.Sem}",
     Department_Name="${user.deptName}"
     WHERE Email="${user.email}"
