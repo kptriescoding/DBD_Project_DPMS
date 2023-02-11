@@ -32,7 +32,7 @@ export default function Projects() {
       return navigate("/student/signup");
     if (!isSignup && resUserType === "Professor")
       return navigate("/professor/signup");
-    if(localStorage.getItem("projectID").length===0)
+    if(localStorage.getItem("projectID")&&localStorage.getItem("projectID").length===0)
         return navigate("/professor/dashboard")
   };
   const getUser = async () => {
