@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react";
 // import {auth,useAuthState} from "../../firebase"
 import axios from "axios";
-import { Multiselect } from "multiselect-react-dropdown";
+// import { Multiselect } from "multiselect-react-dropdown";
 
 /**
  *
@@ -36,14 +36,13 @@ const ModalApply = ({ user, visible, setVisible, closeHandler, proj }) => {
       Email: user.email,
       notificationTime: new Date().toISOString().slice(0, 19).replace("T", " "),
     };
-    // console.log(newProject);
+
     let res = await axios.post("/project/application/apply_for_project", {
       data: newApplication,
     });
 
     if (res.data.success) {
       closeHandler();
-    //   triggerOnAdditionOfProject();
     }
   };
 

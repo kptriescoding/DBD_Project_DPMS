@@ -31,9 +31,9 @@ export const createNotifications = async (req, res) => {
   });
 };
 
-// router.post("/ask_student_to_join", async (req, res) => {
-//   createNotifications(req, res);
-// });
+router.post("/ask_student_to_join", async (req, res) => {
+  createNotifications(req, res);
+});
 router.post("/apply_for_project", async (req, res) => {
 
   createNotifications(req, res);
@@ -48,7 +48,6 @@ router.post("/get_notification_for_student", async (req, res) => {
     Email="${student.Email}" AND
     applicationStatus!="pending"
     ORDER BY notificationTime DESC
-
   )`;
 
   try {

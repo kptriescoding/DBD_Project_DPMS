@@ -2,6 +2,7 @@ import { Router } from "express";
 import { mysqlPool } from "../models/sqlInit.js";
 // import { createApplication } from "./application.js";
 import applicationSchema from "../models/Application.js";
+import { createNotifications } from "./application.js";
 const router = Router();
 
 /**
@@ -32,8 +33,8 @@ router.post("/create", async (req, res) => {
     let deleteQuery=`
         DELETE FROM Project_Skill WHERE Project_ID="${project.projectID}"`
         await mysqlPool.query(deleteQuery)
-    await createApplication(req, res);
-
+    // await createApplication(req, res);
+  
     await mysqlPool.query(query);
     let skills = project.skills;
     for (let i = 0; i < skills.length; i++) {
