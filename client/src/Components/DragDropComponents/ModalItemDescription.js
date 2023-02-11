@@ -1,12 +1,13 @@
 import React, { useRef,useState,forwardRef,useEffect} from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { MultiSelect } from "react-multi-select-component";
+import { Dropdown, MultiSelect } from "react-multi-select-component";
 import { Button,Modal,Text,Input,Textarea,Card,Spacer} from "@nextui-org/react";
 /**
  * TODO:
  * 1. Add array members and labels input and showing
  * 2. Add different kinds of dates for deadline
  */
+
 const ModalItemDescription=forwardRef(({items,
     index
     ,updateDragTasksForItems

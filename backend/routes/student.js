@@ -89,19 +89,23 @@ router.post("/get_user", async (req, res) => {
     FROM Student
     WHERE Email="${user.email}"
     `;
-  let skillQuery=`
+  let skillQuery = `
   SELECT *
   FROM Student_Skill
   WHERE Student_Email="${user.email}"
-  `
+  `;
   let data;
-  let skills
+  let skills;
   try {
     let sqlRes = await mysqlPool.query(query);
     user = sqlRes[0][0];
-    sqlRes=await mysqlPool.query(skillQuery)
-    if(sqlRes[0])skills=sqlRes[0].map((skill)=>({label:skill.Skill,value:skill.Skill}))
-    if(skills===null)skills=[]
+    sqlRes = await mysqlPool.query(skillQuery);
+    if (sqlRes[0])
+      skills = sqlRes[0].map((skill) => ({
+        label: skill.Skill,
+        value: skill.Skill,
+      }));
+    if (skills === null) skills = [];
     data = {
       firstName: user.First_Name,
       lastName: user.Last_Name,
@@ -114,7 +118,7 @@ router.post("/get_user", async (req, res) => {
       summary: user.Summary,
       email: user.Email,
       deptName: user.Department_Name,
-      skills:skills,
+      skills: skills,
     };
   } catch (err) {
     console.log(err);
@@ -135,7 +139,7 @@ router.post("/get_user", async (req, res) => {
  */
 router.post("/update_user", async (req, res) => {
   let user = req.body.data;
-  let skills=user.skills
+  let skills = user.skills;
   let query = `
   UPDATE Student SET
     First_Name="${user.firstName}",
@@ -149,14 +153,14 @@ router.post("/update_user", async (req, res) => {
     Department_Name="${user.deptName}"
     WHERE Email="${user.email}"
     `;
-    let skillQuery
-    let deleteQuery=`
-        DELETE FROM Student_Skill WHERE Student_Email="${user.email}"`
+  let skillQuery;
+  let deleteQuery = `
+        DELETE FROM Student_Skill WHERE Student_Email="${user.email}"`;
   try {
-    await mysqlPool.query(deleteQuery)
-    for(let i in skills){
-      skillQuery=`INSERT INTO Student_Skill VALUES ("${skills[i]}","${user.email}")`
-      await mysqlPool.query(skillQuery)
+    await mysqlPool.query(deleteQuery);
+    for (let i in skills) {
+      skillQuery = `INSERT INTO Student_Skill VALUES ("${skills[i]}","${user.email}")`;
+      await mysqlPool.query(skillQuery);
     }
     await mysqlPool.query(query);
   } catch (err) {
@@ -173,8 +177,7 @@ router.post("/update_user", async (req, res) => {
 router.post("/get_students_admin", async (req, res) => {
   let queryOption = req.body.data;
   let query = "";
-  if (queryOption.query === "List Of Students")
-    query = "select * from Student";
+  if (queryOption.query === "List Of Students") query = "select * from Student";
   else if (queryOption.query === "No Of Projects Each Student is Working On")
     query =
       "select First_Name,Last_Name,Email,CGPA ,count(Student_Email) as Projects_Working_On from Student,Works_on where Student.Email=Student_Email group by Student_Email;";
@@ -219,5 +222,28 @@ router.post("/get_students_admin", async (req, res) => {
       success: false,
     });
   }
+});
+router.post("/get_students_for_professor_apply", async (req, res) => {
+  let input = req.body.data;
+
+  // let query = `
+  // select * from Student where Email not in (select Email from Application where forStudent=1 AND Project_ID="${input.Project_ID}")
+  // `;
+  let query = `
+  select * from Student`;
+
+  let ans;
+  try {
+    ans = await mysqlPool.query(query);
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    students: ans[0],
+  });
 });
 export default router;

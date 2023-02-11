@@ -16,7 +16,6 @@ export default function MyApplications({ isProfessor, user }) {
   const [currentApplication, setcurrentApplication] = useState();
   async function handleSetApplications() {
     if (isProfessor) {
-      
       try {
         const tapplications = await axios.post(
           "/project/application/get_notification_for_professor",
@@ -26,7 +25,6 @@ export default function MyApplications({ isProfessor, user }) {
             },
           }
         );
-        
 
         setapplications(() => tapplications.data.notification);
       } catch (err) {
@@ -42,7 +40,7 @@ export default function MyApplications({ isProfessor, user }) {
             },
           }
         );
-        console.log(tapplications);
+        // console.log(tapplications);
 
         setapplications(() => tapplications.data.notification);
       } catch (err) {
@@ -198,11 +196,8 @@ export default function MyApplications({ isProfessor, user }) {
           <span className=" font-bold text-2xl text-center w-full">
             Applications
           </span>
-          <div className=" ">
-            {/* @todo Professor side : student name year cgpa  accept reject*/}
-            {isProfessor ? <StudentsApplied /> : <StudentSideNotifications/>}
-
-            {/* student side:project name remove application  */}
+          <div>
+            {isProfessor ? (<StudentsApplied />) : (<StudentSideNotifications />)}
           </div>
         </div>
       </div>

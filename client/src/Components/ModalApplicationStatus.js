@@ -65,7 +65,7 @@ const ModalApplicationStatus = ({
   const StudentNotification = () => {
     return (
       // <CreateModalApplicationStatus.Provider>
-      <div>
+      <>
         <Modal
           closeButton
           onClose={closeHandler}
@@ -112,17 +112,15 @@ const ModalApplicationStatus = ({
             </Modal.Footer>
           )}
         </Modal>
-      </div>
+      </>
       // </CreateModalApplicationStatus.Provider>
     );
   };
 
   return (
     <>
-      {
+      {isProfessor ? (
         <CreateModalApplicationStatus.Provider>
-          isProfessor?:(
-          {/* <CreateModalApplicationStatus.Provider> */}
           <div>
             <Modal
               closeButton
@@ -133,10 +131,20 @@ const ModalApplicationStatus = ({
                 <Text size={18}>{applicationData.Email}</Text>
               </Modal.Header>
               <Modal.Body>
-                {/* <Textarea>{applicationData.description}</Textarea> */}
-
-                {applicationData.applicationStatus != "applied" ? (
-                  <Text fullWidth>{applicationData.description}</Text>
+                {applicationData.applicationStatus == "accept" ? (
+                  <>
+                    <Text fullWidth>{applicationData.description}</Text>
+                    <Button disabled={true} style={{ backgroundColor: "red" }}>
+                      Accepted
+                    </Button>
+                  </>
+                ) : applicationData.applicationStatus == "reject" ? (
+                  <>
+                    <Text fullWidth>{applicationData.description}</Text>
+                    <Button disabled={true} style={{ backgroundColor: "red" }}>
+                      Accepted
+                    </Button>
+                  </>
                 ) : (
                   <Textarea
                     clearable
@@ -181,11 +189,12 @@ const ModalApplicationStatus = ({
               )}
             </Modal>
           </div>
-          {/* </CreateModalApplicationStatus.Provider> */}
-          ):(
-          <StudentNotification />)
         </CreateModalApplicationStatus.Provider>
-      }
+      ) : (
+        <CreateModalApplicationStatus.Provider>
+          {<StudentNotification />}
+        </CreateModalApplicationStatus.Provider>
+      )}
     </>
   );
 };
