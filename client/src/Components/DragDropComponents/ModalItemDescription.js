@@ -1,4 +1,4 @@
-import React, { useRef,useState,forwardRef} from "react";
+import React, { useRef,useState,forwardRef,useEffect} from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { MultiSelect } from "react-multi-select-component";
 import { Button,Modal,Text,Input,Textarea,Card,Spacer} from "@nextui-org/react";
@@ -10,7 +10,9 @@ import { Button,Modal,Text,Input,Textarea,Card,Spacer} from "@nextui-org/react";
 const ModalItemDescription=forwardRef(({items,
     index
     ,updateDragTasksForItems
-    ,item}
+    ,item
+    ,members
+  }
     ,ref)=> {
     const [visible, setVisible] = useState(false);
     const handler = () => setVisible(true);
@@ -22,22 +24,16 @@ const ModalItemDescription=forwardRef(({items,
     const changeEditable=()=>setEditable(true);
 
     const [selectedMembers, setSelectedMembers] = useState([]);
-    const [multiSelectMembers,setMultiSelectMembers] = useState([
-      { label:"Java",value:"Java"},
-      {label:"C++",value:"C++"},
-      {label:"Web Development",value:"Web Development"},
-      {label:"Machine Learning",value:"Machine Learning"},
-      {label:"Deep Learning",value:"Deep Learning"},
-      {label:"DevOps",value:"DevOps"},
-      {label:"Cloud-Computing",value:"Cloud-Computing"},
-      {label:"Android-Development",value:"Android-Development"},
-      {label:"Block Chain",value:"Block Chain"},
-    ]);
-
+    const [multiSelectMembers,setMultiSelectMembers] = useState([]);
+    
+    const [selectedLabels, setSelectedLabels] = useState([]);
+    const [multiSelectLabels,setMultiSelectLabels] = useState([]);
     const saveChanges=()=>{
         setEditable(false)
         items[index].Name=name
         items[index].Description=description
+        items[index].Members=selectedMembers
+        items[index].Labels=selectedLabels
         updateDragTasksForItems(items)
     }
     const deleteItem=()=>{
@@ -47,14 +43,10 @@ const ModalItemDescription=forwardRef(({items,
     }
 
     useEffect(() => {
-      setSelectedSkills(res.data.user.skills)
-    let skills=[...multiSelectSkills,...res.data.user.skills]
-    skills = skills.filter((value, index, self) =>
-  index === self.findIndex((t) => (
-    t.label === value.label
-  ))
-)
-    setMultiSelectSkills(skills)
+      setSelectedMembers(items[index].Members)
+      setMultiSelectMembers(members)
+      setSelectedLabels(items[index].Labels)
+      setMultiSelectLabels(items[index].Labels)
     }, [])
 
   
@@ -104,15 +96,23 @@ const ModalItemDescription=forwardRef(({items,
             value={description}
             onChangeCapture={(event)=>setDescription(event.target.value)}
             />
+            <p>Members</p>
             <MultiSelect
                 className="mt-5"
-            options={multiSelectSkills}
-            value={selectedSkills}
-            onChange={setSelectedSkills}
-            placeholder="Skills"
+            options={multiSelectMembers}
+            value={selectedMembers}
+            onChange={setSelectedMembers}
+            disabled={!editable}
+          />
+          <p>Labels</p>
+          <MultiSelect
+                className="mt-5"
+            options={multiSelectLabels}
+            value={selectedLabels}
+            onChange={setSelectedLabels}
             disabled={!editable}
             isCreatable={true}
-            onCreateOption={newSkill=>({label:newSkill,value:newSkill})}
+            onCreateOption={newLabel=>({label:newLabel,value:newLabel})}
           />
           </Modal.Body>
           <Modal.Footer autoMargin={false}>

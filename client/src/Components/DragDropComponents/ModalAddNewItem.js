@@ -9,12 +9,18 @@ const ModalAddNewItem=({items,columnIndex,updateDragTasksForItems})=> {
     const handler = () => setVisible(true);
     const [name,setName]=useState("")
     const [description,setDescription]=useState("")
+    const [errorMessage,setErrorMessage]=useState("")
   
     const closeHandler = () => {
       setVisible(false);
       console.log("closed");
     };
     const addNewItem=()=>{
+      if(!name||!description)
+      {
+        setErrorMessage("Enter All Values")
+        return
+      }
       let item={
         Name: name,
         Description:description,
@@ -85,6 +91,9 @@ const ModalAddNewItem=({items,columnIndex,updateDragTasksForItems})=> {
           </Modal.Body>
           
           <Modal.Footer  >
+          <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">
+              {errorMessage}
+            </p>
             <Button auto onPress={addNewItem} style={{
               width:"100%"
             }}>

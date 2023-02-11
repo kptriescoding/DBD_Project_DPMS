@@ -20,10 +20,20 @@ const draggableTasksSchema=new mongoose.Schema({
             type:String
         },
         Members:[{
-            type:String
+            label:{
+                type:String
+            },
+            value:{
+                type:String
+            }
         }],
         Labels:[{
-            type:String
+            label:{
+                type:String
+            },
+            value:{
+                type:String
+            }
         }],
         Date:{
             type:Date

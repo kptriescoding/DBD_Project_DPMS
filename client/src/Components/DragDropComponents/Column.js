@@ -19,6 +19,7 @@ const Column = ({
   updateDragTasksForItems,
   columnIndex,
   moveCardHandler,
+  members,
 }) => {
   const [, drop] = useDrop({
     accept: "DraggableTasks",
@@ -41,6 +42,7 @@ const Column = ({
           moveCardHandler={moveCardHandler}
           columns={columns}
           item={item}
+          members={members}
         />
       ) : (
         <div />

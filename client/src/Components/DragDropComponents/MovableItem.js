@@ -10,7 +10,8 @@ const MovableItem = ({
     moveCardHandler,
     updateDragTasksForItems,
     columns,
-    item
+    item,
+    members
   }) => {
     const changeItemColumn = (currentItem, columnIndex) => {
       let curInd=currentItem.index
@@ -91,6 +92,7 @@ const MovableItem = ({
       updateDragTasksForItems={updateDragTasksForItems}
       item={item}
       index={index}
+      members={members}
       >
       {name}
       </ModalItemDescription>
