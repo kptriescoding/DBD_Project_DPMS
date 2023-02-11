@@ -225,9 +225,13 @@ router.post("/get_students_admin", async (req, res) => {
 });
 router.post("/get_students_for_professor_apply", async (req, res) => {
   let input = req.body.data;
+
+  // let query = `
+  // select * from Student where Email not in (select Email from Application where forStudent=1 AND Project_ID="${input.Project_ID}")
+  // `;
   let query = `
-  select * from Student where Email not in (select Email from Application where forStudent=1 AND Project_ID="${input.Project_ID}")
-  `;
+  select * from Student`;
+
   let ans;
   try {
     ans = await mysqlPool.query(query);

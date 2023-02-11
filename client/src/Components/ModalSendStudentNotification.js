@@ -24,22 +24,15 @@ const ModalSendStudentNotification = ({
   setVisible,
   closeHandler,
   proj,
+  students
 }) => {
   const [description, setDescription] = useState("");
 
-  const [students, setStudents] = useState([]);
+
   const [studentSelected, setStudentSelected] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function handelSetStudents() {
-    let res = await axios.post("/student/get_students_for_professor_apply", {
-      Project_ID: proj.projectId,
-    });
-    if (res.status.success) console.log(res.data);
-    let studentEmails = [];
-    res.data.students.forEach((student) => studentEmails.push(student.Email));
-    setStudents(studentEmails);
-  }
+ 
   const addNewStudentNotification = async () => {
     if (!description) {
       setErrorMessage("Enter all the details");
@@ -60,15 +53,14 @@ const ModalSendStudentNotification = ({
 
     if (res.data.success) {
       closeHandler();
-      
     }
   };
   function handleStudentSelected(student) {
     setStudentSelected(student);
   }
   useEffect(() => {
-    handelSetStudents();
-  }, []);
+  
+  }, [students]);
 
   return (
     <CreateStudentNotify.Provider>
