@@ -5,6 +5,7 @@ import ModalCreateProject from "../Projects/ModalCreate";
 import { useNavigate } from "react-router-dom";
 import {Popover} from "@nextui-org/react";
 import ProfilePopover from "./ProfilePopover";
+import SpeechRecognizer from "../SpeechRecognizer";
 
 
 
@@ -41,6 +42,9 @@ export default function ProfessorNavbar(props) {
           </Navbar.Link>
           <Navbar.Item>
           <ProfilePopover user={props.user} userType={props.userType}/>
+          </Navbar.Item>
+          <Navbar.Item>
+          <SpeechRecognizer isProfessor={(props.userType==="Professor")?true:false}/>
           </Navbar.Item>
         </Navbar.Content>
       </Navbar>

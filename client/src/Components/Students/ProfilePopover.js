@@ -33,8 +33,6 @@ const ProfilePopover = ({ user, userType }) => {
         >
           Logout
         </button>
-      </Popover.Content>
-      <Popover.Content>
         <span>{userType}</span>
       </Popover.Content>
     </Popover>

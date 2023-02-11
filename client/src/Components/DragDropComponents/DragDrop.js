@@ -14,6 +14,7 @@ const DragDrop = ({projectID}) => {
   let [items, setItems] = useState({});
   let [dragTasks, setDragTasks] = useState({});
   let [columns, setColumns] = useState([]);
+  let [members,setMembers]=useState([])
   const getDragTasks = async () => {
     const data = {
       projectID: projectID,
@@ -25,6 +26,7 @@ const DragDrop = ({projectID}) => {
       setDragTasks(resDragTask);
       setItems(resDragTask.Tasks);
       setColumns(resDragTask.Columns);
+      setMembers(res.data.members)
     }
   };
 
@@ -97,6 +99,7 @@ const DragDrop = ({projectID}) => {
                         columnIndex={index}
                         columns={columns}
                         moveCardHandler={moveCardHandler}
+                        members={members}
                       />
                     );
                   })
