@@ -40,7 +40,7 @@ export default function MyApplications({ isProfessor, user }) {
             },
           }
         );
-        console.log(tapplications);
+        // console.log(tapplications);
 
         setapplications(() => tapplications.data.notification);
       } catch (err) {

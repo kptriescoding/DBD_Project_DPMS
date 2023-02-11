@@ -42,7 +42,7 @@ const ModalSendStudentNotification = ({
       forStudent: 1,
       description: description,
       Project_ID: proj.projectId,
-      applicationStatus: "applied",
+      applicationStatus: "sent",
       Email: studentSelected,
       notificationTime: new Date().toISOString().slice(0, 19).replace("T", " "),
     };
@@ -75,6 +75,7 @@ const ModalSendStudentNotification = ({
                 singleSelect={true}
                 options={students}
                 placeholder="Select Student"
+                isObject={false}
                 onSelect={(value) => handleStudentSelected(value)}
               />
             </div>

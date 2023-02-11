@@ -156,18 +156,20 @@ router.post("/update_application_from_student", async (req, res) => {
   let query3 = `
   Insert into Application values(
     0,
-    1,
-    "${notification.description}",
-    "${notification.applicationStatus}",
-    "${notification.Project_ID}",
-    "${notification.Email}",
-    "${notification.notificationTime}"
+    0,
+    "${student.description}",
+    "${student.applicationStatus}",
+    "${student.Project_ID}",
+    "${student.Email}",
+    "${student.notificationTime}"
   )
   `;
   try {
     let res1 = await mysqlPool.query(query1);
+    await mysqlPool.query(query3);
     if (req.applicationStatus == "accept") {
       let res2 = await mysqlPool.query(query2);
+      
     }
     return res.status(200).json({
       success: true,
