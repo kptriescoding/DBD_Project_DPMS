@@ -1,12 +1,13 @@
-import React, { useRef,useState,forwardRef} from "react";
+import React, { useRef,useState,forwardRef, useEffect} from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { MultiSelect } from "react-multi-select-component";
+import { Dropdown, MultiSelect } from "react-multi-select-component";
 import { Button,Modal,Text,Input,Textarea,Card,Spacer} from "@nextui-org/react";
 /**
  * TODO:
  * 1. Add array members and labels input and showing
  * 2. Add different kinds of dates for deadline
  */
+
 const ModalItemDescription=forwardRef(({items,
     index
     ,updateDragTasksForItems
@@ -47,6 +48,7 @@ const ModalItemDescription=forwardRef(({items,
     }
 
     useEffect(() => {
+    
       setSelectedSkills(res.data.user.skills)
     let skills=[...multiSelectSkills,...res.data.user.skills]
     skills = skills.filter((value, index, self) =>
@@ -104,7 +106,7 @@ const ModalItemDescription=forwardRef(({items,
             value={description}
             onChangeCapture={(event)=>setDescription(event.target.value)}
             />
-            <MultiSelect
+            {/* <MultiSelect
                 className="mt-5"
             options={multiSelectSkills}
             value={selectedSkills}
@@ -113,7 +115,8 @@ const ModalItemDescription=forwardRef(({items,
             disabled={!editable}
             isCreatable={true}
             onCreateOption={newSkill=>({label:newSkill,value:newSkill})}
-          />
+          /> */}
+         
           </Modal.Body>
           <Modal.Footer autoMargin={false}>
             <Button auto flat color="error" onPress={deleteItem} style={{

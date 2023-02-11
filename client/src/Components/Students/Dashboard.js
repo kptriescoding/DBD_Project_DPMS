@@ -3,7 +3,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { auth, db, logout,fetchUserType } from "../../firebase";
+import { auth, db, logout, fetchUserType } from "../../firebase";
 import Navbar from "./Navbar";
 import axios from "axios";
 import MyProjects from "../Projects/MyProjects";
@@ -14,23 +14,22 @@ import MyApplications from "../MyApplications";
 export default function Dashboard() {
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = useState("");
-  const [userType,setUserType]=useState("")
+  const [userType, setUserType] = useState("");
   const [profile, setProfile] = useState({});
   const navigate = useNavigate();
   const [allProjects, setAllProjects] = useState([]);
   const [searchText, setsearchText] = useState("");
 
   const checkUserSignup = async () => {
-    let resUserType=await fetchUserType(user.email)
-    setUserType(resUserType)
+    let resUserType = await fetchUserType(user.email);
+    setUserType(resUserType);
     const data = {
       email: user.email,
     };
     const res = await axios.post("/student/is_signup", { data: data });
     let isSignup = res.data.isSignup;
-    if (resUserType === "Professor")
-      return navigate("/professor/dashboard");
-      else if(resUserType==="Admin")navigate("/admin/dashboard");
+    if (resUserType === "Professor") return navigate("/professor/dashboard");
+    else if (resUserType === "Admin") navigate("/admin/dashboard");
     if (!isSignup && resUserType === "Student")
       return navigate("/student/signup");
     if (!isSignup && resUserType === "Professor")
@@ -50,10 +49,9 @@ export default function Dashboard() {
     checkUserSignup();
     getUser();
     handleSetAllProjects();
-   
   }, [user, loading]);
   useEffect(() => {
-    console.log(userType)
+    console.log(userType);
     handleSetAllProjects();
   }, []);
 
@@ -106,21 +104,20 @@ export default function Dashboard() {
             setsearchText={setsearchText}
             searchListener={handleSetFilterAllProjects}
             user={profile}
-            isProfessor={userType==="Professor"}
+            isProfessor={userType === "Professor"}
           />
         </div>
 
         <div className=" w-full mt-2 ">
-          {user &&userType? (
+          {user && userType ? (
             <>
               <span className="flex flex-wrap items-center font-bold text-black text-2xl w-full text-center">
                 Your Projects
               </span>
               <MyProjectsCentre
+                user={user}
                 email={user.email}
-                isProfessor={
-                  userType=="Professor"
-                }
+                isProfessor={userType == "Professor"}
               />
             </>
           ) : (
@@ -128,11 +125,9 @@ export default function Dashboard() {
           )}
         </div>
         <div className=" w-1/6 mt-2">
-          {profile &&userType? (
+          {profile && userType ? (
             <MyApplications
-              isProfessor={
-                userType=="Student"?false:true
-              }
+              isProfessor={userType == "Student" ? false : true}
               user={profile}
             />
           ) : (
