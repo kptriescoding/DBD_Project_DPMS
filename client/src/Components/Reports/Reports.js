@@ -52,6 +52,10 @@ const Reports=({userType})=>{
   const [isSQLQuery, setisSQLQuery] = useState(false);
   const [sqlQuery, setsqlQuery] = useState("");
 
+  const [barCharCol,setBarChartCol]=useState([])
+  const [barData1,setBarData1]=useState("")
+  const [barData2,setBarData2]=useState("")
+
     const handleOnChangeForViewType = (option) => {
         settype(option.value);
         setqueryType("");
@@ -71,11 +75,8 @@ const Reports=({userType})=>{
           setsqlData(tempData.data.data);
           return;
         }
-        console.log(queryType)
-        console.log(type)
         // console.log(queryFunctions[type])
-        const tempData=await queryFunctions[type](queryType)  
-        console.log(tempData)   
+        const tempData=await queryFunctions[type](queryType)   
         setsqlData(tempData.data.result);
       }
 
@@ -106,6 +107,9 @@ const Reports=({userType})=>{
     
         setbarData(resData);
       };
+
+      
+
 
       useEffect(() => {
         fetchData()
@@ -140,7 +144,7 @@ const Reports=({userType})=>{
                   onChange={(option) => handleOnChangeForQueryType(option)}
                 />
               </div>
-              <div className="flex flex-col justify-center w-full">
+              {userType==="Admin"&&<div className="flex flex-col justify-center w-full">
                 <input
                   placeholder="Write Your SQL Query Here"
                   className=" py-2 px-2 w-full mx-2 mb-2 bg-gray-200 items-center border-black border-2  text-black"
@@ -158,6 +162,7 @@ const Reports=({userType})=>{
                   />
                 </div>
               </div>
+            }
               <div className=" flex  justify-center items-center">
                 <Button
                   style={{
@@ -172,7 +177,7 @@ const Reports=({userType})=>{
             </div>
     
             <div className="flex flex-col mx-4 overflow-x-auto flex-grow p-2 border-  " >
-              <Table data={sqlData} />
+              <Table data={sqlData}/>
               {sqlData != null && sqlData.length != 0 ? (
                 <button
                   className=" px-4 py-2 bg-gray-300 mx-2 w-full"
@@ -188,6 +193,16 @@ const Reports=({userType})=>{
               <div className=" border-2 rounded-2xl m-2 border-black py-4">
                 {barData.length !== 0 ? <Bargraph data={barData} /> : <div />}
               </div>
+              <Dropdown
+                  className=" mb-1"
+                  options={viewType["Options"]}
+                  onChange={(option)=>setBarData1(option)}
+                />
+                <Dropdown
+                  className=" mb-1"
+                  options={viewType[type]}
+                  onChange={(option)=>setBarData2(option)}
+                />
             </div>
           </div>
         </div>

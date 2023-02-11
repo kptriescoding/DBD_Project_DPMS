@@ -7,11 +7,12 @@ export default function Table(props) {
   const [columns, setcolumns] = useState([]);
   const [data, setData] = useState([]);
   useEffect(() => {
-    getColumnNames(props.data);
+    getColumnNames(props.data)
     setData(props.data);
+    console.log(props.data)
   }, [props.data]);
 
-  function getColumnNames(data) {
+  function getColumnNames() {
     let ret = [];
 
     if (data == null || data.length == 0) return;
@@ -24,8 +25,7 @@ export default function Table(props) {
         sortable: true,
       });
     }
-    console.log(ret)
-    setcolumns(ret);
+    setcolumns(ret)
   }
 
   return (
