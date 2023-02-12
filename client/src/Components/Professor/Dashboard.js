@@ -2,7 +2,7 @@ import { Button, Spacer, StyledDivider } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { auth, db, logout ,fetchUserType} from "../../firebase";
+import { auth, db, logout, fetchUserType } from "../../firebase";
 import axios from "axios";
 import AllProjects from "../Projects/AllProjects";
 import ProfessorNavbar from "./Navbar";
@@ -15,7 +15,7 @@ export default function Dashboard(props) {
   const [user, loading, error] = useAuthState(auth);
   const [allProjects, setAllProjects] = useState([]);
   const [searchText, setsearchText] = useState("");
-  const [userType,setUserType]=useState("")
+  const [userType, setUserType] = useState("");
 
   async function handleSetAllProjects() {
     let arr;
@@ -30,7 +30,7 @@ export default function Dashboard(props) {
       );
 
       arr = allProjectsFromDatabase.data.projects;
-      } catch (err) {
+    } catch (err) {
       console.log(err);
     }
     setAllProjects(() => {
@@ -58,16 +58,15 @@ export default function Dashboard(props) {
     });
   }
   const checkUserSignup = async () => {
-    let resUserType=await fetchUserType(user.email)
-    setUserType(resUserType)
+    let resUserType = await fetchUserType(user.email);
+    setUserType(resUserType);
     const data = {
       email: user.email,
     };
     const res = await axios.post("/professor/is_signup", { data: data });
     let isSignup = res.data.isSignup;
-    if (resUserType === "Student")
-    return navigate("/student/dashboard");
-    else if(resUserType==="Admin")navigate("/admin/dashboard");
+    if (resUserType === "Student") return navigate("/student/dashboard");
+    else if (resUserType === "Admin") navigate("/admin/dashboard");
     if (!isSignup && resUserType === "Student")
       return navigate("/student/signup");
     if (!isSignup && resUserType === "Professor")
@@ -85,45 +84,63 @@ export default function Dashboard(props) {
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/login");
-    checkUserSignup()
-    if(profile===null)getUser()
+    checkUserSignup();
+    if (profile === null) getUser();
     setAllProjects(() => {
       handleSetAllProjects();
     });
-  }, [user,loading,profile]);
+  }, [user, loading, profile]);
   return (
     <div className=" ">
-      {(profile)?<ProfessorNavbar
-        userType={userType}
-        user={profile}
-        searchListener={handleSetFilterAllProjects}
-        setsearchText={setsearchText}
-      />:<div/>}
-      <div className=" flex flex-row" >
-       {(profile&&userType)?<div className=" w-1/6 mt-2 ">
-          <AllProjects
-            projects={allProjects}
-            setsearchText={setsearchText}
-            searchListener={handleSetFilterAllProjects}
-            user = {profile}
-            isProfessor={userType==="Professor"}
-          />
-        </div>:<div/>}
-     
-        <div className=" w-full mt-2 items-center ">
-          {user &&userType? (<>
-            <span className="flex flex-wrap items-center font-bold text-black text-2xl w-full text-center">Your Projects</span>
-            <MyProjectsCentre
-              email={user.email}
-              isProfessor={userType==="Professor"}
+      {profile ? (
+        <ProfessorNavbar
+          userType={userType}
+          user={profile}
+          searchListener={handleSetFilterAllProjects}
+          setsearchText={setsearchText}
+        />
+      ) : (
+        <div />
+      )}
+      <div className=" flex flex-row">
+        {profile && userType ? (
+          <div className=" w-1/5 mt-2 ">
+            <AllProjects
+              projects={allProjects}
+              setsearchText={setsearchText}
+              searchListener={handleSetFilterAllProjects}
+              user={profile}
+              isProfessor={userType === "Professor"}
             />
+          </div>
+        ) : (
+          <div />
+        )}
+
+        <div className=" w-full mt-2 items-center ">
+          {user && userType ? (
+            <>
+              <span className="flex flex-wrap items-center font-bold text-black text-2xl w-full text-center">
+                Your Projects
+              </span>
+              <MyProjectsCentre
+                email={user.email}
+                isProfessor={userType === "Professor"}
+              />
             </>
           ) : (
             <div style={{ width: "inherit" }} />
           )}
         </div>
-        <div className=" w-1/6 mt-2" >
-{(profile&&userType)?<MyApplications isProfessor={userType==="Professor"} user={profile}/>:<div/>}
+        <div className=" w-1/5  border-2 p-2 shadow-sm rounded-xl mx-2">
+          {profile && userType ? (
+            <MyApplications
+              isProfessor={userType === "Professor"}
+              user={profile}
+            />
+          ) : (
+            <div />
+          )}
         </div>
       </div>
     </div>

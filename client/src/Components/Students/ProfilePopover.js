@@ -9,18 +9,21 @@ import Profile from "./Profile";
 const ProfilePopover = ({ user, userType }) => {
   const navigate = useNavigate();
   return (
-    <Popover>
+    <Popover style={{ borderRadius: "0px" }}>
       <Popover.Trigger>
         <Button auto flat>
           {user ? user.firstName : "Someother"}
         </Button>
       </Popover.Trigger>
       <Popover.Content>
+      <div className=" py-2 flex justify-end  bg-gray-200">
+          <span className=" mx-2 text-sm">{userType}</span>
+        </div>
         <button
           onClickCapture={() => {
             navigate("/student/profile");
           }}
-          className="w-full px-4 py-2.5  my-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-650"
+          className="w-full px-4 py-2.5 border-t-2 border-gray-400 tracking-wide text-black transition-colors duration-200 transform bg-gray-200  hover:bg-gray-300 focus:outline-none"
         >
           Profile
         </button>
@@ -29,11 +32,11 @@ const ProfilePopover = ({ user, userType }) => {
             logout();
             navigate("/login");
           }}
-          className="w-full px-4 py-2.5  my-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-650"
+          className="w-full px-4 py-2.5 border-t-2 border-gray-400 tracking-wide text-black transition-colors duration-200 transform bg-red-400 hover:bg-red-500 focus:outline-none "
         >
           Logout
         </button>
-        <span>{userType}</span>
+        
       </Popover.Content>
     </Popover>
   );

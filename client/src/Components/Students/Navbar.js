@@ -1,5 +1,5 @@
 import React from "react";
-import { Button,Navbar } from "@nextui-org/react";
+import { Button, Navbar } from "@nextui-org/react";
 import { logout } from "../../firebase";
 import ProfilePopover from "./ProfilePopover";
 import { useNavigate } from "react-router-dom";
@@ -7,9 +7,9 @@ import SpeechRecognizer from "../SpeechRecognizer";
 
 export default (props)=>{
   const navigate=useNavigate()
-    return <section className=" flex flex-grow my-2 justify-center">
-    <Navbar variant={"sticky"} color={"primary"}>
-    <Navbar.Content className=" flex justify-center">
+    return <section className=" flex flex-grow my-2 justify-end">
+    <Navbar variant={"sticky"} color={"primary"} className="flex justify-end">
+    <Navbar.Content className=" flex justify-end">
     <Navbar.Link
     onClick={()=>{navigate("/student/dashboard")}}
     >

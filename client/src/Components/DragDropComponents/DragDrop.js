@@ -10,11 +10,11 @@ import "../../assets/styles/DragDrop.css";
 import MyProjects from "../Projects/MyProjects";
 import { auth } from "../../firebase";
 
-const DragDrop = ({projectID}) => {
+const DragDrop = ({ projectID }) => {
   let [items, setItems] = useState({});
   let [dragTasks, setDragTasks] = useState({});
   let [columns, setColumns] = useState([]);
-  let [members,setMembers]=useState([])
+  let [members, setMembers] = useState([]);
   const getDragTasks = async () => {
     const data = {
       projectID: projectID,
@@ -26,7 +26,7 @@ const DragDrop = ({projectID}) => {
       setDragTasks(resDragTask);
       setItems(resDragTask.Tasks);
       setColumns(resDragTask.Columns);
-      setMembers(res.data.members)
+      setMembers(res.data.members);
     }
   };
 
@@ -62,22 +62,18 @@ const DragDrop = ({projectID}) => {
   };
 
   return (
-    <div className=" h-screen w-screen bg-gray flex flex-col justify-start">
-      <div className=" flex h-full">
+    <div className=" h-screen  bg-gray flex flex-col justify-start flex-grow">
+      <div className=" flex w-full ">
         <DndProvider backend={HTML5Backend}>
-          <Container
-            style={{
-              backgroudColor: "blue",
-              flexGrow: "initial",
-            }}
-          >
-            <Row
-              style={{
-                justifySelf: "start",
-                justifyContent: "flex-start",
-                justifyItems: "flex-start",
-                margin: "0.25rem",
-              }}
+          <div className=" w-full">
+            <div
+              // style={{
+              //   justifySelf: "start",
+              //   justifyContent: "flex-start",
+              //   justifyItems: "flex-start",
+              //   margin: "0.25rem",
+              // }}
+              className="grid grid-cols-4 gap-x-3"
             >
               {
                 // console.log(columns)
@@ -107,8 +103,8 @@ const DragDrop = ({projectID}) => {
                   <div />
                 )
               }
-            </Row>
-          </Container>
+            </div>
+          </div>
         </DndProvider>
       </div>
     </div>

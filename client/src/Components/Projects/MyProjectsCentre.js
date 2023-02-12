@@ -1,8 +1,15 @@
-import { Avatar, Button, Card, Text } from "@nextui-org/react";
+import {
+  Avatar,
+  Button,
+  Card,
+  StyledButton,
+  StyledButtonIcon,
+  Text,
+} from "@nextui-org/react";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ModalSendStudentNotification from "../ModalSendStudentNotification";
+import ModalSendStudentNotification from "../Professor/ModalSendStudentNotification";
 import { CreateProjectContext } from "./ModalCreate";
 
 export default function MyProjectsCentre(props) {
@@ -52,7 +59,7 @@ export default function MyProjectsCentre(props) {
     async function handleNewNotification(proj) {
       setProjectSelected(proj);
       await handelSetStudents(proj.projectId);
-      console.log("jere");
+
       createNewApplyVisibleHandler();
     }
     async function handelSetStudents(projectId) {
@@ -65,6 +72,30 @@ export default function MyProjectsCentre(props) {
       let stEmails = [];
       res.data.students.forEach((student) => stEmails.push(student.Email));
       setStudentEmails(stEmails);
+    }
+    async function handleCloseApplication(proj) {
+      let dateTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+      if (
+        window.confirm(
+          "Do you want to close Application Process for the Project :" +
+            proj.projectName
+        ) == false
+      )
+        return;
+
+      let res = await axios.post(
+        "/project/application/close_open_project_application",
+        {
+          data: {
+            Project_ID: proj.projectId,
+            close: 1,
+            notificationTime: dateTime,
+          },
+        }
+      );
+      if (res.data.success) {
+        alert("Project Application closed successfully");
+      }
     }
     // console.log(arr);
     const ret = arr.map((proj) => {
@@ -79,9 +110,9 @@ export default function MyProjectsCentre(props) {
             if (props.isProfessor) return navigate("/professor/project");
             else return navigate("/student/project");
           }}
-          variant="bordered "
+          variant="shadow"
           style={{
-            width: "20%",
+            width: "100%",
 
             borderRadius: "0.6rem",
             margin: "1.5px",
@@ -92,16 +123,38 @@ export default function MyProjectsCentre(props) {
             css={{
               backgroundColor: curColor,
             }}
+            style={{
+              // height:"5rem",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
           >
             <Text
               style={{
                 color: "#ffffff",
               }}
+              className=" py-3"
             >
               {proj.projectName.length > 20
                 ? proj.projectName.substring(0, 20) + "..."
                 : proj.projectName}
             </Text>
+
+            {props.isProfessor ? (
+              <Button
+                size={"xs"}
+                onPress={() => {
+                  handleCloseApplication(proj);
+                }}
+                ghost
+                auto
+                color={"error"}
+              >
+                X
+              </Button>
+            ) : (
+              <></>
+            )}
           </Card.Header>
           <Card.Divider
             style={{
@@ -109,12 +162,14 @@ export default function MyProjectsCentre(props) {
             }}
           />
           <Card.Body>
-            <Text>{proj.projectDescription}</Text>
+            <Text className=" py-8">{proj.projectDescription}</Text>
           </Card.Body>
           <Card.Divider />
           <Card.Footer style={{}}>
-            {props.isProfessor? (
+            {props.isProfessor ? (
               <Button
+                flat
+                auto
                 onClickCapture={() => handleNewNotification(proj)}
                 style={{ justifyContent: "start", width: "30%" }}
               >
@@ -140,7 +195,7 @@ export default function MyProjectsCentre(props) {
 
   return (
     <>
-      <div className=" flex flex-wrap px-2 w-full content-center ">
+      <div className=" mx-6 grid grid-cols-3 px-2 flex-grow content-center  gap-x-6 gap-y-10">
         {myProjects}
       </div>
       {createNewApplyVisible ? (

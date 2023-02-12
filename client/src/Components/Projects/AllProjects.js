@@ -18,13 +18,14 @@ export default function AllProjects(props) {
   const closeApplicationHandler = () => setCreateApplicationVisible(false);
   const [clickedProject, setclikcedProject] = useState();
 
-
-  const [projectDescriptionVisible, setProjectDescriptionVisible] = useState(false);
+  const [projectDescriptionVisible, setProjectDescriptionVisible] =
+    useState(false);
   const projectDescriptionHandler = (proj) => {
-    setclikcedProject(proj)
+    setclikcedProject(proj);
     setProjectDescriptionVisible(true);
-  }
-  const closeProjectDescriptionHandler = () => setProjectDescriptionVisible(false);
+  };
+  const closeProjectDescriptionHandler = () =>
+    setProjectDescriptionVisible(false);
   const GetMyProjects = async () => {
     let colorArray = [
       "#858585",
@@ -62,7 +63,7 @@ export default function AllProjects(props) {
 
     async function handleApplyForProject(proj) {
       setclikcedProject(proj);
-      
+
       // console.log(proj);
       // console.log(proj);
       // const data = {
@@ -77,64 +78,64 @@ export default function AllProjects(props) {
     }
     const ret = props.projects?.map((proj) => {
       return (
-        <Card
-          isPressable
-          isHoverable
-          variant="bordered "
-          style={{
-            width: "inherit",
-            borderRadius: "0.6rem",
-            margin: "1.5px",
-          }}
-          key={proj.projectId}
-        >
-          <Card.Header
-          //  css={{
-          //   backgroundColor:curColor
-          // }}
-          onClickCapture={()=>projectDescriptionHandler(proj)}
-          >
-            <Text
-              className=" font-bold text-2xl"
-              style={{
-                color: "#000000",
-              }}
-            >
-              {proj.projectName}
-            </Text>
-
-          </Card.Header>
-
-          <Card.Divider />
-
-          <Card.Body
+        <div>
+          <Card
+            isPressable
+            isHoverable
+            variant="shadow"
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              textDecoration: "italic",
+              width: "inherit",
+              borderRadius: "0.6rem",
             }}
-            onClickCapture={()=>projectDescriptionHandler(proj)}
+            key={proj.projectId}
           >
-            <Text small>{proj.projectDuration}</Text>
-            <Text small>{proj.collaborator}</Text>
-          </Card.Body>
-          {!props.isProfessor&&(
-            <Card.Footer style={{ backgroundColor: "blue" }}>
-              <button
-                className="  w-full font-bold text-white text-sm"
-                onClickCapture={() => {
-                  handleApplyForProject(proj);
+            <Card.Header
+              //  css={{
+              //   backgroundColor:curColor
+              // }}
+              onClickCapture={() => projectDescriptionHandler(proj)}
+            >
+              <Text
+                className=" font-bold text-2xl"
+                style={{
+                  color: "#000000",
                 }}
               >
-                APPLY
-              </button>
-            </Card.Footer>
-          )}
-        </Card>
+                {proj.projectName}
+              </Text>
+            </Card.Header>
+
+            <Card.Divider />
+
+            <Card.Body
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                textDecoration: "italic",
+              }}
+              onClickCapture={() => projectDescriptionHandler(proj)}
+            >
+              <Text small>{proj.projectDuration}</Text>
+              <Text small>{proj.collaborator}</Text>
+            </Card.Body>
+            {!props.isProfessor && (
+              <Card.Footer style={{ backgroundColor: "blue" }}>
+                <button
+                  className="  w-full font-bold text-white text-sm"
+                  onClickCapture={() => {
+                    handleApplyForProject(proj);
+                  }}
+                >
+                  APPLY
+                </button>
+              </Card.Footer>
+            )}
+          </Card>
+        </div>
       );
     });
     // console.log(ret);
-    setProjects(() => <div>{ret}</div>);
+    setProjects(() => <>{ret}</>);
   };
 
   useEffect(() => {
@@ -143,9 +144,9 @@ export default function AllProjects(props) {
 
   return (
     <>
-      <div className=" flex px-2 flex-col  overflow-x-hidden">
-        <div class="container flex">
-          <div class="flex border-2 rounded">
+      <div className=" flex px-2 flex-col  overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-300">
+        <div class="container flex  self-start  top-0 sticky z-10 bg-white">
+          <div class="flex border-2 rounded ">
             <input
               type="text"
               onInput={(e) => props.setsearchText(e.target.value)}
@@ -167,7 +168,7 @@ export default function AllProjects(props) {
             </button>
           </div>
         </div>
-        <div className=" h-screen ">{projects}</div>
+        <div className=" h-screen grid grid-flow-row   gap-y-3">{projects}</div>
       </div>
       {createApplicationVisible &&(
         <ModalApply
@@ -188,7 +189,6 @@ export default function AllProjects(props) {
           userCanEdit={false}
         />
       )}
-
     </>
   );
 }
