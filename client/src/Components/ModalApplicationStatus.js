@@ -31,6 +31,7 @@ const ModalApplicationStatus = ({
   const updateApplicationStatus = async (accept) => {
     if (!description) {
       setErrorMessage("Enter all the details");
+      return
     }
     console.log(accept);
     const applicationStatus = {

@@ -170,7 +170,7 @@ export default function AllProjects(props) {
         </div>
         <div className=" h-screen grid grid-flow-row   gap-y-3">{projects}</div>
       </div>
-      {createApplicationVisible ? (
+      {createApplicationVisible &&(
         <ModalApply
           user={props.user}
           visible={createApplicationVisible}
@@ -178,20 +178,16 @@ export default function AllProjects(props) {
           closeHandler={closeApplicationHandler}
           proj={clickedProject}
         />
-      ) : (
-        <div />
       )}
-      {projectDescriptionVisible ? (
+      {projectDescriptionVisible&&(
         <ModalProjectDescription
           user={props.user}
           visible={projectDescriptionVisible}
-          setVisible={setCreateApplicationVisible}
+          setVisible={setProjectDescriptionVisible}
           closeHandler={closeProjectDescriptionHandler}
           projectID={clickedProject.projectId}
           userCanEdit={false}
         />
-      ) : (
-        <div />
       )}
     </>
   );

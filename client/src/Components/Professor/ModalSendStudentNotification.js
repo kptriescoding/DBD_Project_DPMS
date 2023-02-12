@@ -36,6 +36,7 @@ const ModalSendStudentNotification = ({
   const addNewStudentNotification = async () => {
     if (!description) {
       setErrorMessage("Enter all the details");
+      return 
     }
 
     const newApplication = {

@@ -11,6 +11,7 @@ const SpeechRecognizer=({isProfessor})=>{
             "go to dashboard":()=>navigate("/professor/dashboard"),
             "go to project":()=>navigate("/professor/project"),
             "go to profile":()=>navigate("/professor/profile"),
+            "go to report":()=>navigate("/professor/report"),
             "do logout":()=>logout()
         }
     else 
@@ -18,6 +19,7 @@ const SpeechRecognizer=({isProfessor})=>{
             "go to dashboard":()=>navigate("/student/dashboard"),
             "go to project":()=>navigate("/student/project"),
             "go to profile":()=>navigate("/student/profile"),
+            "go to report":()=>navigate("/student/report"),
             "do logout":()=>logout()
         }
 const speechAPI=window.SpeechRecognition || window.webkitSpeechRecognition;

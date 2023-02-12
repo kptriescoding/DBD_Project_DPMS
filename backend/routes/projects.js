@@ -109,32 +109,26 @@ router.post("/get_projects", async (req, res) => {
   }
 });
 
-router.post("/get_projects_admin", async (req, res) => {
+router.post("/get_projects_report", async (req, res) => {
   let queryOption = req.body.data;
   let query = "";
-  if (queryOption.query === "List Of Projects")
-    query = `select *,DATEDIFF(End_Date, Start_Date) AS days from Project`;
-  // else if(queryOption.query==="")
+  const queryOptions={
+    "List Of Projects":`select *,DATEDIFF(End_Date, Start_Date) AS No_of_Days from Project`,
+    "Projects This Professor is Working On":`SELECT * FROM Project where Professor_Email="${queryOption.email}"`,
+    "Projects This Student is Working On":`SELECT * FROM  Project where Project_ID in (Select Project_ID from Works_on where Student_Email="${queryOption.email}")`
+
+  }
+  query=queryOptions[queryOption.query]
+  if(query===-1)query=""
   try {
     var projects = [];
     const sqlRes = await mysqlPool.query(query);
-    for (let i = 0; i < sqlRes[0].length; i = i + 1) {
-      let cur = sqlRes[0][i];
-      projects.push({
-        Project_ID: cur.Project_ID,
-        Project_Name: cur.Title,
-        Professor_Email: cur.Professor_Email,
-        Collaborator: cur.Collaborator,
-        Funding: cur.Funding,
-        Duration: getDuration(cur.days),
-      });
-    }
     return res.status(200).json({
       success: true,
-
-      result: projects,
+      result: sqlRes[0],
     });
   } catch (err) {
+    if(query)
     console.log(err);
     return res.status(200).json({
       success: false,

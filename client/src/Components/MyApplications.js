@@ -4,6 +4,11 @@ import axios from "axios";
 
 import React, { useEffect, useState } from "react";
 import ModalApplicationStatus from "./ModalApplicationStatus";
+import ModalProfessorDescription from "./Professor/ModalProfessorDescription";
+import ModalProjectDescription from "./Projects/ModelProjectDescription";
+import ModalStudentDescription from "./Students/ModelStudentDescription";
+
+
 export default function MyApplications({ isProfessor, user }) {
   const [applications, setapplications] = useState([]);
   // const [create, setCreateApplicationVisible] = useState(false);
@@ -14,6 +19,24 @@ export default function MyApplications({ isProfessor, user }) {
   const closeApplicationStatusVisibleHandler = () =>
     setcreateApplicationStatusVisible(false);
   const [currentApplication, setcurrentApplication] = useState();
+
+  const [key,setKey]=useState("")
+
+  const [studentDescriptionVisible, setStudentDescriptionVisible] = useState(false);
+  const studentDescriptionHandler = (key) => {
+    setKey(key)
+    setStudentDescriptionVisible(true);
+  }
+  const closeStudentDescriptionHandler = () => setStudentDescriptionVisible(false);
+
+  const [projectDescriptionVisible, setProjectDescriptionVisible] = useState(false);
+  const projectDescriptionHandler = (key) => {
+    setKey(key)
+    setProjectDescriptionVisible(true);
+  }
+  const closeProjectDescriptionHandler = () => setProjectDescriptionVisible(false);
+
+
   async function handleSetApplications() {
     if (isProfessor) {
       try {
@@ -83,6 +106,7 @@ export default function MyApplications({ isProfessor, user }) {
             css={{
               backgroundColor: "#ffffff",
             }}
+            onClickCapture={()=>studentDescriptionHandler(applicationData.Email)}
           >
             <span
               style={{
@@ -131,13 +155,14 @@ export default function MyApplications({ isProfessor, user }) {
       // console.log(student.student.name);
 
       return (
-        <div className="flex flex-col bg-gray-100 rounded-xl px-2 py-4 shadow-sm border-b-2 border-gray-500 ">
-          <span className=" text-center w-full overflow-hidden">
+        <div className="flex flex-col bg-gray-100 rounded-xl px-2 py-4 shadow-sm border-b-2 border-gray-500 "
+        >
+          <span className=" text-center w-full overflow-hidden" onClickCapture={()=>projectDescriptionHandler(applicationData.Project_ID)}>
             {applicationData.Email}
-          </span>
+          </span >
 
-          <div className=" flex justify-between ">
-            <span className=" text-center  text-black font-semibold text-sm self-center">
+          <div className=" flex justify-between " >
+            <span className=" text-center  text-black font-semibold text-sm self-center" onClickCapture={()=>projectDescriptionHandler(applicationData.Project_ID)}>
               {applicationData.Project_ID}
             </span>
 
@@ -192,6 +217,24 @@ export default function MyApplications({ isProfessor, user }) {
         />
       ) : (
         <div />
+      )}
+      {studentDescriptionVisible&&(
+        <ModalStudentDescription
+          visible={studentDescriptionVisible}
+          setVisible={setStudentDescriptionVisible}
+          closeHandler={closeStudentDescriptionHandler}
+          email={key}
+        />
+      )}
+      {projectDescriptionVisible&&(
+        <ModalProjectDescription
+          user={user}
+          visible={projectDescriptionVisible}
+          setVisible={setProjectDescriptionVisible}
+          closeHandler={closeProjectDescriptionHandler}
+          projectID={key}
+          userCanEdit={false}
+        />
       )}
     </>
   );

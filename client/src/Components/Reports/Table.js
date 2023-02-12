@@ -3,15 +3,13 @@ import { createAvatar } from "@dicebear/core";
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 
-export default function Table(props) {
+export default function Table({data}) {
   const [columns, setcolumns] = useState([]);
-  const [data, setData] = useState([]);
   useEffect(() => {
-    getColumnNames(props.data);
-    setData(props.data);
-  }, [props.data]);
+    getColumnNames(data)
+  }, [data]);
 
-  function getColumnNames(data) {
+  function getColumnNames() {
     let ret = [];
 
     if (data == null || data.length == 0) return;
@@ -24,8 +22,7 @@ export default function Table(props) {
         sortable: true,
       });
     }
-    console.log(ret)
-    setcolumns(ret);
+    setcolumns(ret)
   }
 
   return (
