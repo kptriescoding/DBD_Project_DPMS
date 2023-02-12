@@ -174,55 +174,34 @@ router.post("/update_user", async (req, res) => {
   });
 });
 
-router.post("/get_students_admin", async (req, res) => {
+router.post("/get_students_report", async (req, res) => {
   let queryOption = req.body.data;
   let query = "";
-  if (queryOption.query === "List Of Students") query = "select * from Student";
-  else if (queryOption.query === "No Of Projects Each Student is Working On")
-    query =
-      "select First_Name,Last_Name,Email,CGPA ,count(Student_Email) as Projects_Working_On from Student,Works_on where Student.Email=Student_Email group by Student_Email;";
-
+const queryOptions={
+  "List Of Students":"select * from Student",
+  "No Of Projects Each Student is Working On":"select First_Name,Last_Name,Email,CGPA ,count(Student_Email) as Projects_Working_On from Student,Works_on where Student.Email=Student_Email group by Student_Email;",
+  "Student Working Under This Professor":`Select * from Student where Email in (Select Student_Email from Works_on WHERE Project_ID in (Select Project_ID from Project Where Professor_Email="${queryOption.email}"))`,
+  "No of Students Working Under This Professor For Each Project":`Select P.Project_ID,P.Title,P.Description ,count(P.Project_ID) as Students_Working_On from Student as S , Works_on as W ,Project as P where S.Email =W.Student_Email and W.Project_ID=P.Project_ID and P.Professor_Email="${queryOption.email}" GROUP BY P.Project_ID`
+}
+query=queryOptions[queryOption.query]
+if(!query)query=""
+console.log(queryOptions[queryOption.query])
   try {
-    var students = [];
     const sqlRes = await mysqlPool.query(query);
-    if (queryOption.query === "List Of Students") {
-      for (let i = 0; i < sqlRes[0].length; i = i + 1) {
-        let cur = sqlRes[0][i];
-        students.push({
-          First_Name: cur.First_Name,
-          Last_Name: cur.Last_Name,
-          Email: cur.Email,
-          USN: cur.USN,
-          Department_Name: cur.Department_Name,
-          CGPA: cur.CGPA,
-        });
-      }
-    } else if (
-      queryOption.query === "No Of Projects Each Student is Working On"
-    ) {
-      for (let i = 0; i < sqlRes[0].length; i = i + 1) {
-        let cur = sqlRes[0][i];
-        students.push({
-          First_Name: cur.First_Name,
-          Last_Name: cur.Last_Name,
-          Email: cur.Email,
-          CGPA: cur.CGPA,
-          Projects_Working_On: cur.Projects_Working_On,
-        });
-      }
-    }
     return res.status(200).json({
       success: true,
-
-      result: students,
+      result: sqlRes[0],
     });
   } catch (err) {
+    if(query)
     console.log(err);
     return res.status(200).json({
       success: false,
     });
   }
 });
+
+
 router.post("/get_students_for_professor_apply", async (req, res) => {
   let input = req.body.data;
 

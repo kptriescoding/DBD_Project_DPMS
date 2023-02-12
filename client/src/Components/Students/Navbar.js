@@ -15,6 +15,11 @@ export default (props)=>{
     >
     Dashboard
     </Navbar.Link>
+    <Navbar.Link
+    onClick={()=>{navigate("/student/report")}}
+    >
+    Report
+    </Navbar.Link>
     <Navbar.Item>
     <ProfilePopover user={props.user} userType={props.userType}/>
     </Navbar.Item>

@@ -40,6 +40,11 @@ export default function ProfessorNavbar(props) {
           >
           Dashboard
           </Navbar.Link>
+          <Navbar.Link
+          onClickCapture={()=>{navigate("/professor/report")}}
+          >
+          Reports
+          </Navbar.Link>
           <Navbar.Item>
           <ProfilePopover user={props.user} userType={props.userType}/>
           </Navbar.Item>

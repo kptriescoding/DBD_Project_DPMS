@@ -191,24 +191,22 @@ await mysqlPool.query(deleteQuery)
   });
 });
 
-router.post("/get_professor_admin", async (req, res) => {
+router.post("/get_professor_report", async (req, res) => {
   let queryOption = req.body.data;
   let query = "";
-  if (queryOption.query === "List Of Professors")
-    query = "select * from Professor";
-  else if (queryOption.query === "Count of Students under Each Professor")
-    query =
-      "select p.Email,count(distinct st.Student_Email) as No_Of_Students from Professor as p,Works_on as st where exists (select * from Project where Professor_Email=p.Email AND st.Project_ID=Project.Project_ID) group by p.Email;";
-  else if (
-    queryOption.query ===
-    "No Of Projects,total funding raised,  Under Each Professor"
-  )
-    query =
-      "select First_Name,Last_Name,p.Email as Professor_Email,count(pr.Project_ID) as No_Of_Projects,sum(pr.Funding) as Funding_Amount_in_Rs  from Professor as p,Project as pr where pr.Professor_Email=p.Email group by Email;";
+  const queryOptions={
+    "List Of Professors":"select * from Professor",
+    "Count of Students under Each Professor": "select p.Email,count(distinct st.Student_Email) as No_Of_Students from Professor as p,Works_on as st where exists (select * from Project where Professor_Email=p.Email AND st.Project_ID=Project.Project_ID) group by p.Email;",
+    "No Of Projects,total funding raised,  Under Each Professor":"select First_Name,Last_Name,p.Email as Professor_Email,count(pr.Project_ID) as No_Of_Projects,sum(pr.Funding) as Funding_Amount_in_Rs  from Professor as p,Project as pr where pr.Professor_Email=p.Email group by Email;",
+
+  }
+  query=queryOptions[queryOption.query]   
+  if(query===-1)query=""
   let sqlRes;
   try {
     sqlRes = await mysqlPool.query(query);
   } catch (err) {
+    if(query)
     console.log(err);
     return res.status(200).json({
       success: false,

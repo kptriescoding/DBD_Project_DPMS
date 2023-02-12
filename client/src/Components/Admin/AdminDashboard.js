@@ -24,7 +24,7 @@ export default function AdminDashboard() {
   }, [user, loading]);
   return (userType)
     ?
-    <Reports userType={userType}/>
+    <Reports userType={userType}email={user.email}/>
     :
     <></>
 }

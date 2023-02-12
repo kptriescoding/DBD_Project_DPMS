@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 export default function Graph({data,xCol,yCol,reRender,graphType}) {
-  const [graph, setgraph] = useState();
+  const [graph, setgraph] = useState(<div></div>);
 
   useEffect(() => {
     handleDataChange();
@@ -39,18 +39,15 @@ export default function Graph({data,xCol,yCol,reRender,graphType}) {
     loadgraph(tmp);
   }
   const loadgraph = (graphData) => {
-    let ret;
     try {
       if (graphData == null || graphData.length == 0) return;
-      setgraph(graphs[graphType](graphData));
+      setgraph( <div>
+        <div style={{ width: "50%" }}></div>
+        {graphs[graphType](graphData)}
+        </div>);
     } catch (err) {
     }
   };
-
-  return (
-    <>
-      <div style={{ width: "50%" }}></div>
-      {graph}
-    </>
-  );
+  return graph
+  
 }

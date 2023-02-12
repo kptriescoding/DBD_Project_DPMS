@@ -122,7 +122,7 @@ const ModalProjectDescription = ({
   };
 
   useEffect(() => {
-    getProject();
+    if(projectID)getProject();
   }, [projectID]);
 
   return (
@@ -177,7 +177,7 @@ const ModalProjectDescription = ({
             disabled={!editable}
             onChangeCapture={(event) => setFunding(event.target.value)}
           />
-          {/* <MultiSelect
+         <MultiSelect
             options={multiSelectSkills}
             value={selectedSkills}
             onChange={setSelectedSkills}
@@ -185,7 +185,7 @@ const ModalProjectDescription = ({
             isCreatable={true}
             disabled={!editable}
             onCreateOption={newSkill=>({label:newSkill,value:newSkill})}
-          /> */}
+          /> 
           <Input
             bordered
             fullWidth
@@ -199,7 +199,6 @@ const ModalProjectDescription = ({
             onChangeCapture={(event) => setStartDate(event.target.value)}
           />
           <Input
-            clearable
             bordered
             fullWidth
             type="date"

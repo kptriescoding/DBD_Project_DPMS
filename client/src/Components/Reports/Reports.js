@@ -8,12 +8,31 @@ import Dropdown from "react-dropdown";
 import "./Dropdown.css";
 import * as XLSX from "xlsx";
 import Graph from "./Graph";
-import Table from "../Reports/Table";
+import Table from "./Table";
 import jsPDF from "jspdf";
 
-const Reports=({userType})=>{
+const Reports=({userType,email})=>{
 
-  let viewType ,queryFunctions
+  let viewType ,firstOption,queryFunctions={
+    "Student":async (queryType)=> await axios.post("/student/get_students_report", {
+        data: {
+          query: queryType,
+          email:email
+        },
+      }),
+     "Professor":async(queryType)=>await axios.post("/professor/get_professor_report", {
+        data: {
+          query: queryType,
+          email:email
+        },
+      }),
+      "Project":async (queryType)=>  await axios.post("/project/get_projects_report", {
+        data: {
+          query: queryType,
+          email:email
+        },
+      }) 
+  }
   if(userType==="Admin"){
   viewType= {
     "Options":["Professor","Student","Project"],
@@ -27,23 +46,26 @@ const Reports=({userType})=>{
       ],
     "Project":["List Of Projects"]
   }
-  queryFunctions={
-    "Student":async (queryType)=> await axios.post("/student/get_students_admin", {
-        data: {
-          query: queryType,
-        },
-      }),
-     "Professor":async(queryType)=>await axios.post("/professor/get_professor_admin", {
-        data: {
-          query: queryType,
-        },
-      }),
-      "Project":async (queryType)=>  await axios.post("/project/get_projects_admin", {
-        data: {
-          query: queryType,
-        },
-      }) 
-  }
+  firstOption="Professor"
+}
+if(userType==="Professor"){
+viewType={
+  "Options":["Student","Project"],
+  "Student":["List Of Students",
+  "Student Working Under This Professor",
+  "No of Students Working Under This Professor For Each Project"],
+  "Project":["Projects This Professor is Working On",
+  "List Of Projects"]
+}
+firstOption="Student"
+}
+if(userType==="Student"){
+viewType={
+  "Options":["Project"],
+  "Project":["Projects This Student is Working On",
+  "List Of Projects"]
+}
+firstOption="Project"
 }
 const [reRender,shouldReRender]=useState(0)
   const [queryType, setqueryType] = useState("");
@@ -54,7 +76,7 @@ const [reRender,shouldReRender]=useState(0)
   const [barCharCol,setBarChartCol]=useState([])
   const [barData1,setBarData1]=useState("")
   const [barData2,setBarData2]=useState("")
-  const [type, settype] = useState("Professor");
+  const [type, settype] = useState(firstOption);
   const [graphType,setGraphType]=useState("Pie")
     const graphTypes=[
         // "Bar",
@@ -82,6 +104,8 @@ const [reRender,shouldReRender]=useState(0)
         // console.log(queryFunctions[type])
         const tempData=await queryFunctions[type](queryType)   
         setsqlData(tempData.data.result);
+        setBarData1("")
+        setBarData2("")
         setBarChartCol(Object.keys(tempData.data.result[0]))
       }
 
@@ -101,17 +125,6 @@ const [reRender,shouldReRender]=useState(0)
     
         doc.save("sample-file.pdf");
       }
-    
-      const fetchData = async () => {
-        // const td = await axios.post("/project/collaborator", {
-        //   data: {
-        //     limit: 10,
-        //   },
-        // });
-        // const resData = td.data.collaborators;
-    
-        // setbarData(resData);
-      };
 
      const generateGraph=()=>{
         if(!barData1||!barData2)return
@@ -120,8 +133,7 @@ const [reRender,shouldReRender]=useState(0)
 
 
       useEffect(() => {
-        fetchData()
-      }, []);
+      }, [userType,email]);
 
       return (
         <div className=" flex flex-col h-screen">
@@ -143,7 +155,7 @@ const [reRender,shouldReRender]=useState(0)
                 <Dropdown
                   className=" mb-1"
                   options={viewType["Options"]}
-                  placeholder={"Professor"}
+                  placeholder={firstOption}
                   onChange={(option) => handleOnChangeForViewType(option)}
                 />
                 <Dropdown
