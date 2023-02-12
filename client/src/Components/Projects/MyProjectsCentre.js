@@ -98,7 +98,8 @@ export default function MyProjectsCentre(props) {
       }
     }
     // console.log(arr);
-    const ret = arr.map((proj) => {
+    let ret
+    if(arr)ret = arr.map((proj) => {
       let curColor = pickRandom();
       //   console.log("curColor")
       return (

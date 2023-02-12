@@ -95,7 +95,7 @@ export default function MyApplications({ isProfessor, user }) {
 
       return (
         <div className="flex flex-col bg-gray-100 rounded-xl px-2 py-4 shadow-sm border-b-2 border-gray-500 ">
-          <span className="text-center w-full  overflow-hidden">
+          <span className="text-center w-full  overflow-hidden" onClickCapture={()=>studentDescriptionHandler(applicationData.Email)}>
             {applicationData.Email}
           </span>
 

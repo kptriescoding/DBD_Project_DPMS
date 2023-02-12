@@ -99,6 +99,9 @@ const [reRender,shouldReRender]=useState(0)
             },
           });
           setsqlData(tempData.data.data);
+          setBarData1("")
+        setBarData2("")
+        setBarChartCol(Object.keys(tempData.data.result[0]))
           return;
         }
         // console.log(queryFunctions[type])

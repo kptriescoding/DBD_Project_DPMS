@@ -21,6 +21,7 @@
     "node-mailjet": "^6.0.2",
     "path": "^0.12.7",
     "pg": "^8.8.0",
-    "sql-injection": "^0.0.7"
+    "sql-injection": "^0.0.7",
+    "sql-sanitizer": "^1.0.0"
   }
 }

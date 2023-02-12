@@ -29,10 +29,10 @@ const ModalApplicationStatus = ({
   const [errorMessage, setErrorMessage] = useState("");
 
   const updateApplicationStatus = async (accept) => {
-    if (!description) {
-      setErrorMessage("Enter all the details");
-      return
-    }
+    // if (!description) {
+    //   setErrorMessage("Enter all the details");
+    //   return
+    // }
     console.log(accept);
     const applicationStatus = {
       description: description,

@@ -12,7 +12,6 @@ import projectRouter from "./routes/projects.js"
 import dragdropRouter from "./routes/dragdrop.js"
 import announcementRouter from "./routes/application.js"
 
-import sqlInjection from "sql-injection"
 
 
 const __dirname=path.resolve()
@@ -30,6 +29,7 @@ mongoose
 sqlInit()
 
 
+
 const app=express()
 
 const corsOptions ={
@@ -41,7 +41,7 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-app.use(sqlInjection);
+// app.use(sqlInjection);
 
 app.use("/student",studentRouter);
 app.use("/professor",professorRouter)

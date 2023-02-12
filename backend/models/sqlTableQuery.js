@@ -34,13 +34,6 @@ export const queryStudentSkillTable=`CREATE TABLE IF NOT EXISTS Student_Skill
   FOREIGN KEY (Student_Email) REFERENCES Student(Email) ON DELETE CASCADE ON UPDATE CASCADE
 );`
 
-// export const queryStudentAchievementTable=`CREATE TABLE IF NOT EXISTS Student_Achievement
-// (
-//   Achievement VARCHAR(255) NOT NULL,
-//   Student_Email VARCHAR(50) NOT NULL,
-//   PRIMARY KEY (Achievement, Student_Email),
-//   FOREIGN KEY (Student_Email) REFERENCES Student(Email) ON DELETE CASCADE ON UPDATE CASCADE
-// );`
 
 export const queryProfessorTable=`CREATE TABLE IF NOT EXISTS Professor
 (
@@ -62,13 +55,6 @@ export const queryProfessorFieldOfExpertise=`CREATE TABLE IF NOT EXISTS Professo
   FOREIGN KEY (Professor_Email) REFERENCES Professor(Email) ON DELETE CASCADE ON UPDATE CASCADE
 );`
 
-// export const queryProfessorPaperPublished=`CREATE TABLE IF NOT EXISTS Professor_Paper_Published
-// (
-//   Paper_Published VARCHAR(255) NOT NULL,
-//   Professor_Email VARCHAR(50) NOT NULL,
-//   PRIMARY KEY (Paper_Published, Professor_Email),
-//   FOREIGN KEY (Professor_Email) REFERENCES Professor(Email) ON DELETE CASCADE ON UPDATE CASCADE
-// );`
 
 export const queryProjectTable=`CREATE TABLE IF NOT EXISTS Project
 (
