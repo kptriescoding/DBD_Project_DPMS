@@ -56,12 +56,12 @@ export default function Projects() {
       {(user)?<MyProjectsSide email={user.email} 
       isProfessor={userType==="Professor"}/>:<div/>}
       </div>
-      <div className="flex w-3/5">
+      <div className="flex flex-grow">
       <DragDrop 
       projectID={localStorage.getItem("projectID")}
       />
       </div>
-      <div className="flex w-1/5">
+      <div className="flex w-1/6">
       {user && <ProjectNotifications
       isProfessor={userType==="Professor"}
       projectID={localStorage.getItem("projectID")}

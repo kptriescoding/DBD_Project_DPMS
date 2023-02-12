@@ -9,8 +9,8 @@ export default (props) => {
   const navigate = useNavigate();
   return (
     <section className=" flex flex-grow my-2 justify-end">
-      <Navbar variant={"sticky"} color={"primary"}>
-        <Navbar.Content className=" flex justify-center">
+      <Navbar variant={"sticky"} color={"primary"} className="flex justify-end">
+        <Navbar.Content className=" flex justify-end">
           <Navbar.Link
             onClick={() => {
               navigate("/student/dashboard");
@@ -18,6 +18,8 @@ export default (props) => {
           >
             Dashboard
           </Navbar.Link>
+        </Navbar.Content>
+        <Navbar.Content>
           <Navbar.Item>
             <ProfilePopover user={props.user} userType={props.userType} />
           </Navbar.Item>

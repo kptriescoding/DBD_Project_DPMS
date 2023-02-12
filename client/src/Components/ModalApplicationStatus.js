@@ -72,21 +72,26 @@ const ModalApplicationStatus = ({
             open={visible && !isProfessor}
           >
             <Modal.Header>
-              <Text size={18}>{applicationData.description}</Text>
+              <Text size={18}>{applicationData.Project_ID}</Text>
             </Modal.Header>
             <Modal.Body>
-              <Textarea
-                clearable
-                bordered
-                fullWidth
-                color="primary"
-                value={description}
-                size="lg"
-                placeholder="Description"
-                aria-label="Description"
-                onChangeCapture={(event) => setDescription(event.target.value)}
-              />
-
+              {applicationData.applicationStatus == "sent" ? (
+                <Textarea
+                  clearable
+                  bordered
+                  fullWidth
+                  color="primary"
+                  value={description}
+                  size="lg"
+                  placeholder="Description"
+                  aria-label="Description"
+                  onChangeCapture={(event) =>
+                    setDescription(event.target.value)
+                  }
+                />
+              ) : (
+                <Text fullWidth>{applicationData.desciption}</Text>
+              )}
               <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">
                 {errorMessage}
               </p>
@@ -132,9 +137,7 @@ const ModalApplicationStatus = ({
               </Modal.Header>
               <Modal.Body>
                 {applicationData.applicationStatus != "sent" ? (
-                  
-                    <Text fullWidth>{applicationData.description}</Text>
-                    
+                  <Text fullWidth>{applicationData.description}</Text>
                 ) : (
                   <Textarea
                     clearable
@@ -181,7 +184,61 @@ const ModalApplicationStatus = ({
           </div>
         </CreateModalApplicationStatus.Provider>
       ) : (
-        <StudentNotification />
+        <CreateModalApplicationStatus.Provider>
+          <div>
+            <Modal
+              closeButton
+              onClose={closeHandler}
+              open={!isProfessor && visible}
+            >
+              <Modal.Header>
+                <Text size={18}>{applicationData.Project_ID}</Text>
+              </Modal.Header>
+              <Modal.Body>
+                {applicationData.applicationStatus == "sent" ? (
+                  <Textarea
+                    clearable
+                    bordered
+                    fullWidth
+                    color="primary"
+                    value={description}
+                    size="lg"
+                    placeholder="Description"
+                    aria-label="Description"
+                    onChangeCapture={(event) =>
+                      setDescription(event.target.value)
+                    }
+                  />
+                ) : (
+                  <Text fullWidth>{applicationData.desciption}</Text>
+                )}
+                <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">
+                  {errorMessage}
+                </p>
+              </Modal.Body>
+              {applicationData.applicationStatus != "sent" ? (
+                <div></div>
+              ) : (
+                <Modal.Footer autoMargin={false}>
+                  <Button
+                    auto
+                    onPress={() => updateApplicationStatus(true)}
+                    style={{ width: "50%", backgroundColor: "#22c856" }}
+                  >
+                    Accept
+                  </Button>
+                  <Button
+                    auto
+                    onPress={() => updateApplicationStatus(false)}
+                    style={{ width: "50%", backgroundColor: "#df0b32" }}
+                  >
+                    Deny
+                  </Button>
+                </Modal.Footer>
+              )}
+            </Modal>
+          </div>
+        </CreateModalApplicationStatus.Provider>
       )}
     </>
   );

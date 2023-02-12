@@ -59,7 +59,7 @@ export default function MyProjectsCentre(props) {
     async function handleNewNotification(proj) {
       setProjectSelected(proj);
       await handelSetStudents(proj.projectId);
-      
+
       createNewApplyVisibleHandler();
     }
     async function handelSetStudents(projectId) {
@@ -75,8 +75,14 @@ export default function MyProjectsCentre(props) {
     }
     async function handleCloseApplication(proj) {
       let dateTime = new Date().toISOString().slice(0, 19).replace("T", " ");
-      if(window.confirm(("Do you want to close Application Process for the Project :"+proj.projectName))==false) return
-      
+      if (
+        window.confirm(
+          "Do you want to close Application Process for the Project :" +
+            proj.projectName
+        ) == false
+      )
+        return;
+
       let res = await axios.post(
         "/project/application/close_open_project_application",
         {
@@ -96,9 +102,7 @@ export default function MyProjectsCentre(props) {
       let curColor = pickRandom();
       //   console.log("curColor")
       return (
-       
         <Card
-     
           isPressable
           isHoverable
           onPress={(event) => {
@@ -109,10 +113,9 @@ export default function MyProjectsCentre(props) {
           variant="shadow"
           style={{
             width: "100%",
-            
+
             borderRadius: "0.6rem",
             margin: "1.5px",
-          
           }}
           key={proj.projectId}
         >
@@ -122,14 +125,13 @@ export default function MyProjectsCentre(props) {
             }}
             style={{
               // height:"5rem",
-              display:"flex",
-              justifyContent:"space-between"
+              display: "flex",
+              justifyContent: "space-between",
             }}
           >
             <Text
               style={{
                 color: "#ffffff",
-
               }}
               className=" py-3"
             >
@@ -138,17 +140,21 @@ export default function MyProjectsCentre(props) {
                 : proj.projectName}
             </Text>
 
-            <Button size={"xs"}
-              onPress={() => {
-                handleCloseApplication(proj);
-              }}
-              ghost
-              auto
-              color={"error"}
-              
-            >
-              X
-            </Button>
+            {props.isProfessor ? (
+              <Button
+                size={"xs"}
+                onPress={() => {
+                  handleCloseApplication(proj);
+                }}
+                ghost
+                auto
+                color={"error"}
+              >
+                X
+              </Button>
+            ) : (
+              <></>
+            )}
           </Card.Header>
           <Card.Divider
             style={{
@@ -156,12 +162,14 @@ export default function MyProjectsCentre(props) {
             }}
           />
           <Card.Body>
-            <Text  className=" py-8">{proj.projectDescription}</Text>
+            <Text className=" py-8">{proj.projectDescription}</Text>
           </Card.Body>
           <Card.Divider />
           <Card.Footer style={{}}>
             {props.isProfessor ? (
               <Button
+                flat
+                auto
                 onClickCapture={() => handleNewNotification(proj)}
                 style={{ justifyContent: "start", width: "30%" }}
               >
@@ -175,7 +183,6 @@ export default function MyProjectsCentre(props) {
             </Text>
           </Card.Footer>
         </Card>
-       
       );
     });
     // console.log(ret);

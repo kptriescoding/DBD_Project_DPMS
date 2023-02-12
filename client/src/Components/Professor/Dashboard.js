@@ -132,7 +132,7 @@ export default function Dashboard(props) {
             <div style={{ width: "inherit" }} />
           )}
         </div>
-        <div className=" w-1/5  border-2 p-2 border-black mx-2">
+        <div className=" w-1/5  border-2 p-2 shadow-sm rounded-xl mx-2">
           {profile && userType ? (
             <MyApplications
               isProfessor={userType === "Professor"}

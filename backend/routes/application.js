@@ -90,7 +90,7 @@ router.post("/get_notification_for_professor", async (req, res) => {
     forStudent=0 AND 
     Project_ID in (
       select Project_ID from Project where Professor_Email="${professor.Professor_Email}"
-    ) ORDER BY notificationTime DESC AND isClosed=0
+    ) AND isClosed=0 ORDER BY notificationTime DESC 
   `;
   let result;
   try {

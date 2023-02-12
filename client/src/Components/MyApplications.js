@@ -106,7 +106,7 @@ export default function MyApplications({ isProfessor, user }) {
           {/* <Card.Footer css={{paddding:"unset"}}> */}
           <div className=" flex flex-grow w-full">
             <button
-              className= " bg-blue-300 font-bold text-blue-900 py-2 hover:bg-blue-500"
+              className=" bg-blue-300 font-bold text-blue-900 py-2 hover:bg-blue-500"
               style={{
                 width: "inherit",
               }}
@@ -131,58 +131,38 @@ export default function MyApplications({ isProfessor, user }) {
       // console.log(student.student.name);
 
       return (
-        <Card
-          isPressable
-          isHoverable
-          variant="bordered shadow"
-          style={{
-            width: "inherit",
-            borderRadius: "0.2rem",
-            margin: "1.5px",
-            // backgroundColor:applicationData.applicationStatus=="accept"?"#003413":"#3b2600"
-          }}
-        >
-          <Card.Header
-            css={{
-              backgroundColor: "#ffffff",
-            }}
-          >
-            <span
-              style={{
-                color: "#000000",
-              }}
-              className=" text-center w-full"
-            >
-              {applicationData.Email}
-            </span>
-          </Card.Header>
-          <Card.Divider
-            style={{
-              backgroundColor: "gray",
-            }}
-          />
-          <div>
-            <span className=" text-center w-full text-black font-semibold text-sm">
+        <div className="flex flex-col bg-gray-100 rounded-xl px-2 py-4 shadow-sm border-b-2 border-gray-500 ">
+          <span className=" text-center w-full overflow-hidden">
+            {applicationData.Email}
+          </span>
+
+          <div className=" flex justify-between ">
+            <span className=" text-center  text-black font-semibold text-sm self-center">
               {applicationData.Project_ID}
             </span>
-          </div>
-          {/* <Card.Footer css={{paddding:"unset"}}> */}
-          <div className=" flex flex-grow w-full">
+
             <button
-              className=" bg-blue-300  font-bold text-blue-900 py-2 hover:bg-blue-500"
-              style={{
-                width: "inherit",
-              }}
+              className="  text-blue-900 py-2 hover:text-black  hover:bg-slate-200 px-2 rounded-xl"
               onClickCapture={() => {
                 handleOnClickForView(applicationData);
               }}
             >
-              View
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 ml-2 -mr-1"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
             </button>
           </div>
-          {/* </Card.Footer> */}
-          <Divider />
-        </Card>
+        </div>
       );
     });
 
@@ -191,15 +171,13 @@ export default function MyApplications({ isProfessor, user }) {
 
   return (
     <>
-      <div className=" ">
-        <div className=" mx-2">
-          <div className="flex justify-center">
-          <span className=" font-bold text-2xl ">
-            Applications
-          </span>
+      <div className="">
+        <div className=" mx-2 overflow-hidden">
+          <div className="flex justify-center ">
+            <span className=" font-bold text-2xl ">Notifications</span>
           </div>
-          <div className="grid grid-cols-1 gap-y-1 ">
-            {isProfessor ? (<StudentsApplied />) : (<StudentSideNotifications />)}
+          <div className="grid grid-cols-1 gap-y-3 overflow-auto">
+            {isProfessor ? <StudentsApplied /> : <StudentSideNotifications />}
           </div>
         </div>
       </div>
