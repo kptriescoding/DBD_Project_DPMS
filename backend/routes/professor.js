@@ -63,6 +63,22 @@ router.post("/save_user", async (req, res) => {
       success: false,
     });
   }
+  let subject=" Welcome to our Project Management System!"
+    let text=`Dear ${user.firstName},
+
+    I hope this email finds you well. I am writing to extend a warm welcome to our Project Management System and to thank you for choosing us as your platform for managing your projects as a student.
+    
+    We are thrilled to have you on board and would like to make sure that your experience with our system is as smooth and productive as possible. Our platform is designed to help you stay organized, manage your tasks efficiently and collaborate with your team effectively.
+    
+    If you have any questions or need help at any time, please do not hesitate to reach out to our support team. Our team is always ready to assist you and ensure that you get the most out of our system.
+    
+    We are committed to providing you with the best possible experience, and we look forward to supporting you as you use our platform to achieve your goals as a student.
+    
+    Best regards,
+    
+    College Project Management System
+    RVCE`
+    sendEmailMailGet(user.email,subject,text)
   return res.status(200).json({
     success: true,
   });

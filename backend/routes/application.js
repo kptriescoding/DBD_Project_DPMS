@@ -1,4 +1,5 @@
 import Router from "express";
+import sendEmailMailGet from "../mailApi/sendMailgetAPI.js";
 import { mysqlPool } from "../models/sqlInit.js";
 
 const router = Router();
@@ -142,6 +143,22 @@ router.post("/update_application_from_professor", async (req, res) => {
     if (professor.applicationStatus == "accept") {
       let res2 = await mysqlPool.query(query2);
     }
+    let subject=" Welcome to our Project Management System!"
+    let text=`Dear Student,
+
+    I hope this email finds you well. I am writing to update you on the status of your recent project application.
+    
+    The status of your application has been updated on our website. You can check the status of your application by logging into your account and visiting the "Applications" section.
+    
+    If your application has been accepted, please take the necessary steps to confirm your participation in the project as soon as possible. Our team will be in touch with you soon with more information on the next steps.
+    
+    If your application has been rejected, we would like to thank you for your interest in our projects and for taking the time to apply. We encourage you to keep an eye on our website for other opportunities that
+
+    Best regards,
+    
+    College Project Management System
+    RVCE`
+    sendEmailMailGet(professor.Email,subject,text)
     return res.status(200).json({
       success: true,
     });
@@ -182,12 +199,32 @@ router.post("/update_application_from_student", async (req, res) => {
     "${student.notificationTime}"
   )
   `;
+  let getProdEmailQuery=`Select * from Project where Project_ID="${student.Project_ID}"`
   try {
-    let res1 = await mysqlPool.query(query1);
-    let res3 = await mysqlPool.query(query3);
+    await mysqlPool.query(query1);
+    await mysqlPool.query(query3);
     if (student.applicationStatus == "accept") {
-      let res2 = await mysqlPool.query(query2);
+      await mysqlPool.query(query2);
     }
+    let res4=await mysqlPool.query(getProdEmailQuery)
+    let subject=" Welcome to our Project Management System!"
+    let text=`Dear Professor,
+
+    I hope this email finds you well. I am writing to inform you about the decision on the project request that you submitted on our platform.
+
+After a careful review and consideration, the status of your project request has been updated on our website. You can check the status by logging into your account and visiting the "Project Requests" section.
+
+If the request has been accepted, a student has agreed to take on the project and will be in touch with you soon to discuss the next steps. We are confident that this student has the skills and expertise to complete the project to your satisfaction.
+
+If the request has been rejected, we apologize for the inconvenience. Our platform connects professors with a large pool of talented students, and sometimes there may not be a student available to take on a particular project. However, you are welcome to submit a new project request at any time.
+
+If you have any questions or concerns, please do not hesitate to reach out to us.
+
+    Best regards,
+    
+    College Project Management System Team,
+    RVCE`
+    sendEmailMailGet(res4[0][0].Professor_Email,subject,text)
     return res.status(200).json({
       success: true,
     });
