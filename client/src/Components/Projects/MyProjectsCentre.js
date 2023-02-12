@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ModalSendStudentNotification from "../ModalSendStudentNotification";
+import ModalSendStudentNotification from "../Professor/ModalSendStudentNotification";
 import { CreateProjectContext } from "./ModalCreate";
 
 export default function MyProjectsCentre(props) {
@@ -59,7 +59,7 @@ export default function MyProjectsCentre(props) {
     async function handleNewNotification(proj) {
       setProjectSelected(proj);
       await handelSetStudents(proj.projectId);
-      console.log("jere");
+      
       createNewApplyVisibleHandler();
     }
     async function handelSetStudents(projectId) {
@@ -96,7 +96,9 @@ export default function MyProjectsCentre(props) {
       let curColor = pickRandom();
       //   console.log("curColor")
       return (
+       
         <Card
+     
           isPressable
           isHoverable
           onPress={(event) => {
@@ -104,12 +106,13 @@ export default function MyProjectsCentre(props) {
             if (props.isProfessor) return navigate("/professor/project");
             else return navigate("/student/project");
           }}
-          variant="bordered "
+          variant="shadow"
           style={{
-            width: "20%",
-
+            width: "100%",
+            
             borderRadius: "0.6rem",
             margin: "1.5px",
+          
           }}
           key={proj.projectId}
         >
@@ -118,6 +121,7 @@ export default function MyProjectsCentre(props) {
               backgroundColor: curColor,
             }}
             style={{
+              // height:"5rem",
               display:"flex",
               justifyContent:"space-between"
             }}
@@ -125,7 +129,9 @@ export default function MyProjectsCentre(props) {
             <Text
               style={{
                 color: "#ffffff",
+
               }}
+              className=" py-3"
             >
               {proj.projectName.length > 20
                 ? proj.projectName.substring(0, 20) + "..."
@@ -150,7 +156,7 @@ export default function MyProjectsCentre(props) {
             }}
           />
           <Card.Body>
-            <Text>{proj.projectDescription}</Text>
+            <Text  className=" py-8">{proj.projectDescription}</Text>
           </Card.Body>
           <Card.Divider />
           <Card.Footer style={{}}>
@@ -169,6 +175,7 @@ export default function MyProjectsCentre(props) {
             </Text>
           </Card.Footer>
         </Card>
+       
       );
     });
     // console.log(ret);
@@ -181,7 +188,7 @@ export default function MyProjectsCentre(props) {
 
   return (
     <>
-      <div className=" flex flex-wrap px-2 w-full content-center ">
+      <div className=" mx-6 grid grid-cols-3 px-2 flex-grow content-center  gap-x-6 gap-y-10">
         {myProjects}
       </div>
       {createNewApplyVisible ? (

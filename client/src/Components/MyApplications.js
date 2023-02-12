@@ -106,7 +106,7 @@ export default function MyApplications({ isProfessor, user }) {
           {/* <Card.Footer css={{paddding:"unset"}}> */}
           <div className=" flex flex-grow w-full">
             <button
-              className=" bg-red-500 font-bold text-white py-2 hover:bg-red-700"
+              className= " bg-blue-300 font-bold text-blue-900 py-2 hover:bg-blue-500"
               style={{
                 width: "inherit",
               }}
@@ -169,7 +169,7 @@ export default function MyApplications({ isProfessor, user }) {
           {/* <Card.Footer css={{paddding:"unset"}}> */}
           <div className=" flex flex-grow w-full">
             <button
-              className=" bg-red-500 font-bold text-white py-2 hover:bg-red-700"
+              className=" bg-blue-300  font-bold text-blue-900 py-2 hover:bg-blue-500"
               style={{
                 width: "inherit",
               }}
@@ -191,12 +191,14 @@ export default function MyApplications({ isProfessor, user }) {
 
   return (
     <>
-      <div>
-        <div>
-          <span className=" font-bold text-2xl text-center w-full">
+      <div className=" ">
+        <div className=" mx-2">
+          <div className="flex justify-center">
+          <span className=" font-bold text-2xl ">
             Applications
           </span>
-          <div>
+          </div>
+          <div className="grid grid-cols-1 gap-y-1 ">
             {isProfessor ? (<StudentsApplied />) : (<StudentSideNotifications />)}
           </div>
         </div>
