@@ -1,7 +1,6 @@
 import Router from "express";
 import { mysqlPool } from "../models/sqlInit.js";
 
-
 const router = Router();
 
 export const createNotifications = async (req, res) => {
@@ -9,7 +8,7 @@ export const createNotifications = async (req, res) => {
   const query = `
     Insert into Application values(
       ${notification.forStudent},
-      1,
+      0,
       "${notification.description}",
       "${notification.applicationStatus}",
       "${notification.Project_ID}",
@@ -35,9 +34,29 @@ router.post("/ask_student_to_join", async (req, res) => {
   createNotifications(req, res);
 });
 router.post("/apply_for_project", async (req, res) => {
-
   createNotifications(req, res);
-  console.log("success")
+  console.log("success");
+});
+router.post("/close_open_project_application", async (req, res) => {
+  let project = req.body.data;
+  let query = `
+  UPDATE Application SET 
+  notificationTime ="${project.notificationTime}",
+    isClosed=${project.close}
+    WHERE 
+    Project_ID = "${project.Project_ID}" 
+  `;
+  try {
+    await mysqlPool.query(query);
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      success: false,
+    });
+  }
+  return res.status(200).json({
+    success: true,
+  });
 });
 
 router.post("/get_notification_for_student", async (req, res) => {
@@ -71,12 +90,12 @@ router.post("/get_notification_for_professor", async (req, res) => {
     forStudent=0 AND 
     Project_ID in (
       select Project_ID from Project where Professor_Email="${professor.Professor_Email}"
-    ) ORDER BY notificationTime DESC
+    ) ORDER BY notificationTime DESC AND isClosed=0
   `;
   let result;
   try {
-     result = await mysqlPool.query(query);
-     return res.status(200).json({
+    result = await mysqlPool.query(query);
+    return res.status(200).json({
       success: true,
       notification: result[0],
     });
@@ -86,7 +105,6 @@ router.post("/get_notification_for_professor", async (req, res) => {
       success: false,
     });
   }
-  
 });
 
 router.post("/update_application_from_professor", async (req, res) => {
@@ -142,15 +160,15 @@ router.post("/update_application_from_student", async (req, res) => {
     description = "${student.description}",
     applicationStatus="${student.applicationStatus}",
     notificationTime ="${student.notificationTime}"
-    WHERE Email="${student.studentEmail}" AND
+    WHERE Email="${student.Email}" AND
     Project_ID = "${student.Project_ID}" AND
     forStudent=1
   `;
 
   let query2 = `
   Insert into Works_on values(
-    "${student.studentEmail}",
-    "${student.Project_ID}",
+    "${student.Email}",
+    "${student.Project_ID}"
   )
   `;
   let query3 = `
@@ -166,10 +184,9 @@ router.post("/update_application_from_student", async (req, res) => {
   `;
   try {
     let res1 = await mysqlPool.query(query1);
-    await mysqlPool.query(query3);
-    if (req.applicationStatus == "accept") {
+    let res3 = await mysqlPool.query(query3);
+    if (student.applicationStatus == "accept") {
       let res2 = await mysqlPool.query(query2);
-      
     }
     return res.status(200).json({
       success: true,
