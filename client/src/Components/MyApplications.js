@@ -156,14 +156,13 @@ export default function MyApplications({ isProfessor, user }) {
 
       return (
         <div className="flex flex-col bg-gray-100 rounded-xl px-2 py-4 shadow-sm border-b-2 border-gray-500 "
-        onClickCapture={()=>projectDescriptionHandler(applicationData.Project_ID)}
         >
-          <span className=" text-center w-full overflow-hidden">
+          <span className=" text-center w-full overflow-hidden" onClickCapture={()=>projectDescriptionHandler(applicationData.Project_ID)}>
             {applicationData.Email}
-          </span>
+          </span >
 
-          <div className=" flex justify-between ">
-            <span className=" text-center  text-black font-semibold text-sm self-center">
+          <div className=" flex justify-between " >
+            <span className=" text-center  text-black font-semibold text-sm self-center" onClickCapture={()=>projectDescriptionHandler(applicationData.Project_ID)}>
               {applicationData.Project_ID}
             </span>
 

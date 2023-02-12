@@ -34,7 +34,6 @@ email}) {
     setProfile(res.data.user);
     setSelectedSkills(res.data.user.skills)
     setDept(res.data.user.deptName)
-    console.log(res.data.user)
   };
 
   useEffect(() => {
