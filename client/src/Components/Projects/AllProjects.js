@@ -40,40 +40,11 @@ export default function AllProjects(props) {
       // console.log(colorArray[Math.floor(Math.random() * colorArray.length)]);
       return colorArray[Math.floor(Math.random() * colorArray.length)];
     };
-    // let arr
-    // try {
-    //   console.log(user.email);
-
-    //   const projectsFromDatabase = await axios.post(
-    //     "/project/get_projects",
-    //     {
-    //       data: {
-    //         email:props.email,
-    //         isProfessor: props.isProfessor,
-    //       },
-    //     }
-    //   );
-    //   // if (myProjectsFromDatabase.data.success) closeHandler();
-    //   // console.log(myProjectsFromDatabase);
-    //    arr = projectsFromDatabase.data.projects;
-    // } catch (e) {
-    //   console.log(e);
-    // }
-    // console.log(arr);
-
+  
     async function handleApplyForProject(proj) {
       setclikcedProject(proj);
 
-      // console.log(proj);
-      // console.log(proj);
-      // const data = {
-      //   projectID: proj.projectId,
-      //   email: user.email,
-      //   professorEmail: proj.professorEmail,
-      //   title: proj.projectName,
-      //   studentName: props.user.firstName + " " + props.user.lastName,
-      //   CGPA: props.user.CGPA,
-      // };
+   
       createApplicationHandler();
     }
     const ret = props.projects?.map((proj) => {
