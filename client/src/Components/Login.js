@@ -119,10 +119,11 @@ export default function Login() {
             <div className=" flex-grow justify-center justify-self-center">
               <img src={coder_image} className=" self-center w-full"></img>
             </div>
-            <div className=" flex justify-center text-center px-3 py-4">
+            <div className=" flex justify-center text-center px-3 py-4 flex-col">
               <h3 className=" font-serif italic ">
                 College Project Management System
               </h3>
+              <span className=" ">Let's Increase the culture of Doing Projects in College </span>
             </div>
           </div>
           <div className=" bg-blue-50 rounded-r-2xl">
@@ -132,8 +133,8 @@ export default function Login() {
 
             <form className="pt-32 pb-10 px-12 bg-blue-50">
               {/* <!-- Email input --> */}
-              <div className=" w-full items-center justify-center">
-                <h2 className=" text-center">CPMS</h2>
+              <div className=" w-full items-center justify-center ">
+                {/* <h2 className=" text-center">CPMS</h2> */}
               </div>
               {loginState === "login" ? (
                 <div>
