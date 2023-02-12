@@ -20,4 +20,3 @@ sendEmailApi.send(msg)
     console.error(error)
   })
 }
-export default sendEmail
