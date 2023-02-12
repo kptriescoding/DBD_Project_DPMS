@@ -124,7 +124,7 @@ export default function Dashboard() {
             <div style={{ width: "inherit" }} />
           )}
         </div>
-        <div className=" w-1/5  border-2 p-2 border-black">
+        <div className=" w-1/5  border-2 p-2 border-black mx-2">
           {profile && userType ? (
             <MyApplications
               isProfessor={userType == "Student" ? false : true}
