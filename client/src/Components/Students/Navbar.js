@@ -7,8 +7,8 @@ import SpeechRecognizer from "../SpeechRecognizer";
 
 export default (props)=>{
   const navigate=useNavigate()
-    return <section className=" flex flex-grow my-2 justify-end">
-    <Navbar variant={"sticky"} color={"primary"} className="flex justify-end">
+    return <section className=" flex flex-grow my-2 justify-end ">
+    <Navbar variant={"sticky"} color className="flex justify-end">
     <Navbar.Content className=" flex justify-end">
     <Navbar.Link
     onClick={()=>{navigate("/student/dashboard")}}

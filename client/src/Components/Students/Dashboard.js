@@ -108,18 +108,20 @@ export default function Dashboard() {
           />
         </div>
 
-        <div className=" w-full mt-2 ">
+        <div className=" w-full mt-2 items-center bg-gray-100 shadow-sm rounded-lg border border-gray-300">
           {user && userType ? (
-            <>
-              <span className="flex flex-wrap items-center font-bold text-black text-2xl w-full text-center">
-                Your Projects
-              </span>
+            <div>
+              <div className=" flex-grow ">
+                <span className="flex flex-wrap items-center font-bold text-black text-2xl w-full text-center">
+                  Your Projects
+                </span>
+              </div>
               <MyProjectsCentre
                 user={user}
                 email={user.email}
                 isProfessor={userType == "Professor"}
               />
-            </>
+            </div>
           ) : (
             <div style={{ width: "inherit" }} />
           )}

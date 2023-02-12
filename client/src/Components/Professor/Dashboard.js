@@ -117,17 +117,19 @@ export default function Dashboard(props) {
           <div />
         )}
 
-        <div className=" w-full mt-2 items-center ">
+        <div className=" w-full mt-2 items-center bg-gray-100 shadow-sm rounded-lg border border-gray-300">
           {user && userType ? (
-            <>
-              <span className="flex flex-wrap items-center font-bold text-black text-2xl w-full text-center">
-                Your Projects
-              </span>
+            <div className=" flex-grow">
+              <div className=" flex w-full justify-center py-2 border-b border-gray-400">
+                <span className=" font-bold text-black text-2xl w-full text-center">
+                  Your Projects
+                </span>
+              </div>
               <MyProjectsCentre
                 email={user.email}
                 isProfessor={userType === "Professor"}
               />
-            </>
+            </div>
           ) : (
             <div style={{ width: "inherit" }} />
           )}

@@ -3,30 +3,25 @@ import { Button, Navbar } from "@nextui-org/react";
 import { logout } from "../../firebase";
 import ModalCreateProject from "../Projects/ModalCreate";
 import { useNavigate } from "react-router-dom";
-import {Popover} from "@nextui-org/react";
+import { Popover } from "@nextui-org/react";
 import ProfilePopover from "./ProfilePopover";
 import SpeechRecognizer from "../SpeechRecognizer";
-
-
 
 export default function ProfessorNavbar(props) {
   const [createProjectVisible, setCreateProjectVisible] = useState(false);
   const createProjectHandler = () => setCreateProjectVisible(true);
   const closeCreateProjectHandler = () => setCreateProjectVisible(false);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   return (
-    
-    <section className=" flex flex-grow justify-between ">
+    <section className=" flex flex-grow w-full  ">
       <Navbar
         variant={"sticky"}
-        color={"primary"}
         style={{
-          justifyContent: "space-between",
-          flexGrow:"initial"
+          width: "inherit",
+          
         }}
       >
-        
         <Navbar.Content className=" flex justify-center">
           <Navbar.Link
             variant="underline"
@@ -36,20 +31,28 @@ export default function ProfessorNavbar(props) {
             Create Project
           </Navbar.Link>
           <Navbar.Link
-          onClickCapture={()=>{navigate("/professor/dashboard")}}
+            onClickCapture={() => {
+              navigate("/professor/dashboard");
+            }}
           >
-          Dashboard
+            Dashboard
           </Navbar.Link>
           <Navbar.Link
-          onClickCapture={()=>{navigate("/professor/report")}}
+            onClickCapture={() => {
+              navigate("/professor/report");
+            }}
           >
-          Reports
+            Reports
           </Navbar.Link>
+        </Navbar.Content>
+        <Navbar.Content>
           <Navbar.Item>
-          <ProfilePopover user={props.user} userType={props.userType}/>
+            <ProfilePopover user={props.user} userType={props.userType} />
           </Navbar.Item>
           <Navbar.Item>
-          <SpeechRecognizer isProfessor={(props.userType==="Professor")?true:false}/>
+            <SpeechRecognizer
+              isProfessor={props.userType === "Professor" ? true : false}
+            />
           </Navbar.Item>
         </Navbar.Content>
       </Navbar>
@@ -64,6 +67,5 @@ export default function ProfessorNavbar(props) {
         <div />
       )}
     </section>
-  
   );
 }

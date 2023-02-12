@@ -68,7 +68,7 @@ const ModalSendStudentNotification = ({
       <div>
         <Modal closeButton onClose={closeHandler} open={visible}>
           <Modal.Header>
-            <Text size={18}>Send Student message to Join your Project</Text>
+            <Text size={18}>Send Student invitation to Join your Project</Text>
           </Modal.Header>
           <Modal.Body>
             <div>

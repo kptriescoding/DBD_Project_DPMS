@@ -165,7 +165,12 @@ export default function MyProjectsCentre(props) {
             <Text className=" py-8">{proj.projectDescription}</Text>
           </Card.Body>
           <Card.Divider />
-          <Card.Footer style={{}}>
+          <Card.Footer
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <Text  style={{ justifyContent: "end" }}>
+              {proj.collaborator}
+            </Text>
             {props.isProfessor ? (
               <Button
                 flat
@@ -178,9 +183,6 @@ export default function MyProjectsCentre(props) {
             ) : (
               <></>
             )}
-            <Text small style={{ justifyContent: "end" }}>
-              {proj.collaborator}
-            </Text>
           </Card.Footer>
         </Card>
       );
@@ -195,7 +197,7 @@ export default function MyProjectsCentre(props) {
 
   return (
     <>
-      <div className=" mx-6 grid grid-cols-3 px-2 flex-grow content-center  gap-x-6 gap-y-10">
+      <div className=" mx-6  my-2 grid grid-cols-3 px-2 flex-grow content-center  gap-x-6 gap-y-10">
         {myProjects}
       </div>
       {createNewApplyVisible ? (

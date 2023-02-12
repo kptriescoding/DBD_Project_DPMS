@@ -144,7 +144,7 @@ export default function AllProjects(props) {
 
   return (
     <>
-      <div className=" flex px-2 flex-col  overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-300">
+      <div className=" flex px-2 flex-col   overflow-x-hidden scrollbar-thin  scrollbar-thumb-slate-300">
         <div class="container flex  self-start  top-0 sticky z-10 bg-white">
           <div class="flex border-2 rounded ">
             <input
@@ -168,7 +168,7 @@ export default function AllProjects(props) {
             </button>
           </div>
         </div>
-        <div className=" h-screen grid grid-flow-row   gap-y-3">{projects}</div>
+        <div className=" h-screen flex flex-col space-y-3">{projects}</div>
       </div>
       {createApplicationVisible &&(
         <ModalApply
