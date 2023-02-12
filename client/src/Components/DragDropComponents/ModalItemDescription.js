@@ -54,19 +54,11 @@ const ModalItemDescription=forwardRef(({items,
   
     return (
       <div className=" my-0.5">
-        <Button ref={ref} bordered color="gradient" light onPress={handler} style={
-          {
-            whiteSpace:"initial",
-            height:"auto",
-            padding:"0.75rem",
-            
-            background:"rgb(255,254,255)",
-            width:"100%",
-            borderRadius:"0.25rem"
-          }
-        }>
+        <button ref={ref} bordered color="gradient"  onClick={handler} 
+        className=" px-2 py-1.5 text-center self-center w-full hover:bg-slate-400"
+        >
           {item.Name}
-        </Button>
+        </button>
         
         <Modal
           closeButton

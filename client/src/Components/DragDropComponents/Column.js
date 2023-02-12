@@ -33,6 +33,7 @@ const Column = ({
   const returnItemsForColumn = () => {
     return items.map((item, index) =>
       item.Column === columnIndex ? (
+        <div className=" border border-gray-500 my-1">
         <MovableItem
           items={items}
           name={item.Name}
@@ -44,60 +45,46 @@ const Column = ({
           item={item}
           members={members}
         />
+        </div>
       ) : (
         <div />
       )
     );
   };
-  const nextuiCGNVTSfIgvLppdCss = {
-    marginTop: "0 !important",
-  };
+
   return (
-    <Col
-      style={{
-        margin: "0rem",
-      }}
-    >
-      <div
-        ref={drop}
-        
-      >
-        <Card
-        borderWeight="extrabold"
-        borderRadius="1"
-        style={{
+    <div className=" px-2 pb-6 pt-2 bg-gray-100 rounded-md shadow-lg">
+      <div ref={drop}>
+        <div
+          borderWeight="extrabold"
+          borderRadius="1"
+          style={{
             background: "rgb(235,235,240)",
             margin: "0.5rem",
             borderRadius: "0.25rem",
           }}
         >
-          <Card.Header
-            style={{
-              justifyContent: "center",
-              nextuiCGNVTSfIgvLppdCss,
-            }}
+          <div
           >
             <Text>{title}</Text>
-          </Card.Header>
+          </div>
           <Card.Divider />
-          <Card.Body
-          style={{
-            flex: "1 1 auto"
-          }}
+          <div
+            style={{
+              flex: "1 1 auto",
+            }}
           />
-          {returnItemsForColumn()}
-          <Card.Divider />
-         
-          <Card.Body />
-          <Card.Divider/>
           <ModalAddNewItem
             items={items}
             columnIndex={columnIndex}
             updateDragTasksForItems={updateDragTasksForItems}
           />
-        </Card>
+          <Card.Divider />
+          {returnItemsForColumn()}
+          <Card.Divider />
+        </div>
       </div>
-    </Col>
+    </div>
   );
 };
 export default Column;

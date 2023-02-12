@@ -80,21 +80,26 @@ export default function ProjectNotifications({
   }, [myNotification]);
 
   return (
-    <div className=" flex px-2 flex-col ">
+    <div className=" flex px-2 flex-col justify-self-center  w-full ">
       {isProfessor && (
         <>
           <Popover isOpen={popoverOpen} onOpenChange={setPopoverOpen}>
             <Popover.Trigger>
-              <Button>Post</Button>
+              <Button>New Notification</Button>
             </Popover.Trigger>
             <Popover.Content>
               <Textarea
-                className=""
+                style={{ width: "100%" ,margin:"2px",textAlign:"center"}}
                 placeholder="Description"
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
               />
-              <Button onClickCapture={sendNotification}>Send</Button>
+              <button
+                onClickCapture={sendNotification}
+                className=" bg-blue-700 w-full py-2 rounded-xl text-white"
+              >
+                Send
+              </button>
             </Popover.Content>
           </Popover>
         </>

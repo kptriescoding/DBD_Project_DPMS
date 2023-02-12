@@ -38,17 +38,9 @@ const ModalAddNewItem=({items,columnIndex,updateDragTasksForItems})=> {
   
   
     return (
-      <div className=" my-0 py-0">
-        <button  shadow onClick={handler} style={
-          {
-            width: "100%",
-            fontSize: "xx-large",
-            textAlign:"left",
-            display:"flex",
-            
-          }
-        }
-        className=" bg-gray-200 hover:bg-gray-300 rounded-sm px-4 py-1 mx-2"
+      <div className=" my-0 py-0 border-2 border-gray-500">
+        <button   onClick={handler} 
+        className=" bg-gray-500 hover:bg-gray-600 rounded-sm px-4 py-2 w-full text-white font-semibold"
         >
           + 
           <span className=" text-sm self-center px-2">Add a card</span>

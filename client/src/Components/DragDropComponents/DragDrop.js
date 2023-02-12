@@ -62,7 +62,7 @@ const DragDrop = ({ projectID }) => {
   };
 
   return (
-    <div className=" h-screen  bg-gray flex flex-col justify-start flex-grow">
+    <div className=" h-screen  bg-gray flex flex-col justify-start flex-grow my-4 mx-2">
       <div className=" flex w-full ">
         <DndProvider backend={HTML5Backend}>
           <div className=" w-full">

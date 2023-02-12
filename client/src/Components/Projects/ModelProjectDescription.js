@@ -177,7 +177,7 @@ const ModalProjectDescription = ({
             disabled={!editable}
             onChangeCapture={(event) => setFunding(event.target.value)}
           />
-          {/* <MultiSelect
+          <MultiSelect
             options={multiSelectSkills}
             value={selectedSkills}
             onChange={setSelectedSkills}
@@ -185,7 +185,7 @@ const ModalProjectDescription = ({
             isCreatable={true}
             disabled={!editable}
             onCreateOption={newSkill=>({label:newSkill,value:newSkill})}
-          /> */}
+          />
           <Input
             bordered
             fullWidth
