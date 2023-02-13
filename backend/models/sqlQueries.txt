@@ -171,6 +171,14 @@ INSERT INTO Works_on VALUES
 ("mohitkumar.cv20@rvce.edu.in","Proj004"),
 ("roshankumar.ch20@rvce.edu.in","Proj005");
 
+REPLACE INTO Department VALUES
+("AS",1967),
+("ISE",1967),
+("CSE",1967),
+("ECE",1967),
+("ETE",1967),
+("ME",1967),
+("CV",1967);
 
 {
    "data" :  {

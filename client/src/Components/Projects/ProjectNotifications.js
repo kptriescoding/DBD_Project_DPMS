@@ -81,6 +81,7 @@ export default function ProjectNotifications({
 
   return (
     <div className=" flex px-2 flex-col justify-self-center  w-full ">
+    <h3>Notification</h3>
       {isProfessor && (
         <>
           <Popover isOpen={popoverOpen} onOpenChange={setPopoverOpen}>

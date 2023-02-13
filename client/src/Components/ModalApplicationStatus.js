@@ -196,6 +196,12 @@ const ModalApplicationStatus = ({
                 <Text size={18}>{applicationData.Project_ID}</Text>
               </Modal.Header>
               <Modal.Body>
+              {applicationData.applicationStatus == "accept" && (
+                <Button style={{ backgroundColor: "#22c856" }}>Accepted</Button>
+              )}
+              { applicationData.applicationStatus == "reject" && (
+                <Button style={{ backgroundColor: "#df0b32" }}>Rejected</Button>
+              )}
                 {applicationData.applicationStatus == "sent" ? (
                   <Textarea
                     clearable

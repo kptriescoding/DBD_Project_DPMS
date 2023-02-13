@@ -146,21 +146,9 @@ const Reports = ({ userType, email }) => {
 
   return (
     <div className=" flex flex-col h-screen">
-      <div className="flex justify-end w-full py-4  bg-slate-100">
-        <div className=" flex flex-column justify-end items-center mx-5">
-          <Button
-            style={{
-              padding: "0rem 6.2rem 0rem 6.2rem",
-            }}
-            onClickCapture={logout}
-          >
-            Logout
-          </Button>
-        </div>
-      </div>
       <div className=" flex flex-grow">
-        <div className="flex  flex-col w-1/5 my-4 mx-2 py-4 bg-slate-100 px-4 rounded-2xl shadow-xl border border-slate-400" >
-          <div className="flex flex-col justify-center  w-full self-center mx-2 ">
+        <div className="flex  flex-col w-1/5 my-4 py-4 bg-slate-100 px-4 rounded-2xl shadow-xl border border-slate-400 ">
+          <div className="flex flex-col justify-center mt-4 w-full self-center ">
             <Dropdown
               className=" mb-1"
               options={viewType["Options"]}
@@ -174,15 +162,15 @@ const Reports = ({ userType, email }) => {
             />
           </div>
           {userType === "Admin" && (
-            <div className="flex flex-col justify-center w-full">
+            <div className="flex flex-col justify-center w-full self-center">
               <input
                 placeholder="Write Your SQL Query Here"
                 className=" py-2 px-2 w-full  mb-2 bg-gray-200 items-center border-black border-2  text-black"
                 onChangeCapture={(val) => handleSqlQueryChange(val)}
               ></input>
 
-              <div className="flex  w-full  justify-center items-center py-2 my-2 px-14 rounded-full bg-blue-200  ">
-                <span className="mx-1 rounded-lg w-full h-8 text-center ">
+              <div className="flex  w-full self-center justify-center items-center py-2 my-2 px-14 rounded-full bg-blue-200  ">
+                <span className="mx-1 rounded-lg w-fit h-8 text-center ">
                   Use SQL Query
                 </span>
                 <Switch
@@ -218,7 +206,7 @@ const Reports = ({ userType, email }) => {
           )}
         </div>
         <div className=" w-1/4 my-4 mx-2 flex flex-col py-4 bg-slate-100 px-4 rounded-2xl shadow-xl border border-slate-400">
-          <Dropdown 
+          <Dropdown
             className=" mb-1"
             options={barCharCol}
             onChange={(option) => setBarData1(option.value)}
