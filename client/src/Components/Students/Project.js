@@ -11,29 +11,30 @@ import { fetchUserType } from "../../firebase";
 
 export default function Projects() {
   const [user, loading, error] = useAuthState(auth);
-  const [project,setProject]=useState({})
+  const [project, setProject] = useState({});
   const navigate = useNavigate();
-  const [userType,setUserType]=useState("")
+  const [userType, setUserType] = useState("");
   const [profile, setProfile] = useState({});
 
   const checkUserSignup = async () => {
-    let resUserType=await fetchUserType(user.email)
-    setUserType(resUserType)
+    let resUserType = await fetchUserType(user.email);
+    setUserType(resUserType);
     const data = {
       email: user.email,
     };
     const res = await axios.post("/student/is_signup", { data: data });
     let isSignup = res.data.isSignup;
-    if(resUserType==="Professor")
-    return navigate("/professor/dashboard")
-    else if(resUserType==="Admin")
-    return navigate("/admin/dashboard");
-    if (!isSignup && resUserType=== "Student")
+    if (resUserType === "Professor") return navigate("/professor/dashboard");
+    else if (resUserType === "Admin") return navigate("/admin/dashboard");
+    if (!isSignup && resUserType === "Student")
       return navigate("/student/signup");
     if (!isSignup && resUserType === "Professor")
       return navigate("/professor/signup");
-    if(localStorage.getItem("projectID")&&localStorage.getItem("projectID").length===0)
-        return navigate("/professor/dashboard")
+    if (
+      localStorage.getItem("projectID") &&
+      localStorage.getItem("projectID").length === 0
+    )
+      return navigate("/professor/dashboard");
   };
   const getUser = async () => {
     const data = {
@@ -51,25 +52,34 @@ export default function Projects() {
   }, [user, loading]);
   return (
     <div>
-      { profile &&<Navbar user={profile}  userType={userType}/>}
+      {profile && <Navbar user={profile} userType={userType} />}
       <div className="flex flex-row">
-      <div className=" sticky flex w-1/5 mt-2 z border-gray-300 border-x-2">
-      {(user)?<MyProjectsSide email={user.email} 
-      isProfessor={userType==="Professor"}/>:<div/>}
+        <div className=" sticky flex w-1/5 mt-2 z border-gray-300 border-x-2">
+          {user ? (
+            <MyProjectsSide
+              email={user.email}
+              isProfessor={userType === "Professor"}
+            />
+          ) : (
+            <div />
+          )}
+        </div>
+        <div className="flex flex-col w-3/5">
+          <div className=" flex w-full">
+            <h3>{localStorage.getItem("projectID")}</h3>
+          </div>
+          <DragDrop projectID={localStorage.getItem("projectID")} />
+        </div>
+        <div className="flex w-1/5">
+          {user && (
+            <ProjectNotifications
+              isProfessor={userType === "Professor"}
+              projectID={localStorage.getItem("projectID")}
+              email={user.email}
+            />
+          )}
+        </div>
       </div>
-      <div className="flex w-3/5">
-      <DragDrop 
-      projectID={localStorage.getItem("projectID")}
-      />
-      </div>
-      <div className="flex w-1/5">
-      {user && <ProjectNotifications
-      isProfessor={userType==="Professor"}
-      projectID={localStorage.getItem("projectID")}
-      email={user.email}
-      />}
-      </div>
-      </div>
-      </div>
+    </div>
   );
 }
