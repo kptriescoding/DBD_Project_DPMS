@@ -140,18 +140,6 @@ const [reRender,shouldReRender]=useState(0)
 
       return (
         <div className=" flex flex-col h-screen">
-          <div className="flex justify-end w-full py-4  bg-slate-100">
-            <div className=" flex flex-column justify-end items-center mx-5">
-              <Button
-                style={{
-                  padding: "0rem 6.2rem 0rem 6.2rem",
-                }}
-                onClickCapture={logout}
-              >
-                Logout
-              </Button>
-            </div>
-          </div>
           <div className=" flex flex-grow">
             <div className="flex  flex-col w-1/6 mt-4">
               <div className="flex flex-col justify-center mt-4 w-full mx-2">
@@ -199,7 +187,7 @@ const [reRender,shouldReRender]=useState(0)
               </div>
             </div>
     
-            <div className="flex flex-col mx-4 overflow-x-auto flex-grow p-2 border-  " >
+            <div className="flex flex-col mx-4 overflow-x-auto flex-grow p-2 border-  w-4/6" >
               <Table data={sqlData}/>
               {sqlData != null && sqlData.length != 0 ? (
                 <button

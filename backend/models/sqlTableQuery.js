@@ -115,13 +115,3 @@ export const queryApplicationTable= `CREATE TABLE IF NOT EXISTS Application
   FOREIGN KEY (Email) REFERENCES Student(Email) ON DELETE CASCADE ON UPDATE CASCADE
 )`
 
-// export const defaultDepartmentQueries=`REPLACE INTO Department VALUES
-// ("AS",1967),
-// ("ISE",1967),
-// ("CSE",1967),
-// ("ECE",1967),
-// ("ETE",1967),
-// ("ME",1967),
-// ("CV",1967)
-// `
-

@@ -40,6 +40,7 @@ export const signInWithGoogle = async (userType) => {
         });
       }
     }
+    window.location.reload()
   } catch (err) {
     console.error(err);
     // alert(err.message);
@@ -93,6 +94,7 @@ export const fetchUserType=async(email)=>{
   return docs.docs[0]._document.data.value.mapValue.fields.userType.stringValue
   }
   catch(err){
+    return ""
     console.log(err)
   }
 }

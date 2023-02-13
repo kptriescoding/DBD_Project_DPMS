@@ -83,7 +83,7 @@ function getDuration(days) {
 router.post("/get_projects", async (req, res) => {
   let query = `
   select *,DATEDIFF(End_Date, Start_Date) AS days from Project
-  where Project_ID not in (select Project_ID from Application where Email="${req.body.data.email}")
+  where Project_ID not in (select Project_ID from Application where Email="${req.body.data.email}" or isClosed=1)
   `;
   try {
     var projects = [];

@@ -103,10 +103,10 @@ export default function Login() {
     );
   };
   const changeEmail = () => setLoginState("login");
-  const logInWithGoogle = () => {
+  const logInWithGoogle = async () => {
     userType = userTypes[document.forms[0].isProfessor.value];
     setUserRoute(userType);
-    signInWithGoogle(userType);
+    await signInWithGoogle(userType);
   };
   const EmailInput = () => {
     return (

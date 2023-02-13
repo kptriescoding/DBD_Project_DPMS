@@ -143,7 +143,7 @@ router.post("/update_application_from_professor", async (req, res) => {
     if (professor.applicationStatus == "accept") {
       let res2 = await mysqlPool.query(query2);
     }
-    let subject=" Welcome to our Project Management System!"
+    let subject=" Change in Project Status Regd."
     let text=`Dear Student,
 
     I hope this email finds you well. I am writing to update you on the status of your recent project application.
@@ -207,12 +207,12 @@ router.post("/update_application_from_student", async (req, res) => {
       await mysqlPool.query(query2);
     }
     let res4=await mysqlPool.query(getProdEmailQuery)
-    let subject=" Welcome to our Project Management System!"
+    let subject="Change in Project Status Regd."
     let text=`Dear Professor,
 
     I hope this email finds you well. I am writing to inform you about the decision on the project request that you submitted on our platform.
 
-After a careful review and consideration, the status of your project request has been updated on our website. You can check the status by logging into your account and visiting the "Project Requests" section.
+The status of your project request has been updated on our website. You can check the status by logging into your account and visiting the "Project Requests" section.
 
 If the request has been accepted, a student has agreed to take on the project and will be in touch with you soon to discuss the next steps. We are confident that this student has the skills and expertise to complete the project to your satisfaction.
 

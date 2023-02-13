@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { mysqlPool } from "../models/sqlInit.js";
+import sendEmailMailGet from "../mailApi/sendMailgetAPI.js";
 
 const router = Router();
 
