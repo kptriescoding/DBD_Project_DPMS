@@ -150,7 +150,7 @@ export default function Login() {
                   <button
                     type="submit"
                     onClickCapture={checkUserLoggedIn}
-                    className="inline-block px-7 py-3.5 bg-blue-600 text-white font-medium text-base leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+                    className="inline-block px-7 py-3.5 bg-sky-500 text-white font-medium text-base leading-snug uppercase rounded shadow-md hover:bg-sky-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-sky-800 active:shadow-lg transition duration-150 ease-in-out w-full"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="light"
                   >
@@ -171,7 +171,7 @@ export default function Login() {
                   <button
                     type="submit"
                     onClickCapture={loginThroughPassword}
-                    className="inline-block px-7 py-3.5 bg-blue-600 text-white font-medium text-base leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full mb-2"
+                    className="inline-block px-7 py-3.5 bg-sky-700 text-white font-medium text-base leading-snug uppercase rounded shadow-md hover:bg-sky-800 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full mb-2"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="light"
                   >
@@ -180,7 +180,7 @@ export default function Login() {
                   <button
                     type="submit"
                     onClickCapture={changeEmail}
-                    className="inline-block px-7 py-3.5 bg-blue-600 text-white font-medium text-base leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+                    className="inline-block px-7 py-3.5 bg-sky-700 text-white font-medium text-base leading-snug uppercase rounded shadow-md hover:bg-sky-800 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="light"
                   >
@@ -215,7 +215,7 @@ export default function Login() {
               <div className=" flex justify-center w-full my-3">
                 <GoogleButton
                   onClickCapture={logInWithGoogle}
-                  className="w-full items-center hover:bg-blue-800"
+                  className="w-full items-center hover:bg-sky-600 bg-sky-500"
                   style={{
                     width: "100%",
                     backgroundColor: "rgb(37 99 235)",

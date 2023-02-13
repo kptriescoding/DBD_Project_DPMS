@@ -33,7 +33,7 @@ const Column = ({
   const returnItemsForColumn = () => {
     return items.map((item, index) =>
       item.Column === columnIndex ? (
-        <div className=" border border-gray-500 my-1">
+        <div className=" border border-gray-300 my-1.5 shadow-sm rounded-lg">
         <MovableItem
           items={items}
           name={item.Name}
