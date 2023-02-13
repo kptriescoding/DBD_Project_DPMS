@@ -170,7 +170,7 @@ const Reports = ({ userType, email }) => {
               ></input>
 
               <div className="flex  w-full self-center justify-center items-center py-2 my-2 px-14 rounded-full bg-blue-200  ">
-                <span className="mx-1 rounded-lg w-fit h-8 text-center ">
+                <span className="mx-1 rounded-lg w-fit h-8 text-center self-center">
                   Use SQL Query
                 </span>
                 <Switch
@@ -192,7 +192,7 @@ const Reports = ({ userType, email }) => {
           </div>
         </div>
 
-        <div className="flex flex-col mx-4 overflow-x-auto flex-grow p-2 border-  ">
+        <div className="flex flex-col mx-4 overflow-x-auto flex-grow p-2   flex-grow  ">
           <Table data={sqlData} />
           {sqlData != null && sqlData.length != 0 ? (
             <button

@@ -14,3 +14,4 @@ export const DATABASE_URL=process.env.DATABASE_URL
 export const SEND_EMAIL_API_KEY=process.env.SEND_EMAIL_API_KEY
 export const MAIL_GET_API_KEY=process.env.MAIL_GET_API_KEY
 export const MAIL_GET_SECRET_KEY=process.env.MAIL_GET_SECRET_KEY
+
