@@ -192,7 +192,7 @@ const Reports = ({ userType, email }) => {
           </div>
         </div>
 
-        <div className="flex flex-col mx-4 overflow-x-auto flex-grow p-2   flex-grow  ">
+        <div className="flex flex-col mx-4 overflow-x-auto flex-grow p-2  w-3/6 flex-grow  ">
           <Table data={sqlData} />
           {sqlData != null && sqlData.length != 0 ? (
             <button
