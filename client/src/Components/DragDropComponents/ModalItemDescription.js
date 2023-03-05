@@ -53,9 +53,9 @@ const ModalItemDescription=forwardRef(({items,
   
   
     return (
-      <div className=" my-0.5">
+      <div className="">
         <button ref={ref} bordered color="gradient"  onClick={handler} 
-        className=" px-2 py-1.5 text-center self-center w-full hover:bg-slate-400"
+        className=" px-2 py-1.5 text-center self-center w-full hover:bg-slate-100 shadow-md border border-gray-300 "
         >
           {item.Name}
         </button>
