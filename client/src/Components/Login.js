@@ -111,11 +111,11 @@ export default function Login() {
   const EmailInput = () => {
     return (
       <div
-        className="  flex justify-center content-center h-screen  flex-wrap bg-no-repeat bg-cover  bg-black/20 bg-blend-multiply"
+        className=" flex justify-center content-center h-screen flex-wrap bg-no-repeat bg-cover  bg-black/20 bg-blend-multiply"
         style={{ backgroundImage: `url(${bgimg})` }}
       >
-        <div className="rounded-2xl grid grid-cols-2 shadow-2xl border-2 border-blue-200">
-          <div className=" bg-sky-300 grid py-6 rounded-l-2xl ">
+        <div className="rounded-2xl lg:grid lg:grid-cols-2 shadow-2xl border-2 border-blue-200">
+          <div className=" hidden  bg-sky-300 lg:grid py-6 rounded-l-2xl ">
             <div className=" flex-grow justify-center justify-self-center">
               <img src={coder_image} className=" self-center w-full"></img>
             </div>

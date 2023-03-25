@@ -8,12 +8,16 @@ import ProjectNotifications from "../Projects/ProjectNotifications";
 import MyProjectsSide from "../Projects/MyProjects";
 import DragDrop from "../DragDropComponents/DragDrop";
 import { fetchUserType } from "../../firebase";
+import NotificationsPausedIcon from "@mui/icons-material/NotificationsPaused";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function Projects() {
   const [user, loading, error] = useAuthState(auth);
   const [project, setProject] = useState("");
   const navigate = useNavigate();
   const [userType, setUserType] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
   const [profile, setProfile] = useState({});
 
   const checkUserSignup = async () => {
@@ -55,6 +59,9 @@ export default function Projects() {
     setProject(res.data.project.projectName);
   }
 
+  function handleShowNotification() {
+    setShowNotification(!showNotification);
+  }
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/login");
@@ -64,8 +71,8 @@ export default function Projects() {
   return (
     <div>
       {profile && <Navbar user={profile} userType={userType} />}
-      <div className="flex flex-row">
-        <div className=" sticky flex w-1/5 mt-2 z border-gray-300 border-x-2">
+      <div className="flex flex-row relative">
+        <div className=" sticky hidden lg:flex w-1/5 mt-2 z border-gray-300 border-x-2">
           {user ? (
             <MyProjectsSide
               email={user.email}
@@ -79,17 +86,41 @@ export default function Projects() {
           <div className=" flex w-full justify-center">
             <h3 className=" self-center">{project}</h3>
           </div>
+          <div className=" bg-gray-100 w-fit grid grid-cols-1 grid-rows-2  min-w-[50%]">
+            <button
+              className="  flex  py-1 px-2.5 justify-start gap-1"
+              onClickCapture={handleShowNotification}
+            >
+              {/* <span className="material-icons-outlined">bubble_chart</span> */}
+              <ReceiptLongIcon />
+              <span>Show All Projects</span>
+            </button>
+            <button
+              className="  flex py-1 px-2.5 justify-start gap-1"
+              onClickCapture={handleShowNotification}
+            >
+              {/* <span className="material-icons-outlined">bubble_chart</span> */}
+              {showNotification ? <CloseIcon /> : <NotificationsPausedIcon />}
+              {showNotification ? (
+                <span>Close Notifications</span>
+              ) : (
+                <span>Notifications</span>
+              )}
+            </button>
+          </div>
           <DragDrop projectID={localStorage.getItem("projectID")} />
         </div>
-        <div className="flex w-1/6">
-          {user && (
-            <ProjectNotifications
-              isProfessor={userType === "Professor"}
-              projectID={localStorage.getItem("projectID")}
-              email={user.email}
-            />
-          )}
-        </div>
+        {showNotification && (
+          <div className=" absolute  md:sticky left-0 md:left-full top-[7rem] md:top-0 right-0 md:flex  w-4/5 md:w-1/6 bg-slate-400 h-full">
+            {user && (
+              <ProjectNotifications
+                isProfessor={userType === "Professor"}
+                projectID={localStorage.getItem("projectID")}
+                email={user.email}
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

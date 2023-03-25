@@ -99,5 +99,5 @@ export default function MyProjects(props) {
     if(myProjects===null||myProjects.length===0)GetMyProjects();
   }, [myProjects]);
 
-  return <div className=" flex px-2 flex-col  ">{myProjects}</div>;
+  return <div className="flex px-2 flex-col  ">{myProjects}</div>;
 }

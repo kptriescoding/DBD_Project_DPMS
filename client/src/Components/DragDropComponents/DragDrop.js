@@ -73,7 +73,7 @@ const DragDrop = ({ projectID }) => {
               //   justifyItems: "flex-start",
               //   margin: "0.25rem",
               // }}
-              className="grid grid-cols-4 gap-x-3"
+              className="grid  grid-cols-1  lg:grid-cols-2 2xl:grid-cols-4 lg:gap-x-3"
             >
               {
                 // console.log(columns)
