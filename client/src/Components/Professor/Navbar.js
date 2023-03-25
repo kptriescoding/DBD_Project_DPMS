@@ -71,17 +71,20 @@ export default function ProfessorNavbar(props) {
               }}
               isActive={index === 2}
             >
-              <Link
-                color="inherit"
-                css={{
-                  minWidth: "100%",
-                }}
+              {index==0? 
+              <ProfilePopover user={props.user} userType={props.userType}  style={{width:"100%"}}/>
+              : 
+              <button
+                className=" border-b-2 border-black w-3/5"
                 onClickCapture={() => {
-                  navigate(links[index]);
+                  index == 2
+                    ? createProjectHandler()
+                    : navigate(links[index - 1]);
                 }}
               >
                 {item}
-              </Link>
+              </button>}
+              
             </Navbar.CollapseItem>
           ))}
         </Navbar.Collapse>
