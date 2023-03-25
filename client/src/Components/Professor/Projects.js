@@ -86,7 +86,7 @@ export default function Projects() {
           <div className=" flex w-full justify-center">
             <h3 className=" self-center">{project}</h3>
           </div>
-          <div className=" bg-gray-100 w-fit grid grid-cols-1 grid-rows-2  min-w-[50%]">
+          <div className=" bg-gray-100 w-fit grid grid-cols-2 grid-rows-1 items-center lg:hidden">
             <button
               className="  flex  py-1 px-2.5 justify-start gap-1"
               onClickCapture={handleShowNotification}
