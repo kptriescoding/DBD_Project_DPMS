@@ -17,7 +17,7 @@ export default function Projects() {
   const [project, setProject] = useState("");
   const navigate = useNavigate();
   const [userType, setUserType] = useState("");
-  const [showNotification, setShowNotification] = useState(false);
+  const [showNotification, setShowNotification] = useState(0);
   const [profile, setProfile] = useState({});
 
   const checkUserSignup = async () => {
@@ -59,8 +59,9 @@ export default function Projects() {
     setProject(res.data.project.projectName);
   }
 
-  function handleShowNotification() {
-    setShowNotification(!showNotification);
+  function handleShowNotification(val) {
+    if (showNotification == 0) setShowNotification(val);
+    else setShowNotification(0);
   }
   useEffect(() => {
     if (loading) return;
@@ -72,46 +73,51 @@ export default function Projects() {
     <div>
       {profile && <Navbar user={profile} userType={userType} />}
       <div className="flex flex-row relative">
-        <div className=" sticky hidden lg:flex w-1/5 mt-2 z border-gray-300 border-x-2">
-          {user ? (
-            <MyProjectsSide
-              email={user.email}
-              isProfessor={userType === "Professor"}
-            />
-          ) : (
-            <div />
-          )}
-        </div>
+        {(showNotification == 1 ||
+          window.matchMedia("(min-width: 1024px)").matches) && (
+          <div className=" z-10 absolute lg:relative left-0 top-[10%] bg-gray-200 w-full  sm:w-1/2 lg:flex lg:w-1/5 mt-2 z border-gray-300 border-x-2">
+            {user ? (
+              <MyProjectsSide
+                email={user.email}
+                isProfessor={userType === "Professor"}
+              />
+            ) : (
+              <div />
+            )}
+          </div>
+        )}
         <div className="flex flex-col flex-grow ">
           <div className=" flex w-full justify-center">
             <h3 className=" self-center">{project}</h3>
           </div>
-          <div className=" bg-gray-100 w-fit grid grid-cols-2 grid-rows-1 items-center lg:hidden">
+          <div className=" bg-gray-100 w-full  grid grid-cols-2 grid-rows-1 items-center lg:hidden">
             <button
-              className="  flex  py-1 px-2.5 justify-start gap-1"
-              onClickCapture={handleShowNotification}
+              className="  w-full flex  py-2 px-2.5 border-r-2 border-black justify-start  hover:bg-slate-500 hover:text-white"
+              onClickCapture={() => handleShowNotification(1)}
             >
               {/* <span className="material-icons-outlined">bubble_chart</span> */}
               <ReceiptLongIcon />
               <span>Show All Projects</span>
             </button>
             <button
-              className="  flex py-1 px-2.5 justify-start gap-1"
-              onClickCapture={handleShowNotification}
+              className=" w-full flex  py-2 px-2.5 justify-start  hover:bg-slate-500 hover:text-white"
+              onClickCapture={() => handleShowNotification(2)}
             >
               {/* <span className="material-icons-outlined">bubble_chart</span> */}
-              {showNotification ? <CloseIcon /> : <NotificationsPausedIcon />}
-              {showNotification ? (
-                <span>Close Notifications</span>
+              {showNotification == 2 ? (
+                <CloseIcon />
               ) : (
-                <span>Notifications</span>
+                <NotificationsPausedIcon />
               )}
+
+              <span>Notifications</span>
             </button>
           </div>
           <DragDrop projectID={localStorage.getItem("projectID")} />
         </div>
-        {showNotification && (
-          <div className=" absolute  md:sticky left-0 md:left-full top-[7rem] md:top-0 right-0 md:flex  w-4/5 md:w-1/6 bg-slate-400 h-full">
+        {(showNotification == 2 ||
+          window.matchMedia("(min-width: 1024px)").matches) && (
+          <div className=" absolute lg:relative md:sticky left-0 top-[10%] md:top-0 right-0 md:flex  w-full md:w-1/6 bg-gray-200 h-full">
             {user && (
               <ProjectNotifications
                 isProfessor={userType === "Professor"}
