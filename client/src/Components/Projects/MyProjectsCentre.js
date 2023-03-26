@@ -198,7 +198,7 @@ export default function MyProjectsCentre(props) {
 
   return (
     <>
-      <div className=" mx-6  my-2 grid grid-cols-3 px-2 flex-grow content-center  gap-x-6 gap-y-10">
+      <div className=" mx-6  my-2 grid grid-cols-1  sm:grid-cols-2 xl:grid-cols-3 px-2 flex-grow content-center  gap-x-6 gap-y-10">
         {myProjects}
       </div>
       {createNewApplyVisible ? (
