@@ -48,10 +48,12 @@ const Reports = ({ userType, email }) => {
         "List Of Professors",
         "No Of Projects,total funding raised,  Under Each Professor",
         "Count of Students under Each Professor",
+        "List of Project Under Each Professor",
       ],
       Student: [
         "List Of Students",
         "No Of Projects Each Student is Working On",
+        "List of Students Along with their Projects"
       ],
       Project: ["List Of Projects"],
     };
@@ -64,6 +66,7 @@ const Reports = ({ userType, email }) => {
         "List Of Students",
         "Student Working Under This Professor",
         "No of Students Working Under This Professor For Each Project",
+        "List of Students Working Under This Professor With Project Name"
       ],
       Project: ["Projects This Professor is Working On", "List Of Projects"],
     };

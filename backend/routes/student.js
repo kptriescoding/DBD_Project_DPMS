@@ -197,7 +197,9 @@ const queryOptions={
   "List Of Students":"select * from Student",
   "No Of Projects Each Student is Working On":"select First_Name,Last_Name,Email,CGPA ,count(Student_Email) as Projects_Working_On from Student,Works_on where Student.Email=Student_Email group by Student_Email;",
   "Student Working Under This Professor":`Select * from Student where Email in (Select Student_Email from Works_on WHERE Project_ID in (Select Project_ID from Project Where Professor_Email="${queryOption.email}"))`,
-  "No of Students Working Under This Professor For Each Project":`Select P.Project_ID,P.Title,P.Description ,count(P.Project_ID) as Students_Working_On from Student as S , Works_on as W ,Project as P where S.Email =W.Student_Email and W.Project_ID=P.Project_ID and P.Professor_Email="${queryOption.email}" GROUP BY P.Project_ID`
+  "No of Students Working Under This Professor For Each Project":`Select P.Project_ID,P.Title,P.Description ,count(P.Project_ID) as Students_Working_On from Student as S , Works_on as W ,Project as P where S.Email =W.Student_Email and W.Project_ID=P.Project_ID and P.Professor_Email="${queryOption.email}" GROUP BY P.Project_ID`,
+  "List of Students Working Under This Professor With Project Name":`Select P.Project_ID,P.Title,P.Description ,S.First_Name,S.Last_Name,S.Middle_Name,S.Email from Student as S , Works_on as W ,Project as P where S.Email =W.Student_Email and W.Project_ID=P.Project_ID and P.Professor_Email="${queryOption.email}" `,
+  "List of Students Along with their Projects":`Select P.Project_ID,P.Title,P.Description ,S.First_Name,S.Last_Name,S.Middle_Name,S.Email from Student as S , Works_on as W ,Project as P where S.Email =W.Student_Email and W.Project_ID=P.Project_ID`
 }
 query=queryOptions[queryOption.query]
 if(!query)query=""

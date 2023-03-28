@@ -215,6 +215,7 @@ router.post("/get_professor_report", async (req, res) => {
     "List Of Professors":"select * from Professor",
     "Count of Students under Each Professor": "select p.Email,count(distinct st.Student_Email) as No_Of_Students from Professor as p,Works_on as st where exists (select * from Project where Professor_Email=p.Email AND st.Project_ID=Project.Project_ID) group by p.Email;",
     "No Of Projects,total funding raised,  Under Each Professor":"select First_Name,Last_Name,p.Email as Professor_Email,count(pr.Project_ID) as No_Of_Projects,sum(pr.Funding) as Funding_Amount_in_Rs  from Professor as p,Project as pr where pr.Professor_Email=p.Email group by Email;",
+    "List of Project Under Each Professor":`select First_Name,Last_Name,p.Email as Professor_Email,pr.Title,pr.Project_ID  from Professor as p,Project as pr where pr.Professor_Email=p.Email`
 
   }
   query=queryOptions[queryOption.query]   

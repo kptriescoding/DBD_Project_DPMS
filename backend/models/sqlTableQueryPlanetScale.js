@@ -10,7 +10,20 @@ export const queryDeptTable=`CREATE TABLE IF NOT EXISTS Department
   PRIMARY KEY (Name)
 );`
 
-export const queryStudentTable=`bpn`
+export const queryStudentTable=`CREATE TABLE IF NOT EXISTS Student
+(
+  First_Name CHAR(20) NOT NULL,
+  Last_Name CHAR(20) NOT NULL,
+  Middle_Name CHAR(20) ,
+  Local_Address VARCHAR(100) NOT NULL,
+  Permanent_Address VARCHAR(100) NOT NULL,
+  USN VARCHAR(10) NOT NULL,
+  CGPA FLOAT NOT NULL,
+  Semester INT NOT NULL,
+  Email VARCHAR(50) NOT NULL,
+  Department_Name CHAR(50) NOT NULL REFERENCES Department(Name) ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY (Email),
+)`
 
 export const queryStudentSkillTable=`CREATE TABLE IF NOT EXISTS Student_Skill
 (
