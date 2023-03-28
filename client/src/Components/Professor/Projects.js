@@ -5,6 +5,7 @@ import { auth, db, logout } from "../../firebase";
 import Navbar from "./Navbar";
 import axios from "axios";
 import ProjectNotifications from "../Projects/ProjectNotifications";
+import ModalProjectDescription from "../Projects/ModelProjectDescription";
 import MyProjectsSide from "../Projects/MyProjects";
 import DragDrop from "../DragDropComponents/DragDrop";
 import { fetchUserType } from "../../firebase";
@@ -20,6 +21,7 @@ export default function Projects() {
   const [userType, setUserType] = useState("");
   const [showNotification, setShowNotification] = useState(0);
   const [profile, setProfile] = useState({});
+  const [editableProjectVisible,seteditableProjectVisible] = useState(false)
 
   const checkUserSignup = async () => {
     let resUserType = await fetchUserType(user.email);
@@ -27,6 +29,7 @@ export default function Projects() {
     const data = {
       email: user.email,
     };
+    
     const res = await axios.post("/professor/is_signup", { data: data });
     let isSignup = res.data.isSignup;
     if (resUserType === "Student") return navigate("/student/dashboard");
@@ -64,6 +67,12 @@ export default function Projects() {
     if (showNotification == 0) setShowNotification(val);
     else setShowNotification(0);
   }
+  function handleOnClickEdit(){
+    seteditableProjectVisible(!editableProjectVisible)
+  }
+  const closeProjectDescriptionHandler = () =>{
+    seteditableProjectVisible(false);
+    }
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/login");
@@ -88,9 +97,19 @@ export default function Projects() {
           </div>
         )}
         <div className="flex flex-col flex-grow ">
-          <div className=" flex w-full justify-center">
-            <button className=" absolute right-3">
+          <div className=" flex w-full justify-center relative ">
+            <button className=" absolute right-3 top-0 bottom-0 hover:bg-gray-300 rounded-full px-2 my-1 " onClickCapture={handleOnClickEdit}>
               <EditIcon />
+              {editableProjectVisible&&(
+        <ModalProjectDescription
+          user={user}
+          visible={editableProjectVisible}
+          setVisible={seteditableProjectVisible}
+          closeHandler={closeProjectDescriptionHandler}
+          projectID={localStorage.getItem("projectID")}
+          userCanEdit={true}
+        />
+      )}
             </button>
             <h3 className=" self-center">{project}</h3>
           </div>
