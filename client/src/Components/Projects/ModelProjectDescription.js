@@ -35,6 +35,7 @@ const ModalProjectDescription = ({
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [editable, setEditable] = useState(false);
+  const [professorEmail,setProfessorEmail]=useState("")
   const [multiSelectSkills, setMultiSelectSkills] = useState([
     { label: "Java", value: "Java" },
     { label: "C++", value: "C++" },
@@ -111,6 +112,7 @@ const ModalProjectDescription = ({
     setFunding(project.funding);
     setStartDate(date1);
     setEndDate(date2);
+    setProfessorEmail(project.professorEmail)
 
     setSelectedSkills(project.skills);
     let skills = [...multiSelectSkills, ...project.skills];
@@ -176,6 +178,16 @@ const ModalProjectDescription = ({
             aria-label="Funding in Rs."
             disabled={!editable}
             onChangeCapture={(event) => setFunding(event.target.value)}
+          />
+          <Input
+            bordered
+            fullWidth
+            color="primary"
+            value={professorEmail}
+            size="lg"
+            placeholder="Professor Email."
+            aria-label="Professor Email."
+            disabled={true}
           />
          <MultiSelect
             options={multiSelectSkills}

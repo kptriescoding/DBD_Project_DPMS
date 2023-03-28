@@ -354,6 +354,7 @@ router.post("/get_by_projectID", async (req, res) => {
           projectName: cur.Title,
           projectDescription: cur.Description,
           projectId: cur.Project_ID,
+          professorEmail:cur.Professor_Email,
           collaborator: cur.Collaborator,
           funding:cur.Funding,
           startDate:cur.Start_Date,
