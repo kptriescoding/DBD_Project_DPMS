@@ -14,15 +14,31 @@ import CloseIcon from "@mui/icons-material/Close";
 
 export default function Projects() {
   const [user, loading, error] = useAuthState(auth);
-  const [project, setProject] = useState({});
+  const [project, setProject] = useState("");
   const navigate = useNavigate();
   const [userType, setUserType] = useState("");
   const [showNotification, setShowNotification] = useState(0);
   const [profile, setProfile] = useState({});
 
+
+  useEffect(() => {
+    handleSetProject();
+  }, []);
+
   function handleShowNotification(val) {
     if (showNotification == 0) setShowNotification(val);
     else setShowNotification(0);
+  }
+
+  async function handleSetProject() {
+    let res;
+    if (localStorage.getItem("projectID") == null) return;
+    res = await axios.post("/project/get_by_projectID", {
+      data: {
+        projectID: localStorage.getItem("projectID"),
+      },
+    });
+    setProject(res.data.project.projectName);
   }
 
   const checkUserSignup = async () => {
@@ -77,8 +93,8 @@ export default function Projects() {
           </div>
         )}
         <div className="flex flex-col flex-grow">
-          <div className=" flex w-full">
-            <h3>{localStorage.getItem("projectID")}</h3>
+        <div className=" flex w-full justify-center">
+            <h3 className=" self-center">{project}</h3>
           </div>
           <div className=" bg-gray-100 w-full  grid grid-cols-2 grid-rows-1 items-center lg:hidden">
             <button
