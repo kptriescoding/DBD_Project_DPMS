@@ -10,6 +10,9 @@ import * as XLSX from "xlsx";
 import Graph from "./Graph";
 import Table from "./Table";
 import jsPDF from "jspdf";
+import PieChartIcon from '@mui/icons-material/PieChart';
+import CloseIcon from "@mui/icons-material/Close";
+import TableRowsIcon from '@mui/icons-material/TableRows';
 
 const Reports = ({ userType, email }) => {
   let viewType,
@@ -84,6 +87,7 @@ const Reports = ({ userType, email }) => {
   const [barData2, setBarData2] = useState("");
   const [type, settype] = useState(firstOption);
   const [graphType, setGraphType] = useState("Pie");
+  const [lOrR, setLOrR] = useState(0)
   const graphTypes = [
     // "Bar",
     "Donut",
@@ -120,6 +124,10 @@ const Reports = ({ userType, email }) => {
     setBarChartCol(Object.keys(tempData.data.result[0]));
   }
 
+  function handelesetLOrR(val){
+    if (lOrR == 0) setLOrR(val);
+    else setLOrR(0);
+  }
   function generateXL() {
     const worksheet = XLSX.utils.json_to_sheet(sqlData);
     const workbook = XLSX.utils.book_new();
@@ -146,8 +154,26 @@ const Reports = ({ userType, email }) => {
 
   return (
     <div className=" flex flex-col h-screen">
+      <div className=" grid  grid-cols-2 justify-items-center w-full xl:hidden ">
+        <button
+          className=" bg-gray-200 py-2 self-center w-full border-r-2 border-black hover:bg-gray-600  hover:text-white"
+          onClickCapture={() => handelesetLOrR(1)}
+        >
+          { lOrR== 1 ? <CloseIcon /> : <TableRowsIcon />}
+          All Projects
+        </button>
+        <button
+          className=" bg-gray-200 py-2 self-center w-full  border-black hover:bg-gray-600  hover:text-white"
+          onClickCapture={() => handelesetLOrR(2)}
+        >
+          {lOrR == 2 ? <CloseIcon /> : <PieChartIcon />}
+           ChartGenerator
+        </button>
+      </div>
       <div className=" flex flex-grow">
-        <div className="flex  flex-col w-1/5 my-4 py-4 bg-slate-100 px-4 rounded-2xl shadow-xl border border-slate-400 ">
+      {(lOrR == 1 ||
+          window.matchMedia("(min-width: 1280px)").matches) && ( 
+        <div className=" z-10 absolute left-0 right-0 w-full h-full md:w-60%  xl:relative flex  flex-col xl:w-1/5 my-4 py-4 bg-slate-100 px-4 rounded-2xl shadow-xl border border-slate-400 ">
           <div className="flex flex-col justify-center mt-4 w-full self-center ">
             <Dropdown
               className=" mb-1"
@@ -190,9 +216,9 @@ const Reports = ({ userType, email }) => {
               Fetch Data
             </button>
           </div>
-        </div>
+        </div>)}
 
-        <div className="flex flex-col mx-4 overflow-x-auto flex-grow p-2   flex-grow  ">
+        <div className="flex flex-col mx-4 overflow-x-auto flex-grow p-2    ">
           <Table data={sqlData} />
           {sqlData != null && sqlData.length != 0 ? (
             <button
@@ -205,7 +231,9 @@ const Reports = ({ userType, email }) => {
             <></>
           )}
         </div>
-        <div className=" w-1/4 my-4 mx-2 flex flex-col py-4 bg-slate-100 px-4 rounded-2xl shadow-xl border border-slate-400">
+        {(lOrR == 2 ||
+          window.matchMedia("(min-width: 1280px)").matches) && ( 
+        <div className=" absolute left-0 right-0 h-full  xl:relative w-full xl:w-[40rem] my-4 mx-2 flex flex-col py-4 bg-slate-100 px-4 rounded-2xl shadow-xl border border-slate-400">
           <Dropdown
             className=" mb-1"
             options={barCharCol}
@@ -238,7 +266,7 @@ const Reports = ({ userType, email }) => {
             />{" "}
             : <div />
           </div>
-        </div>
+        </div>)}
       </div>
     </div>
   );
