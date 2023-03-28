@@ -32,7 +32,9 @@ export default function AdminDashboard() {
                 style={{
                   padding: "0rem 6.2rem 0rem 6.2rem",
                 }}
-                onClickCapture={logout}
+                onClickCapture={()=>{
+                  logout() 
+                  navigate("/")}}
               >
                 Logout
               </Button>
