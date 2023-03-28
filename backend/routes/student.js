@@ -74,7 +74,7 @@ router.post("/save_user", async (req, res) => {
   let subject=" Welcome to our Project Management System!"
     let text=`Dear ${user.firstName},
 
-    I hope this email finds you well. I am writing to extend a warm welcome to our Project Management System and to thank you for choosing us as your platform for managing your projects as a student.
+    We hope this email finds you well. We am writing to extend a warm welcome to our Project Management System and to thank you for choosing us as your platform for managing your projects as a student.
     
     We are thrilled to have you on board and would like to make sure that your experience with our system is as smooth and productive as possible. Our platform is designed to help you stay organized, manage your tasks efficiently and collaborate with your team effectively.
     
