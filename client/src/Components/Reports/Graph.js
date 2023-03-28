@@ -2,12 +2,16 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 export default function Graph({data,xCol,yCol,reRender,graphType}) {
-  const [graph, setgraph] = useState(<div></div>);
+  const [graph, setgraph] = useState(()=><div></div>);
 
   useEffect(() => {
     handleDataChange();
-  }, [reRender,xCol,yCol,graphType]);
-
+  }, [reRender,xCol,yCol]);
+  useEffect(()=>{
+    handleDataChange()
+    console.log(graphType)
+    console.log("Graph type Changed")
+  },[graphType])
   async function handleDataChange() {
     fetchgraphData(data);
   }
@@ -41,7 +45,7 @@ export default function Graph({data,xCol,yCol,reRender,graphType}) {
   const loadgraph = (graphData) => {
     try {
       if (graphData == null || graphData.length == 0) return;
-      setgraph( <div>
+      setgraph(()=> <div>
         <div style={{ width: "50%" }}></div>
         {graphs[graphType](graphData)}
         </div>);
