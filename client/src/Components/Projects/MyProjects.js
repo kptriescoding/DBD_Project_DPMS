@@ -72,7 +72,7 @@ export default function MyProjects(props) {
                 color: "#ffffff",
               }}
             >
-              {proj.projectName}
+              {proj.projectName+' ('+proj.projectId+')'}
             </Text>
           </Card.Header>
           <Card.Divider

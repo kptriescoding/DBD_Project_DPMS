@@ -46,13 +46,13 @@ export default function ProfessorNavbar(props) {
           >
             Reports
           </Navbar.Link>
-        </Navbar.Content>
 
-        <Navbar.Content hideIn="xs" variant="highlight">
           <Navbar.Item>
             <ProfilePopover user={props.user} userType={props.userType} />
           </Navbar.Item>
+          
         </Navbar.Content>
+
         <Navbar.Content>
           <Navbar.Item>
             <SpeechRecognizer

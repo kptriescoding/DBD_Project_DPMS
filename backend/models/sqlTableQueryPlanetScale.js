@@ -88,6 +88,5 @@ export const queryApplicationTable= `CREATE TABLE IF NOT EXISTS Application
   Project_ID VARCHAR(20) NOT NULL,
   Email VARCHAR(50) NOT NULL,
   notificationTime DATETIME NOT NULL,
-  PRIMARY KEY(Project_ID,Email)
-)`
+);`
 

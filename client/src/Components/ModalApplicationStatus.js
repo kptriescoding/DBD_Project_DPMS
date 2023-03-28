@@ -154,10 +154,6 @@ const ModalApplicationStatus = ({
                     }
                   />
                 )}
-
-                <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">
-                  {errorMessage}
-                </p>
               </Modal.Body>
               {applicationData.applicationStatus == "accept" ? (
                 <Button style={{ backgroundColor: "#22c856" }}>Accepted</Button>
@@ -219,9 +215,6 @@ const ModalApplicationStatus = ({
                 ) : (
                   <Text fullWidth>{applicationData.desciption}</Text>
                 )}
-                <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">
-                  {errorMessage}
-                </p>
               </Modal.Body>
               {applicationData.applicationStatus != "sent" ? (
                 <div></div>
