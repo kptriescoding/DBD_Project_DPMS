@@ -13,7 +13,7 @@ import { fetchUserType } from "../../firebase";
 import NotificationsPausedIcon from "@mui/icons-material/NotificationsPaused";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import CloseIcon from "@mui/icons-material/Close";
-import EditIcon from "@mui/icons-material/Edit";
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 export default function Projects() {
   const [user, loading, error] = useAuthState(auth);
@@ -106,7 +106,7 @@ export default function Projects() {
         <div className="flex flex-col flex-grow">
           <div className=" flex w-full justify-center relative">
           <button className=" absolute right-3 top-0 bottom-0 hover:bg-gray-300 rounded-full px-2 my-1 " onClickCapture={handleOnClickEdit}>
-              <EditIcon />
+              <RemoveRedEyeIcon />
               {editableProjectVisible&&(
         <ModalProjectDescription
           user={user}
