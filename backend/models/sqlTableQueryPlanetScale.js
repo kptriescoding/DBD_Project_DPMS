@@ -81,12 +81,12 @@ export const queryWorksOnTable=`CREATE TABLE IF NOT EXISTS Works_on
 
 export const queryApplicationTable= `CREATE TABLE IF NOT EXISTS Application
 (
-  forStudent BIT NOT NULL,
-  isClosed BIT NOT NULL,
+  forStudent INT NOT NULL,
+  isClosed INT NOT NULL,
   description VARCHAR(255) NOT NULL,
   applicationStatus VARCHAR(20) NOT NULL,
   Project_ID VARCHAR(20) NOT NULL,
   Email VARCHAR(50) NOT NULL,
-  notificationTime DATETIME NOT NULL,
+  notificationTime DATETIME NOT NULL
 );`
 

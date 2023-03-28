@@ -136,9 +136,8 @@ export default function MyProjectsCentre(props) {
               }}
               className=" py-3"
             >
-              {proj.projectName.length > 20
-                ? proj.projectName.substring(0, 20) + "..."
-                : proj.projectName}
+      
+              {proj.projectName+' ('+proj.projectId+')'}
             </Text>
 
             {props.isProfessor ? (

@@ -131,7 +131,7 @@ router.post("/update_application_from_professor", async (req, res) => {
   let query3 = `
   Insert into Application values(
     1,
-    1,
+    0,
     "${professor.description}",
     "${professor.applicationStatus}",
     "${professor.Project_ID}",
@@ -190,21 +190,21 @@ router.post("/update_application_from_student", async (req, res) => {
     "${student.Project_ID}"
   )
   `;
-  // let query3 = `
-  // Insert into Application values(
-  //   0,
-  //   0,
-  //   "${student.description}",
-  //   "${student.applicationStatus}",
-  //   "${student.Project_ID}",
-  //   "${student.Email}",
-  //   "${student.notificationTime}"
-  // )
-  // `;
+  let query3 = `
+  Insert into Application values(
+    0,
+    0,
+    "${student.description}",
+    "${student.applicationStatus}",
+    "${student.Project_ID}",
+    "${student.Email}",
+    "${student.notificationTime}"
+  )
+  `;
   let getProdEmailQuery=`Select * from Project where Project_ID="${student.Project_ID}"`
   try {
     await mysqlPool.query(query1);
-    // await mysqlPool.query(query3);
+    await mysqlPool.query(query3);
     if (student.applicationStatus == "accept") {
       await mysqlPool.query(query2);
     }
