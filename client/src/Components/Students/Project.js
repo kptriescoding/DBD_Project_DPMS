@@ -35,7 +35,7 @@ export default function Projects() {
   }
 
   function handleOnClickEdit(){
-    seteditableProjectVisible(!editableProjectVisible)
+    seteditableProjectVisible(true)
   }
   const closeProjectDescriptionHandler = () =>{
     seteditableProjectVisible(false);

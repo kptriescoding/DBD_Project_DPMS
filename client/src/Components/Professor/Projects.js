@@ -68,7 +68,7 @@ export default function Projects() {
     else setShowNotification(0);
   }
   function handleOnClickEdit(){
-    seteditableProjectVisible(!editableProjectVisible)
+    seteditableProjectVisible(true)
   }
   const closeProjectDescriptionHandler = () =>{
     seteditableProjectVisible(false);

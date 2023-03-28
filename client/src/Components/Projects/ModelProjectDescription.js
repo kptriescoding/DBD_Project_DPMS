@@ -24,7 +24,7 @@ const ModalProjectDescription = ({
   setVisible,
   closeHandler,
   projectID,
-  useCanEdit,
+  userCanEdit,
 }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -48,6 +48,7 @@ const ModalProjectDescription = ({
     { label: "Block Chain", value: "Block Chain" },
   ]);
   const updateProject = async () => {
+    setErrorMessage("")
     if (
       !name ||
       !description ||
@@ -76,6 +77,7 @@ const ModalProjectDescription = ({
     };
     // console.log(newProject);
     let res = await axios.post("/project/update", { data: newProject });
+    console.log(res)
     if (res.data.success) {
       setEditable(false);
     }
@@ -226,7 +228,7 @@ const ModalProjectDescription = ({
             {errorMessage}
           </p>
         </Modal.Body>
-        {useCanEdit && (
+        {userCanEdit && (
           <Modal.Footer autoMargin={false}>
             {!editable ? (
               <Button
@@ -238,7 +240,7 @@ const ModalProjectDescription = ({
               </Button>
             ) : (
               <Button auto onPress={updateProject} style={{ width: "100%" }}>
-                Add
+                Update
               </Button>
             )}
           </Modal.Footer>
