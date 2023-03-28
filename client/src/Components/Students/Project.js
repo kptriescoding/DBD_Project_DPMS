@@ -11,6 +11,7 @@ import { fetchUserType } from "../../firebase";
 import NotificationsPausedIcon from "@mui/icons-material/NotificationsPaused";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function Projects() {
   const [user, loading, error] = useAuthState(auth);
@@ -19,7 +20,6 @@ export default function Projects() {
   const [userType, setUserType] = useState("");
   const [showNotification, setShowNotification] = useState(0);
   const [profile, setProfile] = useState({});
-
 
   useEffect(() => {
     handleSetProject();
@@ -93,7 +93,10 @@ export default function Projects() {
           </div>
         )}
         <div className="flex flex-col flex-grow">
-        <div className=" flex w-full justify-center">
+          <div className=" flex w-full justify-center relative">
+            <button className=" absolute right-3">
+              <EditIcon />
+            </button>
             <h3 className=" self-center">{project}</h3>
           </div>
           <div className=" bg-gray-100 w-full  grid grid-cols-2 grid-rows-1 items-center lg:hidden">

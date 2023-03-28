@@ -11,6 +11,7 @@ import { fetchUserType } from "../../firebase";
 import NotificationsPausedIcon from "@mui/icons-material/NotificationsPaused";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function Projects() {
   const [user, loading, error] = useAuthState(auth);
@@ -88,6 +89,9 @@ export default function Projects() {
         )}
         <div className="flex flex-col flex-grow ">
           <div className=" flex w-full justify-center">
+            <button className=" absolute right-3">
+              <EditIcon />
+            </button>
             <h3 className=" self-center">{project}</h3>
           </div>
           <div className=" bg-gray-100 w-full  grid grid-cols-2 grid-rows-1 items-center lg:hidden">
@@ -96,7 +100,7 @@ export default function Projects() {
               onClickCapture={() => handleShowNotification(1)}
             >
               {/* <span className="material-icons-outlined">bubble_chart</span> */}
-             {showNotification==1?<CloseIcon/>:<ReceiptLongIcon/>} 
+              {showNotification == 1 ? <CloseIcon /> : <ReceiptLongIcon />}
               <span>Show All Projects</span>
             </button>
             <button
