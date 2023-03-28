@@ -123,7 +123,7 @@ export default function Login() {
               <h3 className=" font-serif italic ">
                 College Project Management System
               </h3>
-              <span className=" ">Let's Increase the culture of Doing Projects in College </span>
+              <span className=" ">Let's Increase the Culture of Doing Projects in College </span>
             </div>
           </div>
           <div className=" bg-blue-50 rounded-r-2xl">

@@ -10,7 +10,7 @@ import { NextUIProvider } from '@nextui-org/react';
 import StudentSignup from "./Components/Students/Signup"
 import StudentDashboard from "./Components/Students/Dashboard"
 import ProfessorSignup from "./Components/Professor/Signup"
-import ProfessorLogin from "./Components/Login"
+import Login from "./Components/Login"
 import ProfessorDashboard from "./Components/Professor/Dashboard"
 import DragDrop from "./Components/DragDropComponents/DragDrop";
 import ProfessorProject from "./Components/Professor/Projects.js";
@@ -20,6 +20,7 @@ import AdminDashboard from "./Components/Admin/AdminDashboard";
 import StudentProjects from "./Components/Students/Project";
 import ProfessorReport from "./Components/Professor/Report";
 import StudentReport from "./Components/Students/Report";
+import { Navigate } from "react-router-dom";
 
 /**
  TODO
@@ -45,8 +46,8 @@ function App() {
         <Routes>
           {/*<Route exact path="/" element={<Login />} />
   <Route exact path="/dashboard" element={<Dashboard />} />*/}
-          <Route exact path="/dragDropTest" element={<DragDrop/>}/>
-          <Route exact path="/login" element={<ProfessorLogin/>}/>
+  <Route exact path="/" element={<Login/>}/>
+          <Route exact path="/login" element={<Login/>}/>
           <Route exact path="/student/dashboard" element={<StudentDashboard/>}/>
           <Route exact path="/student/signup" element={<StudentSignup/>}/>
           <Route exact path="/student/profile" element={<StudentProfile/>}/>
@@ -58,6 +59,7 @@ function App() {
           <Route exact path="/professor/profile" element={<ProfessorProfile/>}/>
           <Route exact path="/professor/report" element={<ProfessorReport/>}/>
           <Route exact path="/admin/dashboard" element={<AdminDashboard/>}/>
+          <Route path='*' element={<Navigate to='/' />} />
         </Routes>
       </Router>
       </NextUIProvider>

@@ -53,8 +53,8 @@ const Column = ({
   };
 
   return (
-    <div className=" px-2 pb-6 pt-2 bg-gray-100 rounded-md shadow-lg">
-      <div ref={drop}>
+    <div className=" px-2 pb-6 pt-2 bg-gray-100 rounded-md shadow-lg" ref={drop}>
+      <div >
         <div
           borderWeight="extrabold"
           borderRadius="1"
