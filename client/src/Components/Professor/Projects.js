@@ -75,7 +75,7 @@ export default function Projects() {
       <div className="flex flex-row relative">
         {(showNotification == 1 ||
           window.matchMedia("(min-width: 1024px)").matches) && (
-          <div className=" z-10 absolute lg:relative left-0 top-[10%] bg-gray-200 w-full  sm:w-1/2 lg:flex lg:w-1/5 mt-2 z border-gray-300 border-x-2">
+          <div className=" z-10 absolute lg:relative left-0 top-[10%] bg-gray-200  lg:bg-white  h-full w-full  sm:w-1/2 lg:flex lg:w-1/5 mt-2 z border-gray-300 border-x-2">
             {user ? (
               <MyProjectsSide
                 email={user.email}
@@ -96,7 +96,7 @@ export default function Projects() {
               onClickCapture={() => handleShowNotification(1)}
             >
               {/* <span className="material-icons-outlined">bubble_chart</span> */}
-              <ReceiptLongIcon />
+             {showNotification==1?<CloseIcon/>:<ReceiptLongIcon/>} 
               <span>Show All Projects</span>
             </button>
             <button
@@ -117,7 +117,7 @@ export default function Projects() {
         </div>
         {(showNotification == 2 ||
           window.matchMedia("(min-width: 1024px)").matches) && (
-          <div className=" absolute lg:relative md:sticky left-0 top-[10%] md:top-0 right-0 md:flex  w-full md:w-1/6 bg-gray-200 h-full">
+          <div className=" absolute lg:relative  top-[10%] sm:w-1/2  lg:top-0 right-0 lg:flex  w-full lg:w-1/6 bg-gray-200  lg:bg-white h-full">
             {user && (
               <ProjectNotifications
                 isProfessor={userType === "Professor"}

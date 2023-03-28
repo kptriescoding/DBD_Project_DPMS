@@ -8,13 +8,22 @@ import ProjectNotifications from "../Projects/ProjectNotifications";
 import MyProjectsSide from "../Projects/MyProjects";
 import DragDrop from "../DragDropComponents/DragDrop";
 import { fetchUserType } from "../../firebase";
+import NotificationsPausedIcon from "@mui/icons-material/NotificationsPaused";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function Projects() {
   const [user, loading, error] = useAuthState(auth);
   const [project, setProject] = useState({});
   const navigate = useNavigate();
   const [userType, setUserType] = useState("");
+  const [showNotification, setShowNotification] = useState(0);
   const [profile, setProfile] = useState({});
+
+  function handleShowNotification(val) {
+    if (showNotification == 0) setShowNotification(val);
+    else setShowNotification(0);
+  }
 
   const checkUserSignup = async () => {
     let resUserType = await fetchUserType(user.email);
@@ -53,32 +62,61 @@ export default function Projects() {
   return (
     <div>
       {profile && <Navbar user={profile} userType={userType} />}
-      <div className="flex flex-row">
-        <div className=" sticky flex w-1/5 mt-2 z border-gray-300 border-x-2">
-          {user ? (
-            <MyProjectsSide
-              email={user.email}
-              isProfessor={userType === "Professor"}
-            />
-          ) : (
-            <div />
-          )}
-        </div>
-        <div className="flex flex-col w-3/5">
+      <div className="flex flex-row relative">
+        {(showNotification == 1 ||
+          window.matchMedia("(min-width: 1024px)").matches) && (
+          <div className="z-10 absolute lg:relative left-0 top-[10%] bg-gray-200 lg:bg-white h-full w-full  sm:w-1/2 lg:flex lg:w-1/5 mt-2 z border-gray-300 border-x-2">
+            {user ? (
+              <MyProjectsSide
+                email={user.email}
+                isProfessor={userType === "Professor"}
+              />
+            ) : (
+              <div />
+            )}
+          </div>
+        )}
+        <div className="flex flex-col flex-grow">
           <div className=" flex w-full">
             <h3>{localStorage.getItem("projectID")}</h3>
           </div>
+          <div className=" bg-gray-100 w-full  grid grid-cols-2 grid-rows-1 items-center lg:hidden">
+            <button
+              className="  w-full flex  py-2 px-2.5 border-r-2 border-black justify-start  hover:bg-slate-500 hover:text-white"
+              onClickCapture={() => handleShowNotification(1)}
+            >
+              {/* <span className="material-icons-outlined">bubble_chart</span> */}
+              {showNotification == 1 ? <CloseIcon /> : <ReceiptLongIcon />}
+              <span>Show All Projects</span>
+            </button>
+            <button
+              className=" w-full flex  py-2 px-2.5 justify-start  hover:bg-slate-500 hover:text-white"
+              onClickCapture={() => handleShowNotification(2)}
+            >
+              {/* <span className="material-icons-outlined">bubble_chart</span> */}
+              {showNotification == 2 ? (
+                <CloseIcon />
+              ) : (
+                <NotificationsPausedIcon />
+              )}
+
+              <span>Notifications</span>
+            </button>
+          </div>
           <DragDrop projectID={localStorage.getItem("projectID")} />
         </div>
-        <div className="flex w-1/5">
-          {user && (
-            <ProjectNotifications
-              isProfessor={userType === "Professor"}
-              projectID={localStorage.getItem("projectID")}
-              email={user.email}
-            />
-          )}
-        </div>
+        {(showNotification == 2 ||
+          window.matchMedia("(min-width: 1024px)").matches) && (
+          <div className="absolute lg:relative  top-[10%] sm:w-1/2  lg:top-0 right-0 lg:flex  w-full lg:w-1/6 bg-gray-200 lg:bg-white h-full">
+            {user && (
+              <ProjectNotifications
+                isProfessor={userType === "Professor"}
+                projectID={localStorage.getItem("projectID")}
+                email={user.email}
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

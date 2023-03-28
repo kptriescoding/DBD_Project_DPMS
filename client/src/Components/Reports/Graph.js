@@ -13,7 +13,7 @@ export default function Graph({data,xCol,yCol,reRender,graphType}) {
   }
   let graphs={
     // "Bar":(graphData)=><Chart options={graphData.options} series={graphData.series} labels={graphData.labels} type="bar" />,
-    "Pie":(graphData)=><Chart options={graphData.options} series={graphData.series} labels={graphData.labels} type="pie" />,
+    "Pie":(graphData)=><Chart options={graphData.options} series={graphData.series} labels={graphData.labels} type="pie"  />,
     "Donut":(graphData)=><Chart options={graphData.options} series={graphData.series} labels={graphData.labels} type="donut" />,
   }
   function fetchgraphData(sqlD) {
