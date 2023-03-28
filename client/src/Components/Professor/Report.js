@@ -32,8 +32,6 @@ export default function ProfessorReport() {
       return navigate("/student/signup");
     if (!isSignup && resUserType === "Professor")
       return navigate("/professor/signup");
-    if(!localStorage.getItem("projectID"))
-        return navigate("/professor/dashboard")
   };
   const getUser = async () => {
     const data = {
