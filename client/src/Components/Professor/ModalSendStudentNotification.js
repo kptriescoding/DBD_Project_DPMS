@@ -92,7 +92,7 @@ const ModalSendStudentNotification = ({
               onChangeCapture={(event) => setDescription(event.target.value)}
             />
 
-            <p className="text-center font-semibold mx-4 mb-0 text-2xl font-light text-red-500">
+            <p className="text-center mx-4 mb-0 text-2xl font-light text-red-500">
               {errorMessage}
             </p>
           </Modal.Body>
