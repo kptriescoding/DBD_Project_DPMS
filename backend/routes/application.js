@@ -148,7 +148,7 @@ router.post("/update_application_from_professor", async (req, res) => {
     let subject=" Change in Project Status Regd."
     let text=`Dear Student,
 
-    I hope this email finds you well. I am writing to update you on the status of your recent project application.
+    We hope this email finds you well. We am writing to update you on the status of your recent project application.
     
     The status of your application has been updated on our website. You can check the status of your application by logging into your account and visiting the "Applications" section.
     
