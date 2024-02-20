@@ -18,28 +18,28 @@ import {
    
 
 const sqlInit=async()=>{
-//     let config={
-//         host: SQL_HOST,
-//         user: SQL_USER,
-//         password: SQL_PASS,
-//     }
-//     const dpool=mysql.createPool(config)
+    let config={
+        host: SQL_HOST,
+        user: SQL_USER,
+        password: SQL_PASS,
+        port:3306
+    }
+    const dpool=mysql.createPool(config)
 
-// //Creating Database if doesn't exist
-//     let query
-//     try{
-//         query="CREATE DATABASE IF NOT EXISTS CPMS;"
-//     await dpool.execute(query)
-//     }catch(err){
-//         console.log(err)
-//     }
+//Creating Database if doesn't exist
+    let query
+    try{
+        query="CREATE DATABASE IF NOT EXISTS CPMS;"
+    await dpool.execute(query)
+    }catch(err){
+        console.log(err)
+    }
     config={
         host: SQL_HOST,
         user: SQL_USER,
         password: SQL_PASS,
         database:SQL_DB,
         port:3306,
-        ssl:{"rejectUnauthorized":true}
     }
     const pool=mysql.createPool(config)
     try{
@@ -75,7 +75,6 @@ let config={
     password: SQL_PASS,
     database:SQL_DB,
     port:3306,
-    ssl:{"rejectUnauthorized":true}
 }
 export const mysqlPool=mysql.createPool(config)
 export default sqlInit

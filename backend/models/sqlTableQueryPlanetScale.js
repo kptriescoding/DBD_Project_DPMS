@@ -22,7 +22,7 @@ export const queryStudentTable=`CREATE TABLE IF NOT EXISTS Student
   Semester INT NOT NULL,
   Email VARCHAR(50) NOT NULL,
   Department_Name CHAR(50) NOT NULL REFERENCES Department(Name) ON DELETE CASCADE ON UPDATE CASCADE,
-  PRIMARY KEY (Email),
+  PRIMARY KEY (Email)
 )`
 
 export const queryStudentSkillTable=`CREATE TABLE IF NOT EXISTS Student_Skill
